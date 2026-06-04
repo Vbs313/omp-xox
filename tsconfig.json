@@ -1,0 +1,35 @@
+// Pi loads extensions via jiti (TypeScript JIT compiler).
+// noEmit: true is intentional — extensions are loaded as .ts directly.
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    // Pi loads extensions via jiti (TypeScript JIT compiler). noEmit: true is intentional
+    // — extensions are loaded as .ts files directly, not compiled to dist/.
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": [
+    "extensions/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "skills",
+    "prompts",
+    "agents",
+    "config"
+  ]
+}

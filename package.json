@@ -1,0 +1,40 @@
+{
+  "name": "pi-xox",
+  "version": "2.0.0",
+  "description": "OMP extension pack: DAG-based multi-agent orchestration, structured dev tools, safety gate, and semantic context guard",
+  "type": "module",
+  "omp": {
+    "extensions": [
+      "./extensions/dag-scheduler/index.ts",
+      "./extensions/dev-tools/index.ts",
+      "./extensions/safety-gate/index.ts",
+      "./extensions/context-guard/index.ts",
+      "./extensions/fallback-pipeline/index.ts",
+      "./extensions/verification-gate/index.ts",
+      "./extensions/task-spawner/index.ts",
+      "./extensions/auto-delegate/index.ts",
+      "./extensions/knowledge-writer/index.ts"
+    ],
+    "skills": [
+      "./skills"
+    ],
+    "prompts": [
+      "./prompts"
+    ]
+  },
+  "keywords": [
+    "omp",
+    "agent",
+    "orchestration",
+    "multi-agent",
+    "coding"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@oh-my-pi/pi-coding-agent": "*"
+  }
+}
