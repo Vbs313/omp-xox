@@ -13,9 +13,19 @@
         "source": "github",
         "repo": "Vbs313/omp-xox"
       },
-      "version": "2.0.0",
+      "version": "2.0.1",
       "author": "Vbs313",
-      "tags": ["multi-agent", "orchestration", "dev-tools", "safety", "context", "fallback", "verification", "task-spawner", "knowledge"],
+      "tags": [
+        "multi-agent",
+        "orchestration",
+        "dev-tools",
+        "safety",
+        "context",
+        "fallback",
+        "verification",
+        "task-spawner",
+        "knowledge"
+      ],
       "homepage": "https://github.com/Vbs313/omp-xox",
       "repository": "https://github.com/Vbs313/omp-xox"
     }

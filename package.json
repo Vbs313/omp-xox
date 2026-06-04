@@ -1,6 +1,6 @@
 {
   "name": "omp-xox",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "OMP extension pack: DAG-based multi-agent orchestration, structured dev tools, safety gate, semantic context guard, unified fallback pipeline, verification gate, task spawner, auto-delegation, and knowledge writer",
   "type": "module",
   "omp": {
