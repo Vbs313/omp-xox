@@ -1,4 +1,4 @@
-// pi-xox v2: Auto-Delegate — Natural language → specialized agent routing
+// omp-xox v2: Auto-Delegate — Natural language → specialized agent routing
 // Implements oh-my-openagent's pattern: user types "审查代码"
 // → system auto-routes to reviewer agent via omp's task tool.
 //
@@ -101,7 +101,7 @@ export default function autoDelegate(pi: ExtensionAPI) {
   let enabled = true;
   let routedCount = 0;
 
-  pi.setLabel("pi-xox Auto-Delegate");
+  pi.setLabel("omp-xox Auto-Delegate");
 
   const routingPrompt = buildRoutingPrompt();
 

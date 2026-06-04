@@ -1,4 +1,4 @@
-// pi-xox v2: Context Guard — Semantic context preservation
+// omp-xox v2: Context Guard — Semantic context preservation
 // v2.1: Detects omp minimizer to avoid double-truncation
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
@@ -14,7 +14,7 @@ interface ContextGuardConfig {
 export default function contextGuard(pi: ExtensionAPI) {
   const config: ContextGuardConfig = { enabled: true, minTriggerChars: 2000, totalTruncated: 0, totalSavedChars: 0 };
 
-  pi.setLabel("pi-xox Context Guard");
+  pi.setLabel("omp-xox Context Guard");
 
   pi.on("session_start", async (_event, ctx) => {
     ctx.ui.notify(`Context Guard: active, trigger ≥ ${config.minTriggerChars} chars`, "info");

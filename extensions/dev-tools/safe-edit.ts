@@ -1,4 +1,4 @@
-// pi-xox v2: safe-edit — Hashline-style optimistic locking for file edits
+// omp-xox v2: safe-edit — Hashline-style optimistic locking for file edits
 // v2.1: Removed hash injection hook. Uses optional hash verification.
 // Hash comes from omp's native read output header (¶PATH#TAG) or prior safe_edit return.
 // No hook → no conflict with omp read cache.
@@ -50,7 +50,7 @@ function applyEdit(content: string, op: EditOperation): string {
 export default function safeEdit(pi: ExtensionAPI) {
   const { z } = pi.zod;
 
-  pi.setLabel("pi-xox safe-edit");
+  pi.setLabel("omp-xox safe-edit");
 
   pi.registerTool({
     name: "safe_edit",

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# pi-xox v2: Install script for OMP extension package
+# omp-xox v2: Install script for OMP extension package
 #
 # Usage:
 #   ./install.sh              # Link to user-level OMP extensions
@@ -9,7 +9,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PACKAGE_NAME="pi-xox"
+PACKAGE_NAME="omp-xox"
 
 # Colors
 RED='\033[0;31m'
@@ -23,7 +23,7 @@ error() { echo -e "${RED}[ERROR]${NC} $*" >&2; }
 
 usage() {
     cat <<EOF
-pi-xox v2 Installer
+omp-xox v2 Installer
 
 Usage:
   ./install.sh              Link to user-level (~/.omp/agent/settings.json)
@@ -31,7 +31,7 @@ Usage:
   ./install.sh --uninstall  Remove from settings
   ./install.sh --check      Verify installation
 
-This script registers pi-xox as an OMP extension package via settings.json.
+This script registers omp-xox as an OMP extension package via settings.json.
 OMP will automatically discover skills, prompts, agents, and the unified
 extension entry point from this directory.
 EOF
@@ -179,23 +179,23 @@ main() {
 
     case "$action" in
         install)
-            info "Installing pi-xox v2 ($scope scope)"
+            info "Installing omp-xox v2 ($scope scope)"
             ensure_settings "$settings_path"
             add_extension "$settings_path" "$ext_path"
             info "Settings: $settings_path"
             info "Extension: $ext_path"
             echo ""
             info "Installation complete. Restart OMP to load extensions."
-            info "Quick test: omp -e $ext_path/index.ts --max-turns 1 --print 'list pi-xox tools'"
+            info "Quick test: omp -e $ext_path/index.ts --max-turns 1 --print 'list omp-xox tools'"
             ;;
         uninstall)
-            info "Uninstalling pi-xox v2 ($scope scope)"
+            info "Uninstalling omp-xox v2 ($scope scope)"
             ensure_settings "$settings_path"
             remove_extension "$settings_path" "$ext_path"
             info "Done. Restart OMP to unload extensions."
             ;;
         check)
-            info "Checking pi-xox v2 installation ($scope scope)"
+            info "Checking omp-xox v2 installation ($scope scope)"
             check_install "$settings_path" "$ext_path"
             ;;
     esac

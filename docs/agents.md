@@ -74,4 +74,4 @@ Agents discovered from three layers (later overrides earlier):
 
 1. `<cwd>/.omp/agents/*.md` (project)
 2. `~/.omp/agents/*.md` (user)
-3. `<pi-xox>/agents/*.md` (bundled)
+3. `<omp-xox>/agents/*.md` (bundled)

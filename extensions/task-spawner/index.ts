@@ -1,8 +1,8 @@
-// pi-xox v2: Task Spawner — Task state persistence + mailbox coordination
+// omp-xox v2: Task Spawner — Task state persistence + mailbox coordination
 // Implements lightweight cross-turn coordination within omp's extension API.
 //
 // Design: task-spawner does NOT spawn subagents (ctx.createSubSession unavailable).
-// Instead it writes tasks to .pi-xox/tasks/ as a persistent queue.
+// Instead it writes tasks to .omp-xox/tasks/ as a persistent queue.
 // The primary agent executes them via run_subagent in subsequent turns.
 //
 // mailbox_send / mailbox_read provide filesystem-based agent-to-agent messaging.
@@ -28,14 +28,14 @@ interface MailboxMessage {
 
 export default function taskSpawner(pi: ExtensionAPI) {
   const { z } = pi.zod;
-  pi.setLabel("pi-xox Task Spawner");
+  pi.setLabel("omp-xox Task Spawner");
 
   // ── enqueue_task ──
   pi.registerTool({
     name: "enqueue_task",
     label: "Enqueue Task",
     description:
-      "Add a task to the persistent queue (.pi-xox/tasks/). Executed later via run_subagent. " +
+      "Add a task to the persistent queue (.omp-xox/tasks/). Executed later via run_subagent. " +
       "Use task_status to check progress and collect_task to get results.",
     parameters: z.object({
       capability: z.string(),
@@ -43,7 +43,7 @@ export default function taskSpawner(pi: ExtensionAPI) {
       label: z.string().optional(),
     }),
     async execute(_id, params, _onUpdate, _signal, ctx) {
-      const taskDir = path.join(ctx.cwd ?? process.cwd(), ".pi-xox", "tasks");
+      const taskDir = path.join(ctx.cwd ?? process.cwd(), ".omp-xox", "tasks");
       ensureDir(taskDir);
       const taskId = crypto.randomBytes(4).toString("hex");
       const label = params.label ?? `${params.capability}: ${params.task.slice(0, 40)}`;
@@ -70,7 +70,7 @@ export default function taskSpawner(pi: ExtensionAPI) {
       result: z.string().optional(),
     }),
     async execute(_id, params, _onUpdate, _signal, ctx) {
-      const p = path.join(ctx.cwd ?? process.cwd(), ".pi-xox", "tasks", `${params.taskId}.json`);
+      const p = path.join(ctx.cwd ?? process.cwd(), ".omp-xox", "tasks", `${params.taskId}.json`);
       if (!fs.existsSync(p)) return { content: [{ type: "text" as const, text: `Task ${params.taskId} not found.` }], details: {} };
       const record: TaskRecord = JSON.parse(fs.readFileSync(p, "utf-8"));
       record.status = params.status;
@@ -92,13 +92,13 @@ export default function taskSpawner(pi: ExtensionAPI) {
   pi.registerTool({
     name: "task_status",
     label: "Task Status",
-    description: "Check status of tasks in .pi-xox/tasks/. Omit taskId for all, use filter to narrow.",
+    description: "Check status of tasks in .omp-xox/tasks/. Omit taskId for all, use filter to narrow.",
     parameters: z.object({
       taskId: z.string().optional(),
       filter: z.enum(["all", "pending", "running", "completed", "failed"]).default("all"),
     }),
     async execute(_id, params, _onUpdate, _signal, ctx) {
-      const taskDir = path.join(ctx.cwd ?? process.cwd(), ".pi-xox", "tasks");
+      const taskDir = path.join(ctx.cwd ?? process.cwd(), ".omp-xox", "tasks");
       if (!fs.existsSync(taskDir)) return { content: [{ type: "text" as const, text: "No tasks." }], details: { tasks: [] } };
       let records: TaskRecord[] = [];
       for (const f of fs.readdirSync(taskDir)) {
@@ -129,7 +129,7 @@ export default function taskSpawner(pi: ExtensionAPI) {
     description: "Read the result of a completed task.",
     parameters: z.object({ taskId: z.string() }),
     async execute(_id, params, _onUpdate, _signal, ctx) {
-      const p = path.join(ctx.cwd ?? process.cwd(), ".pi-xox", "tasks", `${params.taskId}.json`);
+      const p = path.join(ctx.cwd ?? process.cwd(), ".omp-xox", "tasks", `${params.taskId}.json`);
       if (!fs.existsSync(p)) return { content: [{ type: "text" as const, text: `Task ${params.taskId} not found.` }], details: {} };
       const r: TaskRecord = JSON.parse(fs.readFileSync(p, "utf-8"));
       return {
@@ -143,10 +143,10 @@ export default function taskSpawner(pi: ExtensionAPI) {
   pi.registerTool({
     name: "mailbox_send",
     label: "Send Mail",
-    description: "Send a message to another agent via .pi-xox/mailbox/. Survives across turns.",
+    description: "Send a message to another agent via .omp-xox/mailbox/. Survives across turns.",
     parameters: z.object({ to: z.string(), subject: z.string(), body: z.string() }),
     async execute(_id, params, _onUpdate, _signal, ctx) {
-      const dir = path.join(ctx.cwd ?? process.cwd(), ".pi-xox", "mailbox");
+      const dir = path.join(ctx.cwd ?? process.cwd(), ".omp-xox", "mailbox");
       ensureDir(dir);
       const id = crypto.randomBytes(4).toString("hex");
       fs.writeFileSync(path.join(dir, `${id}.json`), JSON.stringify({
@@ -163,10 +163,10 @@ export default function taskSpawner(pi: ExtensionAPI) {
   pi.registerTool({
     name: "mailbox_read",
     label: "Read Mailbox",
-    description: "Read messages from .pi-xox/mailbox/.",
+    description: "Read messages from .omp-xox/mailbox/.",
     parameters: z.object({ recipient: z.string().default("orchestrator") }),
     async execute(_id, params, _onUpdate, _signal, ctx) {
-      const dir = path.join(ctx.cwd ?? process.cwd(), ".pi-xox", "mailbox");
+      const dir = path.join(ctx.cwd ?? process.cwd(), ".omp-xox", "mailbox");
       if (!fs.existsSync(dir)) return { content: [{ type: "text" as const, text: "No mailbox." }], details: { count: 0 } };
       const messages: MailboxMessage[] = [];
       for (const f of fs.readdirSync(dir)) {
@@ -188,7 +188,7 @@ export default function taskSpawner(pi: ExtensionAPI) {
   pi.registerCommand("tasks", {
     description: "Show task queue status",
     handler: async (_args, ctx) => {
-      const taskDir = path.join(ctx.cwd ?? process.cwd(), ".pi-xox", "tasks");
+      const taskDir = path.join(ctx.cwd ?? process.cwd(), ".omp-xox", "tasks");
       if (!fs.existsSync(taskDir)) { ctx.ui.notify("No tasks.", "info"); return; }
       const files = fs.readdirSync(taskDir).filter(f => f.endsWith(".json"));
       if (files.length === 0) { ctx.ui.notify("No tasks.", "info"); return; }

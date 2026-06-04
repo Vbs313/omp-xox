@@ -2,7 +2,7 @@
 
 ## Overview
 
-pi-xox v2 is an OMP extension pack of **8 independent extensions**. Each extension registers hooks, tools, and slash commands via the OMP extension API. Extensions communicate through shared context (`pi.__piXoxVerify`) and filesystem state (`.pi-xox/tasks/`, `.pi-xox/mailbox/`).
+omp-xox v2 is an OMP extension pack of **8 independent extensions**. Each extension registers hooks, tools, and slash commands via the OMP extension API. Extensions communicate through shared context (`pi.__ompXoxVerify`) and filesystem state (`.omp-xox/tasks/`, `.omp-xox/mailbox/`).
 
 ## Module Graph
 
@@ -57,8 +57,8 @@ No delegation workaround. Direct SDK call.
 
 ## Filesystem as State Store
 
-- `.pi-xox/tasks/` — Persistent task queue (JSON files)
-- `.pi-xox/mailbox/` — Agent-to-agent messaging (JSON files)
+- `.omp-xox/tasks/` — Persistent task queue (JSON files)
+- `.omp-xox/mailbox/` — Agent-to-agent messaging (JSON files)
 - State survives across conversation turns
 
 ## Hook-First Safety

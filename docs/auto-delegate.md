@@ -11,7 +11,7 @@ Keyword-based automatic task routing. Injects routing rules into the system prom
 ## How It Works
 
 ```
-User types: "审查当前pi-xox的安全问题"
+User types: "审查当前omp-xox的安全问题"
   │
   ├─ 1. before_agent_start hook fires
   ├─ 2. Routing rules injected into system prompt

@@ -16,7 +16,7 @@
 
 ```bash
 # 1. TypeScript 编译检查
-cd /home/vbs/code/pi-xox && bun --eval 'import("./index.ts").then(m=>console.log("OK:",typeof m.default))'
+cd /home/vbs/code/omp-xox && bun --eval 'import("./index.ts").then(m=>console.log("OK:",typeof m.default))'
 
 # 2. 检查所有扩展文件存在
 ls extensions/*/index.ts | wc -l  # 应为 9
@@ -50,7 +50,7 @@ print('Consistency OK')
 ### Step 4: 提交并推送
 
 ```bash
-cd /home/vbs/code/pi-xox
+cd /home/vbs/code/omp-xox
 
 # Stage all changes
 git add -A

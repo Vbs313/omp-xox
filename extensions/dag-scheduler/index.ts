@@ -1,4 +1,4 @@
-// pi-xox v2: DAG Scheduler — Orchestrator-Workers Execution Engine
+// omp-xox v2: DAG Scheduler — Orchestrator-Workers Execution Engine
 // Uses pi.pi.createAgentSession() for direct sub-agent spawning (no delegation workaround)
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
@@ -80,7 +80,7 @@ export default function dagScheduler(pi: ExtensionAPI) {
   const { z } = pi.zod;
   let agents: AgentDef[] = [];
 
-  pi.setLabel("pi-xox DAG Scheduler");
+  pi.setLabel("omp-xox DAG Scheduler");
 
   // ── Initialization ──
   pi.on("session_start", async (_event, ctx) => {
@@ -97,7 +97,7 @@ export default function dagScheduler(pi: ExtensionAPI) {
         }
       }
     }
-    ctx.ui.notify(`pi-xox: ${agents.length} agents loaded`, "info");
+    ctx.ui.notify(`omp-xox: ${agents.length} agents loaded`, "info");
   });
 
   // ── Slash Command: /orchestrate ──

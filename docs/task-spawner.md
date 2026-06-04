@@ -12,8 +12,8 @@ Persistent task queue + filesystem mailbox for cross-turn coordination. Tasks su
 
 Task-spawner provides:
 
-1. **Task queue** — `.pi-xox/tasks/<id>.json` persists task records across turns
-2. **Mailbox** — `.pi-xox/mailbox/<id>.json` enables agent-to-agent messaging
+1. **Task queue** — `.omp-xox/tasks/<id>.json` persists task records across turns
+2. **Mailbox** — `.omp-xox/mailbox/<id>.json` enables agent-to-agent messaging
 3. **Status tracking** — pending → running → completed/failed
 
 The primary agent reads pending tasks and executes them via `delegate` tool in subsequent turns.
@@ -58,7 +58,7 @@ Read the persisted result of a completed task.
 
 ### `mailbox_send` / `mailbox_read`
 
-Agent-to-agent messaging via `.pi-xox/mailbox/`.
+Agent-to-agent messaging via `.omp-xox/mailbox/`.
 
 ## Slash Command
 
@@ -67,7 +67,7 @@ Agent-to-agent messaging via `.pi-xox/mailbox/`.
 ## Filesystem Layout
 
 ```
-.pi-xox/
+.omp-xox/
 ├── tasks/
 │   ├── a1b2c3d4.json   — Task record
 │   └── e5f6g7h8.json

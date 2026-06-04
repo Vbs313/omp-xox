@@ -1,4 +1,4 @@
-// pi-xox v2: Safety Gate — Rule-driven command interception
+// omp-xox v2: Safety Gate — Rule-driven command interception
 // Based on Anthropic 2026 Trend #8: "Security-first architecture"
 // + Anthropic BEA: "Guardrails: one model instance processes user queries
 // while another screens for inappropriate content"
@@ -64,7 +64,7 @@ function loadRules(userDir: string, projectDir?: string): SafetyConfig {
 
   // Load project-level rules (override user)
   if (projectDir) {
-    const projPath = path.join(projectDir, ".pi-xox", "safety-rules.json");
+    const projPath = path.join(projectDir, ".omp-xox", "safety-rules.json");
     if (fs.existsSync(projPath)) {
       try {
         const projRules: SafetyRule[] = JSON.parse(fs.readFileSync(projPath, "utf-8"));
@@ -83,7 +83,7 @@ export default function safetyGate(pi: ExtensionAPI) {
   let config: SafetyConfig = { enabled: true, mode: "strict", rules: [...DEFAULT_RULES] };
   const stats = { blocked: 0, confirmed: 0, warned: 0 };
 
-  pi.setLabel("pi-xox Safety Gate");
+  pi.setLabel("omp-xox Safety Gate");
 
   // Load rules on session start
   pi.on("session_start", async (_event, ctx) => {

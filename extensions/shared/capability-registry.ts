@@ -1,4 +1,4 @@
-// pi-xox v2: Capability Registry
+// omp-xox v2: Capability Registry
 // Maps task capabilities to agent + model configurations
 // Based on Anthropic 2026 Trends: Orchestrator-Workers pattern
 

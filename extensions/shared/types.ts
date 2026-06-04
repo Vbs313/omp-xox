@@ -1,4 +1,4 @@
-// pi-xox v2: Capability Contract type system
+// omp-xox v2: Capability Contract type system
 // Based on Anthropic 2026 Agentic Coding Trends Report & "Building Effective Agents"
 
 export type AgentMode = "subagent";

@@ -1,4 +1,4 @@
-// pi-xox v2: Verification Gate — Post-agent completion quality checks
+// omp-xox v2: Verification Gate — Post-agent completion quality checks
 // Based on Anthropic 2026 Trends #1: "Cycle times collapse from weeks to hours
 // as agent-driven implementation, automated testing, and inline documentation
 // feed back into rapid iteration"
@@ -154,11 +154,11 @@ async function runVerificationGate(
 export default function verificationGate(pi: ExtensionAPI) {
   const config: VerificationConfig = { enabled: true, strictMode: false };
 
-  pi.setLabel("pi-xox Verification Gate");
+  pi.setLabel("omp-xox Verification Gate");
 
   // Provide the verification function to other extensions via a shared context
   // The dag-scheduler can call this after agent completion
-  (pi as Record<string, unknown>).__piXoxVerify = runVerificationGate;
+  (pi as Record<string, unknown>).__ompXoxVerify = runVerificationGate;
 
   // ── Tool: run_verification ──
   pi.registerTool({

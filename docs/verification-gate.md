@@ -35,7 +35,7 @@ Output:
 
 ## Integration
 
-Exposes checker via `pi.__piXoxVerify` for other extensions. The `delegate` tool runs verification checks after sub-agent completion (if the agent contract declares `verification` fields). Results are included in the delegation output.
+Exposes checker via `pi.__ompXoxVerify` for other extensions. The `delegate` tool runs verification checks after sub-agent completion (if the agent contract declares `verification` fields). Results are included in the delegation output.
 
 ## Slash Command
 

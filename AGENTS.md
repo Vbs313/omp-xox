@@ -1,4 +1,4 @@
-# pi-xox v2 — Architecture
+# omp-xox v2 — Architecture
 
 Built on Anthropic 2026 Agentic Coding Trends Report and "Building Effective Agents" (Dec 2024).
 
@@ -10,7 +10,7 @@ Built on Anthropic 2026 Agentic Coding Trends Report and "Building Effective Age
 - **Context Guard** — 4 semantic truncation strategies, detects omp minimizer
 - **Fallback Pipeline** — 3-chain model fallback (SGP →降级 thinking → opencode-go)
 - **Verification Gate** — 4 check types (test/lint/todos/diff), `run_verification`
-- **Task Spawner** — persistent task queue + mailbox (`.pi-xox/tasks/`, `.pi-xox/mailbox/`)
+- **Task Spawner** — persistent task queue + mailbox (`.omp-xox/tasks/`, `.omp-xox/mailbox/`)
 - **Auto-Delegate** — keyword-based routing via `before_agent_start` hook
 
 ## Subagent Spawning
@@ -47,7 +47,7 @@ No delegation workaround. No LLM round-trip to `task` tool. Direct SDK call.
 ## Files
 
 ```
-pi-xox/
+omp-xox/
 ├── extensions/           10 TS modules (1972 lines)
 ├── agents/               5 Capability Contracts (.md)
 ├── skills/               6 Skills

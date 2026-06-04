@@ -55,7 +55,7 @@ omp plugin uninstall omp-xox          # Uninstall
 Just type normally. Auto-delegate detects intent from keywords and routes to the right agent:
 
 ```
-审查当前pi-xox的安全性        → reviewer agent
+审查当前omp-xox的安全性        → reviewer agent
 修复登录超时的bug            → task agent (fix)
 探索认证模块的代码结构        → explore agent
 规划新的缓存架构             → plan agent

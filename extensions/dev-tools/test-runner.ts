@@ -1,4 +1,4 @@
-// pi-xox v2: test-runner — Auto-detect test framework and execute tests
+// omp-xox v2: test-runner — Auto-detect test framework and execute tests
 // Structured output with pass/fail parsing for common frameworks
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
@@ -143,7 +143,7 @@ function parseTestOutput(output: string, framework: string): TestReport {
 export default function testRunner(pi: ExtensionAPI) {
   const { z } = pi.zod;
 
-  pi.setLabel("pi-xox Test Runner");
+  pi.setLabel("omp-xox Test Runner");
 
   pi.registerTool({
     name: "run_tests",

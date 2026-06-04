@@ -1,4 +1,4 @@
-// pi-xox v2: Context Guard — Semantic truncation strategies per tool type
+// omp-xox v2: Context Guard — Semantic truncation strategies per tool type
 // Based on Anthropic BEA: "Tailoring capabilities to your specific use case"
 // Not just truncation — semantically aware content preservation
 

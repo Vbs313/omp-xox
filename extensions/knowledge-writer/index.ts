@@ -1,4 +1,4 @@
-// pi-xox v2: Knowledge Writer — Captures /compact summaries into Obsidian knowledge base
+// omp-xox v2: Knowledge Writer — Captures /compact summaries into Obsidian knowledge base
 //
 // Flow:
 //   1. User runs /compact in TUI
@@ -25,7 +25,7 @@ interface KnowledgeDomain {
 }
 
 const DOMAINS: KnowledgeDomain[] = [
-  { path: "AI-Agent/架构对比", keywords: /agent|architect|multi.agent|omp|pi-xox|oh.my.open/i, tags: ["ai", "agent", "architecture"] },
+  { path: "AI-Agent/架构对比", keywords: /agent|architect|multi.agent|omp|omp-xox|oh.my.open/i, tags: ["ai", "agent", "architecture"] },
   { path: "AI-Agent/工具生态", keywords: /mcp|tool|extension|plugin|skill|provider/i, tags: ["ai", "tools"] },
   { path: "AI-Agent/开发方法论", keywords: /tdd|methodology|workflow|superpowers|best.practice/i, tags: ["ai", "methodology"] },
   { path: "AI-Agent/协议与接口", keywords: /mcp|acp|protocol|interface|api.spec/i, tags: ["ai", "protocol"] },
@@ -63,7 +63,7 @@ export default function knowledgeWriter(pi: ExtensionAPI) {
   let lastCompactTimestamp = "";
   let enabled = true;
 
-  pi.setLabel("pi-xox Knowledge Writer");
+  pi.setLabel("omp-xox Knowledge Writer");
 
   // ── Hook: compact_output — capture the high-quality summary ──
   pi.on("compact_output", async (event) => {

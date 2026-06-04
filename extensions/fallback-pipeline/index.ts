@@ -1,4 +1,4 @@
-// pi-xox v2: Fallback Pipeline — Model fallback visibility + manual control
+// omp-xox v2: Fallback Pipeline — Model fallback visibility + manual control
 // v2.1: Removed hook-based retry (inline fallback in run_subagent handles this natively).
 // Keeps the /fallback command for visibility into fallback chain configuration.
 
@@ -58,7 +58,7 @@ export default function fallbackPipeline(pi: ExtensionAPI) {
   let enabled = true;
   let totalFallbacks = 0;
 
-  pi.setLabel("pi-xox Fallback Pipeline");
+  pi.setLabel("omp-xox Fallback Pipeline");
 
   // Track fallback events for visibility (does not change execution)
   pi.on("session_error", async (event, ctx) => {

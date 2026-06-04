@@ -1,4 +1,4 @@
-// pi-xox v2: git-ops — Structured Git Operation Tools
+// omp-xox v2: git-ops — Structured Git Operation Tools
 // Replaces raw `bash "git ..."` with typed parameters and structured output
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
@@ -41,7 +41,7 @@ function parseGitStatus(output: string) {
 export default function gitOps(pi: ExtensionAPI) {
   const { z } = pi.zod;
 
-  pi.setLabel("pi-xox Git Tools");
+  pi.setLabel("omp-xox Git Tools");
 
   // ── git_diff ──
   pi.registerTool({
