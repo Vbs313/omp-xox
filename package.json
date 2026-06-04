@@ -1,9 +1,11 @@
 {
-  "name": "pi-xox",
+  "name": "omp-xox",
   "version": "2.0.0",
-  "description": "OMP extension pack: DAG-based multi-agent orchestration, structured dev tools, safety gate, and semantic context guard",
+  "description": "OMP extension pack: DAG-based multi-agent orchestration, structured dev tools, safety gate, semantic context guard, unified fallback pipeline, verification gate, task spawner, auto-delegation, and knowledge writer",
   "type": "module",
   "omp": {
+    "name": "omp-xox",
+    "description": "9-extension pack for multi-agent orchestration and dev tooling",
     "extensions": [
       "./extensions/dag-scheduler/index.ts",
       "./extensions/dev-tools/index.ts",
@@ -15,6 +17,7 @@
       "./extensions/auto-delegate/index.ts",
       "./extensions/knowledge-writer/index.ts"
     ],
+    "tools": "./extensions",
     "skills": [
       "./skills"
     ],
@@ -27,10 +30,21 @@
     "agent",
     "orchestration",
     "multi-agent",
-    "coding"
+    "coding",
+    "safety",
+    "verification",
+    "knowledge"
   ],
-  "author": "",
+  "author": "Vbs313",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Vbs313/omp-xox.git"
+  },
+  "homepage": "https://github.com/Vbs313/omp-xox",
+  "bugs": {
+    "url": "https://github.com/Vbs313/omp-xox/issues"
+  },
   "devDependencies": {
     "typescript": "^5.0.0"
   },

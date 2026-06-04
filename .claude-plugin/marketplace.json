@@ -1,0 +1,23 @@
+{
+  "name": "omp-xox",
+  "description": "OMP extension pack for multi-agent orchestration, dev tools, safety gate, context guard, fallback pipeline, verification gate, task spawner, auto-delegate, and knowledge writer",
+  "owner": {
+    "name": "Vbs313",
+    "url": "https://github.com/Vbs313"
+  },
+  "plugins": [
+    {
+      "name": "omp-xox",
+      "description": "9-extension pack: DAG-based multi-agent orchestration, structured dev tools, safety gate, semantic context guard, unified fallback pipeline, verification gate, task spawner, auto-delegation, and knowledge writer",
+      "source": {
+        "source": "github",
+        "repo": "Vbs313/omp-xox"
+      },
+      "version": "2.0.0",
+      "author": "Vbs313",
+      "tags": ["multi-agent", "orchestration", "dev-tools", "safety", "context", "fallback", "verification", "task-spawner", "knowledge"],
+      "homepage": "https://github.com/Vbs313/omp-xox",
+      "repository": "https://github.com/Vbs313/omp-xox"
+    }
+  ]
+}

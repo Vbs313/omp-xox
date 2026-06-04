@@ -1,46 +1,51 @@
-# pi-xox v2
+# omp-xox
 
 OMP extension pack — 9 modules: DAG-based multi-agent orchestration, structured dev tools, safety gate, semantic context guard, unified fallback pipeline, verification gate, task spawner, auto-delegation, and knowledge writer.
 
+[English](#installation) | [中文](INSTALL-zh.md)
+
 ## Installation
 
-### Quick Install (Recommended)
+### Method 1: OMP Plugin Install (Recommended)
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/pi-xox.git
-cd pi-xox
+# Install directly from GitHub
+omp plugin install github:Vbs313/omp-xox
 
-# Install as user-level OMP extension
-./install.sh
-
-# Or install as project-level extension
-./install.sh --project
+# Or with explicit scope
+omp plugin install github:Vbs313/omp-xox --scope user
+omp plugin install github:Vbs313/omp-xox --scope project
 ```
 
-### Manual Install
+### Method 2: Install Script
 
 ```bash
-# Option 1: Direct path in settings.json
-# Add to ~/.omp/agent/settings.json (user) or .omp/settings.json (project):
+git clone https://github.com/Vbs313/omp-xox.git
+cd omp-xox
+./install.sh              # User-level
+./install.sh --project    # Project-level
+```
+
+### Method 3: Manual — settings.json
+
+```json
 {
-  "extensions": ["/absolute/path/to/pi-xox"]
+  "extensions": ["/absolute/path/to/omp-xox"]
 }
-
-# Option 2: CLI flag (temporary)
-omp -e /path/to/pi-xox
 ```
 
-### Verify Installation
+### Method 4: CLI Flag (Temporary)
 
 ```bash
-./install.sh --check
+omp -e /path/to/omp-xox
 ```
 
-### Uninstall
+### Verify & Uninstall
 
 ```bash
-./install.sh --uninstall
+omp plugin list                       # Check installed plugins
+./install.sh --check                  # Check settings.json registration
+omp plugin uninstall omp-xox          # Uninstall
 ```
 
 ## Usage
@@ -84,6 +89,7 @@ Decompose complex tasks into parallel subtasks:
 | [Verification Gate](docs/verification-gate.md) | run_verification | — | /verify |
 | [Task Spawner](docs/task-spawner.md) | enqueue_task, mark_task, task_status, collect_task, mailbox_* | — | /tasks |
 | [Auto-Delegate](docs/auto-delegate.md) | — | before_agent_start | /auto-delegate |
+| [Knowledge Writer](extensions/knowledge-writer/) | archive_to_knowledge | /archive, /knowledge | compact_output |
 
 ## Architecture
 
