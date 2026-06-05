@@ -1,11 +1,11 @@
 {
   "name": "omp-xox",
-  "version": "3.1.0",
-  "description": "OMP extension pack: 9 modules — safety gate, path guard, exec sandbox, workspace map, plan mode, test runner, auto repair, DAG scheduler, verification gate",
+  "version": "3.2.0",
+  "description": "OMP extension pack: 12 modules — safety, sandbox, plan, test, repair, orchestration, verification, skill evolution, memory, checkpoints",
   "type": "module",
   "omp": {
     "name": "omp-xox",
-    "description": "9-module extension pack — only what OMP doesn't provide natively",
+    "description": "12-module extension pack — only what OMP doesn't provide natively + self-evolving skills",
     "extensions": [
       "./extensions/safety-gate/index.ts",
       "./extensions/path-guard/index.ts",
@@ -15,41 +15,21 @@
       "./extensions/dev-tools/index.ts",
       "./extensions/auto-repair/index.ts",
       "./extensions/dag-scheduler/index.ts",
-      "./extensions/verification-gate/index.ts"
+      "./extensions/verification-gate/index.ts",
+      "./extensions/skill-evolver/index.ts",
+      "./extensions/memory-tools/index.ts",
+      "./extensions/checkpoint-notepad/index.ts"
     ],
     "tools": "./extensions",
-    "skills": [
-      "./skills"
-    ],
-    "prompts": [
-      "./prompts"
-    ]
+    "skills": ["./skills"],
+    "prompts": ["./prompts"]
   },
-  "keywords": [
-    "omp",
-    "agent",
-    "safety",
-    "sandbox",
-    "verification",
-    "planning",
-    "orchestration",
-    "repair",
-    "multi-agent"
-  ],
+  "keywords": ["omp", "agent", "safety", "sandbox", "verification", "planning", "orchestration", "repair", "skill-evolution", "memory", "checkpoint"],
   "author": "Vbs313",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Vbs313/omp-xox.git"
-  },
+  "repository": { "type": "git", "url": "https://github.com/Vbs313/omp-xox.git" },
   "homepage": "https://github.com/Vbs313/omp-xox",
-  "bugs": {
-    "url": "https://github.com/Vbs313/omp-xox/issues"
-  },
-  "devDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "peerDependencies": {
-    "@oh-my-pi/pi-coding-agent": "*"
-  }
+  "bugs": { "url": "https://github.com/Vbs313/omp-xox/issues" },
+  "devDependencies": { "typescript": "^5.0.0" },
+  "peerDependencies": { "@oh-my-pi/pi-coding-agent": "*" }
 }

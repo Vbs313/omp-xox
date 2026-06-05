@@ -1,13 +1,13 @@
-// omp-xox v3.1: Workspace Map — repo structure index injected at session start
+// omp-xox v3.2: Workspace Map — repo structure + checkpoint injection
 //
 // Architecture:
-//   before_agent_start hook → scan repo files → extract signatures → inject as custom message
+//   before_agent_start hook → scan repo + read checkpoints → inject as custom message
 //   Fires ONCE per top-level session (injected flag reset on session_start).
 //
-// Token budget: WORKSPACE_MAP_TOKEN_BUDGET (~2000 tokens ≈ 8000 chars)
+// v3.2: Added checkpoint reading from session entries (checkpoint-notepad integration).
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
-import { existsSync, readdirSync, readFileSync, statSync } from "fs";
+import { readdirSync, readFileSync, statSync } from "fs";
 import path from "path";
 import {
   WORKSPACE_MAP_TOKEN_BUDGET,
@@ -31,55 +31,35 @@ const DEFAULTS: WorkspaceMapConfig = {
 
 function extractSignatures(filepath: string, maxSigs: number): string[] {
   let content: string;
-  try {
-    content = readFileSync(filepath, "utf-8").slice(0, 8192);
-  } catch {
-    return [];
-  }
+  try { content = readFileSync(filepath, "utf-8").slice(0, 8192); } catch { return []; }
   const entries: string[] = [];
   const ext = path.extname(filepath);
 
-  // TS/JS: function, class, interface, type, enum, const, let, var, export
   if (ext === ".ts" || ext === ".tsx" || ext === ".js" || ext === ".jsx") {
     const re = /^\s*(export\s+)?(async\s+)?(function|class|interface|type|enum|const|let|var)\s+(\w+)/gm;
     let m: RegExpExecArray | null;
-    while ((m = re.exec(content)) !== null && entries.length < maxSigs) {
-      entries.push(m[0].trim().replace(/\s+/g, " ").slice(0, 120));
-    }
+    while ((m = re.exec(content)) !== null && entries.length < maxSigs) entries.push(m[0].trim().replace(/\s+/g, " ").slice(0, 120));
   }
-  // Python: def, class
   if (ext === ".py") {
     const re = /^\s*(async\s+)?(def|class)\s+(\w+)/gm;
     let m: RegExpExecArray | null;
-    while ((m = re.exec(content)) !== null && entries.length < maxSigs) {
-      entries.push(m[0].trim().replace(/\s+/g, " ").slice(0, 120));
-    }
+    while ((m = re.exec(content)) !== null && entries.length < maxSigs) entries.push(m[0].trim().replace(/\s+/g, " ").slice(0, 120));
   }
-  // Rust: fn, struct, enum, trait, impl, mod
   if (ext === ".rs") {
     const re = /^\s*(pub\s+)?(fn|struct|enum|trait|impl|mod)\s+(\w+)/gm;
     let m: RegExpExecArray | null;
-    while ((m = re.exec(content)) !== null && entries.length < maxSigs) {
-      entries.push(m[0].trim().replace(/\s+/g, " ").slice(0, 120));
-    }
+    while ((m = re.exec(content)) !== null && entries.length < maxSigs) entries.push(m[0].trim().replace(/\s+/g, " ").slice(0, 120));
   }
-  // Go: func, type
   if (ext === ".go") {
     const re = /^\s*(func|type)\s+(\w+)/gm;
     let m: RegExpExecArray | null;
-    while ((m = re.exec(content)) !== null && entries.length < maxSigs) {
-      entries.push(m[0].trim().replace(/\s+/g, " ").slice(0, 120));
-    }
+    while ((m = re.exec(content)) !== null && entries.length < maxSigs) entries.push(m[0].trim().replace(/\s+/g, " ").slice(0, 120));
   }
-  // C/C++/H: function declarations
   if (ext === ".c" || ext === ".cpp" || ext === ".h" || ext === ".hpp") {
     const re = /^\s*\w[\w:*&<>,\s]+\s+(\w+)\s*\(/gm;
     let m: RegExpExecArray | null;
-    while ((m = re.exec(content)) !== null && entries.length < maxSigs) {
-      entries.push(m[0].trim().replace(/\s+/g, " ").slice(0, 120));
-    }
+    while ((m = re.exec(content)) !== null && entries.length < maxSigs) entries.push(m[0].trim().replace(/\s+/g, " ").slice(0, 120));
   }
-
   return entries;
 }
 
@@ -91,7 +71,6 @@ function buildMap(cwd: string, maxFiles: number): string {
     if (fileCount >= maxFiles || depth > 10) return;
     let entries: string[];
     try { entries = readdirSync(dir); } catch { return; }
-
     for (const name of entries) {
       if (fileCount >= maxFiles) return;
       const full = path.join(dir, name);
@@ -99,24 +78,19 @@ function buildMap(cwd: string, maxFiles: number): string {
       if (name.startsWith(".")) continue;
       let st: ReturnType<typeof statSync>;
       try { st = statSync(full); } catch { continue; }
-      if (st.isDirectory()) {
-        scan(full, depth + 1);
-      } else if (st.isFile()) {
+      if (st.isDirectory()) { scan(full, depth + 1); }
+      else if (st.isFile()) {
         const ext = path.extname(name);
         if (!CODE_FILE_EXTS[ext]) continue;
         fileCount++;
         const sigs = extractSignatures(full, 20);
-        if (sigs.length > 0) {
-          results.set(path.relative(cwd, full), sigs.slice(0, 8));
-        }
+        if (sigs.length > 0) results.set(path.relative(cwd, full), sigs.slice(0, 8));
       }
     }
   }
-
   scan(cwd, 0);
   if (results.size === 0) return "";
 
-  // Build the Markdown index
   const lines: string[] = [`# Repository Structure (${results.size} files)`];
   const byDir = new Map<string, string[]>();
   for (const [rel, sigs] of results) {
@@ -125,31 +99,44 @@ function buildMap(cwd: string, maxFiles: number): string {
     if (existing) existing.push(rel);
     else byDir.set(topDir, [rel]);
   }
-
   for (const dir of [...byDir.keys()].sort()) {
     const files = (byDir.get(dir) ?? []).sort();
     lines.push(`\n## ${dir}/`);
-    let dirChars = 0;
     for (const file of files) {
       const sigs = results.get(file) ?? [];
       if (!sigs.length) continue;
       const block = `### ${file}\n${sigs.map(s => `  - ${s}`).join("\n")}`;
-      dirChars += block.length;
       lines.push(block);
     }
   }
-
   const full = lines.join("\n");
-  const maxChars = maxFiles * 200; // rough upper bound
+  const maxChars = maxFiles * 200;
   return full.length > maxChars ? `${full.slice(0, maxChars)}\n... (truncated)` : full;
+}
+
+// ---- Checkpoint Reading ----
+
+function readCheckpoints(ctx: { sessionManager: { getBranch(): Array<Record<string, unknown>> } }): string {
+  try {
+    const items: string[] = [];
+    for (const entry of ctx.sessionManager.getBranch()) {
+      if (entry.type === "custom" && entry.customType === "omp-xox-checkpoint") {
+        const data = (entry as Record<string, unknown>).data as Record<string, unknown> | undefined;
+        if (data?.note && data?.status === "in_progress") {
+          items.push(`- ${String(data.note).slice(0, 200)}`);
+        }
+      }
+    }
+    if (items.length > 0) return `\n## Active Checkpoints\n${items.join("\n")}`;
+  } catch { /* session manager may not be available */ }
+  return "";
 }
 
 // ---- Extension Entry ----
 
 export default function workspaceMap(pi: ExtensionAPI) {
   let injected = false;
-
-  pi.setLabel("omp-xox Workspace Map v3.1");
+  pi.setLabel("omp-xox Workspace Map v3.2");
 
   pi.on("session_start", () => { injected = false; });
 
@@ -157,16 +144,18 @@ export default function workspaceMap(pi: ExtensionAPI) {
     if (injected) return;
     injected = true;
 
-    const { config } = loadConfig(ctx.cwd, "workspace-map", DEFAULTS);
+    const cwd = ctx.cwd ?? process.cwd();
+    const { config } = loadConfig(cwd, "workspace-map", DEFAULTS);
     if (!config.enabled) return;
 
-    const map = buildMap(ctx.cwd, config.maxFiles);
-    if (!map) return;
+    const map = buildMap(cwd, config.maxFiles);
+    const checkpoints = readCheckpoints(ctx as unknown as { sessionManager: { getBranch(): Array<Record<string, unknown>> } });
+    if (!map && !checkpoints) return;
 
     return {
       message: {
         customType: "workspace-map",
-        content: `<workspace-map>\n${map}\n</workspace-map>`,
+        content: `<workspace-map>\n${map}${checkpoints}\n</workspace-map>`,
         display: false,
         details: { generated: true, at: new Date().toISOString() },
       },

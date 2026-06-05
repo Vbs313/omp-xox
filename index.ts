@@ -1,4 +1,4 @@
-// omp-xox v3.1 — 9 modules: 4 kept from v3 + 5 new
+// omp-xox v3.2 — 12 modules
 // Registration order is intentional — hooks fire in register order
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
@@ -16,8 +16,13 @@ import planMode from "./extensions/plan-mode/index.ts";
 import pathGuard from "./extensions/path-guard/index.ts";
 import autoRepair from "./extensions/auto-repair/index.ts";
 
+// v3.2 (new)
+import skillEvolver from "./extensions/skill-evolver/index.ts";
+import memoryTools from "./extensions/memory-tools/index.ts";
+import checkpointNotepad from "./extensions/checkpoint-notepad/index.ts";
+
 export default function ompXox(pi: ExtensionAPI) {
-  pi.setLabel("omp-xox v3.1");
+  pi.setLabel("omp-xox v3.2");
 
   // --- tool_call hooks (fire in order: block first, then mutate) ---
   safetyGate(pi);           // command-content rules — block destructive commands
@@ -25,7 +30,7 @@ export default function ompXox(pi: ExtensionAPI) {
   execSandbox(pi);          // docker/podman wrapper — mutates command last
 
   // --- before_agent_start hooks (first-wins for message injection) ---
-  workspaceMap(pi);         // repo structure index — injects once per session
+  workspaceMap(pi);         // repo structure index + checkpoints — injects once per session
 
   // --- commands (registration order for conflict resolution) ---
   planMode(pi);             // /plan + /plan-execute
@@ -35,4 +40,9 @@ export default function ompXox(pi: ExtensionAPI) {
   autoRepair(pi);           // auto_repair (depends on delegate from dagScheduler)
   dagScheduler(pi);         // delegate + agent_status + /orchestrate
   verificationGate(pi);     // run_verification + /verify
+
+  // --- v3.2 memory + evolution tools ---
+  skillEvolver(pi);         // crystallize_skill + l1_insight
+  memoryTools(pi);          // l2_fact + distill_session
+  checkpointNotepad(pi);    // set_checkpoint
 }
