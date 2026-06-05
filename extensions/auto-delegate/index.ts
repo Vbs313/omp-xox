@@ -100,16 +100,18 @@ function buildRoutingPrompt(): string {
 export default function autoDelegate(pi: ExtensionAPI) {
   let enabled = true;
   let routedCount = 0;
+  let injected = false;
 
   pi.setLabel("omp-xox Auto-Delegate");
 
   const routingPrompt = buildRoutingPrompt();
 
   pi.on("before_agent_start", async (_event, ctx) => {
-    if (!enabled) return;
+    if (!enabled || injected) return;
+    injected = true;
     ctx.ui.notify(`Auto-Delegate: ${ROUTES.length} routing rules active`, "info");
 
-    // Inject routing instructions into the system context
+    // Inject routing instructions into the system context (once per session)
     return {
       message: {
         customType: "auto_delegate_rules",
@@ -119,6 +121,7 @@ export default function autoDelegate(pi: ExtensionAPI) {
       },
     };
   });
+
 
   pi.registerCommand("auto-delegate", {
     description: "Show or toggle auto-delegation routing",
