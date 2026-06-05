@@ -151,7 +151,6 @@ export default function dagScheduler(pi: ExtensionAPI) {
         const { session } = await pi.pi.createAgentSession({
           systemPrompt: (_default: { systemPrompt: string }) => `${agent.prompt}\n\n---\n\nTask: ${task}\n\nExecute this task efficiently. Use the tools available to you. Return your findings or results clearly.`,
           agentType: cap.ompAgentType as "task" | "explore" | "plan" | "designer" | "reviewer" | "quick_task",
-          model: cap.modelRole,
           thinkingLevel: cap.thinking,
           timeout: cap.timeoutSeconds * 1000,
         });
