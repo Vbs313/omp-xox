@@ -164,6 +164,7 @@ export default function dagScheduler(pi: ExtensionAPI) {
           content: [{ type: "text" as const, text: `## Delegation: ${capId} → ${agent.name}\n\n${text}` }],
           details: { task, capability: capId, agent: agent.name },
         };
+      } catch (err) {
         return {
           content: [{ type: "text" as const, text: `Delegation failed: ${String(err)}` }],
           details: { task, capability: capId, error: String(err) },
