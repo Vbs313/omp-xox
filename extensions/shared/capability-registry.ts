@@ -31,11 +31,11 @@ export const CAPABILITY_REGISTRY: Record<string, CapabilityEntry> = {
 
   verify: {
     id: "verify", agent: "verify", ompAgentType: "quick_task",
-    modelRole: "default", thinking: "low", timeoutSeconds: 120, maxRetries: 1,
+    modelRole: "smol", thinking: "low", timeoutSeconds: 120, maxRetries: 1,
   },
   test: {
     id: "test", agent: "verify", ompAgentType: "quick_task",
-    modelRole: "default", thinking: "low", timeoutSeconds: 120, maxRetries: 1,
+    modelRole: "smol", thinking: "low", timeoutSeconds: 120, maxRetries: 1,
   },
 
   review: {
