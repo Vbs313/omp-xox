@@ -1,118 +1,92 @@
-# omp-xox
+# omp-xox v3.1
 
-OMP extension pack — 9 modules: DAG-based multi-agent orchestration, structured dev tools, safety gate, semantic context guard, unified fallback pipeline, verification gate, task spawner, auto-delegation, and knowledge writer.
+OMP extension pack — 9 modules, only what OMP doesn't provide natively.
 
-[English](#installation) | [中文](INSTALL-zh.md)
+[English](#quick-start) | [中文](INSTALL-zh.md)
 
-## Installation
-
-### Method 1: OMP Plugin Install (Recommended)
+## Quick Start
 
 ```bash
-# Install directly from GitHub
 omp plugin install github:Vbs313/omp-xox
-
-# Or with explicit scope
-omp plugin install github:Vbs313/omp-xox --scope user
-omp plugin install github:Vbs313/omp-xox --scope project
 ```
 
-### Method 2: Install Script
+Or clone and symlink:
 
 ```bash
 git clone https://github.com/Vbs313/omp-xox.git
-cd omp-xox
-./install.sh              # User-level
-./install.sh --project    # Project-level
-```
-
-### Method 3: Manual — settings.json
-
-```json
-{
-  "extensions": ["/absolute/path/to/omp-xox"]
-}
-```
-
-### Method 4: CLI Flag (Temporary)
-
-```bash
-omp -e /path/to/omp-xox
-```
-
-### Verify & Uninstall
-
-```bash
-omp plugin list                       # Check installed plugins
-./install.sh --check                  # Check settings.json registration
-omp plugin uninstall omp-xox          # Uninstall
-```
-
-## Usage
-
-### Natural Language (Auto-Delegate)
-
-Just type normally. Auto-delegate detects intent from keywords and routes to the right agent:
-
-```
-审查当前omp-xox的安全性        → reviewer agent
-修复登录超时的bug            → task agent (fix)
-探索认证模块的代码结构        → explore agent
-规划新的缓存架构             → plan agent
-```
-
-### Explicit Delegation
-
-Use the `delegate` tool for explicit capability control:
-
-```
-delegate task="..." capability=review
-```
-
-### Orchestration
-
-Decompose complex tasks into parallel subtasks:
-
-```
-/orchestrate "实现 OAuth 登录并添加单元测试"
+ln -sfn $(pwd)/omp-xox ~/.omp/agent/extensions/omp-xox
 ```
 
 ## Modules
 
-| Module | Tools | Hooks | Commands |
-|--------|-------|-------|----------|
-| [DAG Scheduler](docs/dag-scheduler.md) | delegate, agent_status | — | /orchestrate |
-| [Dev Tools](docs/dev-tools.md) | safe_edit, git_*, run_tests | — | — |
-| [Safety Gate](docs/safety-gate.md) | — | tool_call | /safety |
-| [Context Guard](docs/context-guard.md) | — | tool_result | /context |
-| [Fallback Pipeline](docs/fallback-pipeline.md) | — | session_error | /fallback |
-| [Verification Gate](docs/verification-gate.md) | run_verification | — | /verify |
-| [Task Spawner](docs/task-spawner.md) | enqueue_task, mark_task, task_status, collect_task, mailbox_* | — | /tasks |
-| [Auto-Delegate](docs/auto-delegate.md) | — | before_agent_start | /auto-delegate |
-| [Knowledge Writer](extensions/knowledge-writer/) | archive_to_knowledge | /archive, /knowledge | compact_output |
+| Module | Type | Purpose |
+|---|---|---|
+| [safety-gate](docs/safety-gate.md) | `tool_call` hook | Block dangerous bash commands (20 rules) |
+| [path-guard](docs/path-guard.md) | `tool_call` hook | Per-directory file path whitelist |
+| [exec-sandbox](docs/exec-sandbox.md) | `tool_call` hook | Docker/Podman container isolation |
+| [workspace-map](docs/workspace-map.md) | `before_agent_start` hook | Repo structure index injection |
+| [plan-mode](docs/plan-mode.md) | slash commands | `/plan` + `/plan-execute` — read-only analysis |
+| [dev-tools](docs/dev-tools.md) | `run_tests` tool | Framework auto-detection + output parsing |
+| [auto-repair](docs/auto-repair.md) | `auto_repair` tool | Test-failure → fix → retest loop |
+| [dag-scheduler](docs/dag-scheduler.md) | `delegate` tool | Capability-based sub-agent spawning |
+| [verification-gate](docs/verification-gate.md) | `run_verification` tool | Post-agent quality checks |
 
-## Architecture
+## Slash Commands
+
+`/plan` `/plan-execute` `/safety` `/verify` `/orchestrate <task>`
+
+## Tools (LLM-callable)
+
+`run_tests` `auto_repair` `delegate(task, capability?)` `agent_status` `run_verification`
+
+## Hook Architecture
 
 ```
-delegate task="review safe-edit" capability=review
-  │
-  ├─ 1. resolveCapability("review") → { agent: "reviewer", ompAgentType: "reviewer", modelRole: "slow" }
-  ├─ 2. find agent contract "review" → { prompt, tools, verification }
-  ├─ 3. buildSystemPrompt(agent, task)
-  ├─ 4. pi.pi.createAgentSession({ systemPrompt })
-  ├─ 5. session.prompt(task)
-  ├─ 6. session.waitForIdle()
-  └─ 7. session.getLastAssistantText() → return result
+tool_call:
+  safety-gate  →  block  →  path-guard  →  block  →  exec-sandbox  →  mutate
+
+before_agent_start:
+  workspace-map  →  inject repo index  (once per session, first-wins)
 ```
+
+## Configuration
+
+Per-module JSON in `.omp-xox/<module>.json` (project) or `~/.omp/agent/omp-xox/<module>.json` (user).
+
+Environment flags:
+
+| Flag | Effect |
+|---|---|
+| `OMP_SANDBOX=0` | Disable exec-sandbox |
+| `OMP_SANDBOX_BACKEND=podman` | Use Podman instead of Docker |
+| `OMP_SANDBOX_IMAGE=ubuntu:latest` | Container image |
+| `OMP_PATH_GUARD=0` | Disable path-guard |
+| `OMP_AUTO_REPAIR=0` | Disable auto-repair |
 
 ## Agents
 
-| Agent | Capability | OMP Agent Type | Read-only |
-|-------|-----------|---------------|-----------|
-| swe | implement, fix, refactor | task | No |
-| explore | explore, search, map, trace | explore | Yes |
-| verify | verify, test, audit, check | quick_task | Yes |
-| review | review, critique, assess | reviewer | Yes |
-| plan | plan, design, spec, architect | plan | Yes |
+| Agent | Capabilities | Read-only |
+|---|---|---|
+| swe | implement, fix, refactor | No |
+| explore | explore, search, map | Yes |
+| review | review, critique, assess | Yes |
+| plan | plan, design, architect | Yes |
+| verify | verify, test, audit | Yes |
 
-See [docs/architecture.md](docs/architecture.md) for full architecture.
+## Why v3.1 Rebuild
+
+7 original modules were redundant with OMP native features:
+
+| Removed | OMP Built-in |
+|---|---|
+| fallback-pipeline | `retry.fallbackChains` |
+| context-guard | minimizer + `pruneToolOutputs` |
+| task-spawner | `todo` + `task` tools |
+| git-ops | `bash` tool |
+| safe-edit | `edit` tool (hashline + stale-anchor) |
+| knowledge-writer | `memory.backend: local` |
+| auto-delegate | dag-scheduler `delegate` tool |
+
+5 new modules fill genuine OMP gaps (cross-referenced against Cursor, Cline, Aider, Codex, Claude Code).
+
+Full methodology: [docs/architecture.md](docs/architecture.md)
