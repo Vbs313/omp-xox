@@ -1,5 +1,5 @@
-// omp-xox v2: DAG Scheduler — Orchestrator-Workers Execution Engine
-// Uses pi.pi.createAgentSession() for direct sub-agent spawning (no delegation workaround)
+// omp-xox v3.2: DAG Scheduler — orchestrator-workers with agent contracts
+// Uses pi.pi.createAgentSession() for direct sub-agent spawning.
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
 import * as fs from "node:fs";
@@ -85,14 +85,14 @@ export default function dagScheduler(pi: ExtensionAPI) {
   const { z } = pi.zod;
   let agents: AgentDef[] = [];
 
-  pi.setLabel("omp-xox DAG Scheduler");
+  pi.setLabel("omp-xox DAG Scheduler v3.2");
 
   // ── Initialization ──
   pi.on("session_start", async (_event, ctx) => {
     const dirs = [
       path.join(ctx.cwd ?? process.cwd(), ".omp/agents"),
       path.join(process.env.HOME ?? "~", ".omp/agents"),
-      path.join(path.dirname(new URL(import.meta.url).pathname), "../../agents"),
+      path.join(import.meta.dir, "../../agents"),
     ];
     for (const dir of dirs) {
       const found = discoverAgents(dir);
@@ -102,90 +102,70 @@ export default function dagScheduler(pi: ExtensionAPI) {
         }
       }
     }
-    ctx.ui.notify(`omp-xox: ${agents.length} agents loaded`, "info");
+    if (agents.length > 0) {
+      ctx.ui.notify(`omp-xox: ${agents.length} agents loaded`, "info");
+    }
   });
 
   // ── Slash Command: /orchestrate ──
   pi.registerCommand("orchestrate", {
-    description: "Decompose a task into a DAG and execute with specialized agents",
+    description: "Decompose a task and delegate to specialized agents",
     handler: async (args, ctx) => {
       const task = args.trim();
       if (!task) {
-        ctx.ui.notify("Usage: /orchestrate <task description>", "warning");
+        ctx.ui.notify("Usage: /orchestrate <task description>", "warn");
         return;
       }
-      ctx.ui.notify(`Orchestrating: "${task.slice(0, 60)}..."`, "info");
-      await ctx.sendMessage([
-        "## Orchestration Task",
-        "",
-        `**Task**: ${task}`,
-        "",
-        "### Instructions",
-        "1. **Plan**: Call `delegate` with capability=plan to decompose the task into subtasks.",
-        "2. **Execute**: For each subtask, call `delegate` with the appropriate capability.",
-        "   - Independent subtasks can be called in parallel (multiple `delegate` calls in one message).",
-        `   - Available capabilities: explore, implement, fix, refactor, verify, test, review, plan, quick`,
-        "3. **Verify**: After all subtasks complete, call `run_verification`.",
-        "4. **Report**: Summarize results.",
-      ].join("\n"));
+      const capId = autoDetectCapability(task);
+      ctx.ui.notify(`Orchestrating: "${task.slice(0, 80)}" → ${capId}`, "info");
+      await pi.sendMessage({
+        customType: "orchestrate",
+        content: `Please use \`delegate(task="${task}", capability="${capId}")\` to execute this task with the appropriate sub-agent.`,
+        display: true,
+      }, { deliverAs: "steer" });
     },
   });
 
   // ── Tool: delegate ──
-  // Direct sub-agent spawning via pi.pi.createAgentSession()
   pi.registerTool({
     name: "delegate",
     label: "Delegate Task",
-    description:
-      "Delegate a task to a specialized sub-agent. Auto-detects capability from task keywords, "
-      + "or accepts explicit capability override. Spawns a sub-agent session directly.",
+    description: "Delegate a task to a specialized sub-agent. Auto-detects capability from task description, or use explicit capability override.",
     parameters: z.object({
       task: z.string().describe("Task description in natural language"),
       capability: z.string().optional().describe("Explicit capability override (omit for auto-detect)"),
     }),
     async execute(_id, params, _signal, _onUpdate, _ctx) {
-      const task = params.task.trim();
-      const capId = params.capability || autoDetectCapability(task);
+      const task = params.task;
+      const capId = params.capability ?? autoDetectCapability(task);
       const cap = resolveCapability(capId);
-      const agent = agents.find(a => a.id === cap.agent);
-
+      const agent = agents.find(a => a.id === cap.agent) ?? agents[0];
       if (!agent) {
         return {
-          content: [{ type: "text" as const, text: `No agent for capability "${capId}". Available: ${agents.map(a => a.id).join(", ") || "none"}.` }],
-          details: { capability: capId, status: "no_agent" },
+          content: [{ type: "text" as const, text: "No agent available. Load agent contracts first." }],
+          details: { task, capability: capId },
         };
       }
 
-      const systemPrompt = [
-        `You are a specialized sub-agent: **${agent.name}**.`,
-        `Capabilities: ${agent.provides.join(", ")}.`,
-        `Tools available: ${agent.tools.join(", ")}.`,
-        "",
-        agent.prompt,
-        "",
-        "---",
-        `Task: ${task}`,
-        "",
-        "Return only the result. No meta-commentary.",
-      ].join("\n");
-
       try {
-        // Direct SDK call — no delegation workaround
         const { session } = await pi.pi.createAgentSession({
-          systemPrompt: [systemPrompt],
+          systemPrompt: `${agent.prompt}\n\n---\n\nTask: ${task}\n\nExecute this task efficiently. Use the tools available to you. Return your findings or results clearly.`,
+          agentType: cap.ompAgentType as "task" | "explore" | "plan" | "designer" | "reviewer" | "quick_task",
+          model: cap.modelRole,
+          thinkingLevel: cap.thinking,
+          timeout: cap.timeoutSeconds * 1000,
         });
-        await session.prompt(task);
-        await session.waitForIdle();
-        const resultText = session.getLastAssistantText() ?? "(no response)";
+
+        const response = await session.waitForCompletion();
 
         return {
-          content: [{ type: "text" as const, text: `## Delegation: ${capId} → ${agent.name}\n\n${resultText}` }],
-          details: { capability: capId, agent: agent.id, status: "ok" },
+          content: [{ type: "text" as const, text: `## Delegation: ${capId} → ${agent.name}\n\n${response?.output ?? "(no output)"}` }],
+          details: { task, capability: capId, agent: agent.name },
         };
       } catch (err) {
         return {
-          content: [{ type: "text" as const, text: `Sub-agent execution failed: ${err instanceof Error ? err.message : String(err)}` }],
-          details: { capability: capId, agent: agent.id, status: "error" },
+          content: [{ type: "text" as const, text: `Delegation failed: ${String(err)}` }],
+          details: { task, capability: capId, error: String(err) },
         };
       }
     },
@@ -200,16 +180,16 @@ export default function dagScheduler(pi: ExtensionAPI) {
     async execute(_id, _params, _signal, _onUpdate, _ctx) {
       if (agents.length === 0) {
         return {
-          content: [{ type: "text" as const, text: "No agents loaded." }],
+          content: [{ type: "text" as const, text: "No agents loaded. Agent contracts are loaded from .omp/agents/, ~/.omp/agents/, or the bundled agents/ directory on session start." }],
           details: { count: 0, agents: [] },
         };
       }
       const lines = agents.map(a =>
-        `- **${a.id}** (${a.name}): provides [${a.provides.join(", ")}], model=${a.budget.modelRole}, thinking=${a.budget.thinking}, tools=[${a.tools.join(", ")}]`
+        `- **${a.name}** (\`${a.id}\`): provides [${a.provides.join(", ")}], model=${a.budget.modelRole}, thinking=${a.budget.thinking}, tools=[${a.tools.join(", ")}]`
       );
       return {
         content: [{ type: "text" as const, text: `## Loaded Agents (${agents.length})\n\n${lines.join("\n")}` }],
-        details: { count: agents.length, agents: agents.map(a => ({ id: a.id, name: a.name, provides: a.provides })) },
+        details: { count: agents.length, agents: agents.map(a => ({ id: a.id, name: a.name, provides: a.provides, modelRole: a.budget.modelRole, thinking: a.budget.thinking })) },
       };
     },
   });
