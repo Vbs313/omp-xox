@@ -49,10 +49,15 @@ function discoverAgents(agentsDir: string): AgentDef[] {
       const { frontmatter, body } = parseFrontmatter(content);
       return {
         id: (frontmatter.id as string) || f.replace(".md", ""),
-        name: (frontmatter.name as string) || frontmatter.id as string,
+        name: (frontmatter.name as string) || (frontmatter.id as string),
         provides: (frontmatter.provides as string[]) || [],
-        mode: (frontmatter.mode as string) || "subagent",
-        budget: (frontmatter.budget as AgentDef["budget"]) || { modelRole: "default", thinking: "medium", maxTurns: 20, maxTokens: 100000 },
+        mode: "subagent",
+        budget: {
+          modelRole: (frontmatter.modelRole as string) || "default",
+          thinking: (frontmatter.thinking as string) || "medium",
+          maxTurns: (frontmatter.maxTurns as number) || 20,
+          maxTokens: (frontmatter.maxTokens as number) || 100000,
+        },
         tools: (frontmatter.tools as string[]) || [],
         verification: (frontmatter.verification as string[]) || [],
         prompt: body,

@@ -2,19 +2,12 @@
 id: plan
 name: Planner / Architect
 provides: [plan, design, spec, architect, decompose]
-mode: subagent
-budget:
-  modelRole: slow
-  thinking: xhigh
-  maxTurns: 20
-  maxTokens: 150000
+modelRole: slow
+thinking: high
+maxTurns: 20
+maxTokens: 150000
 tools: [read, grep, glob, lsp, ast_grep, git_log]
 verification: []
-escalation:
-  - condition: "task is ambiguous and requires business/domain knowledge not in the codebase"
-    action: escalate_to_human
-  - condition: "proposed architecture introduces new infrastructure dependency"
-    action: escalate_to_human
 ---
 
 # Plan Capability Contract

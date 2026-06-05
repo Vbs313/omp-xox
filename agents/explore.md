@@ -2,17 +2,12 @@
 id: explore
 name: Code Explorer
 provides: [explore, search, map, trace]
-mode: subagent
-budget:
-  modelRole: smol
-  thinking: "off"
-  maxTurns: 15
-  maxTokens: 80000
+modelRole: smol
+thinking: "off"
+maxTurns: 15
+maxTokens: 80000
 tools: [read, grep, glob, lsp, ast_grep, git_log, git_status]
 verification: []
-escalation:
-  - condition: "codebase is larger than 10K files without a clear entry point"
-    action: escalate_to_human
 ---
 
 # Explore Capability Contract

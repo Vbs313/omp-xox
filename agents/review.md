@@ -2,19 +2,12 @@
 id: review
 name: Code Reviewer
 provides: [review, critique, assess, security-review]
-mode: subagent
-budget:
-  modelRole: slow
-  thinking: high
-  maxTurns: 15
-  maxTokens: 100000
+modelRole: slow
+thinking: high
+maxTurns: 15
+maxTokens: 100000
 tools: [read, grep, git_diff, git_log, lsp, ast_grep]
 verification: []
-escalation:
-  - condition: "security vulnerability found in production path"
-    action: escalate_to_human
-  - condition: "architectural concern that spans multiple subsystems"
-    action: escalate_to_review_agent
 ---
 
 # Review Capability Contract

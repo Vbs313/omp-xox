@@ -2,21 +2,12 @@
 id: swe
 name: Software Engineer
 provides: [implement, fix, refactor]
-mode: subagent
-budget:
-  modelRole: slow
-  thinking: high
-  maxTurns: 30
-  maxTokens: 200000
-tools: [read, bash, edit, write, grep, glob, lsp, ast_grep, safe_edit, git_diff, git_log, git_status, run_tests]
+modelRole: slow
+thinking: high
+maxTurns: 30
+maxTokens: 200000
+tools: [read, bash, edit, write, grep, glob, lsp, ast_grep, git_diff, git_log, git_status, run_tests]
 verification: [test-pass, lint-pass, no-new-todos]
-escalation:
-  - condition: "test pass after 3+ retry cycles with same approach"
-    action: escalate_to_human
-  - condition: "change touches auth, crypto, or security-sensitive paths"
-    action: escalate_to_review_agent
-  - condition: "change exceeds 200 lines of diff"
-    action: escalate_to_human
 ---
 
 # SWE Capability Contract
@@ -39,7 +30,6 @@ You are a software engineer agent. Your role is to implement, fix, and refactor 
 - `git_diff` — See what you've changed (default: staged diff).
 - `git_log` — Understand recent history of a file before changing it.
 - `run_tests` — Execute the project's test suite. Framework auto-detected.
-- `safe_edit` — Edit files with hash-based version validation. Requires prior `read` for the hash.
 
 ## Constraints
 

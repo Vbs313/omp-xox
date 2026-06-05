@@ -2,19 +2,12 @@
 id: verify
 name: Verifier
 provides: [verify, test, audit, check]
-mode: subagent
-budget:
-  modelRole: default
-  thinking: low
-  maxTurns: 20
-  maxTokens: 120000
+modelRole: smol
+thinking: low
+maxTurns: 20
+maxTokens: 120000
 tools: [read, bash, grep, run_tests, git_diff, git_log, lsp]
 verification: []
-escalation:
-  - condition: "test infrastructure is broken (cannot compile or run)"
-    action: escalate_to_human
-  - condition: "flaky test detected (passes and fails non-deterministically)"
-    action: escalate_to_human
 ---
 
 # Verify Capability Contract
