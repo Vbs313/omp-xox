@@ -5,7 +5,7 @@ description: Deep analysis of code structure, architecture, and data flow.
 
 # Code Analysis
 
-Use workspace-map for top-level structure. Use `delegate(capability=explore)` for broad searches.
+Use workspace-map for top-level structure. Use `delegate(capability=explore)` for broad searches. Use `l2_fact(action=read)` to check known environment facts.
 
 ## Workflow
 
@@ -14,6 +14,7 @@ Use workspace-map for top-level structure. Use `delegate(capability=explore)` fo
 3. **Identify architectural patterns** — MVC, layered, microservices, event-driven?
 4. **Map dependencies** — which modules call which? Circular dependencies?
 5. **Document findings** — explicit, file:line references
+6. **Evolve** — `crystallize_skill` for reusable analysis patterns
 
 ## Analysis Dimensions
 

@@ -5,14 +5,15 @@ description: Safe refactoring: plan, execute, verify. Behavior-preserving change
 
 # Refactoring
 
-Use `/plan` before starting. Use `run_verification` after finishing. Use `delegate(capability=refactor)` for large efforts.
+Use `/plan` before starting. Use `run_verification` after finishing. Use `delegate(capability=refactor)` for large efforts. Use `set_checkpoint(note, status=in_progress)` to track each step.
 
 ## Workflow
 
 1. **Plan** — `/plan` to analyze scope without touching files
-2. **Understand** — workspace-map for module boundaries, `run_tests` for baseline
-3. **Execute** — `/plan-execute`, apply changes incrementally
+2. **Understand** — `l1_insight(action=read)` for existing patterns, workspace-map for module boundaries, `run_tests` for baseline
+3. **Execute** — `/plan-execute`, apply changes incrementally. `set_checkpoint("Extracted X to helper", status=in_progress)` after each step
 4. **Verify** — `run_tests` after each change, `run_verification` as final gate
+5. **Evolve** — `crystallize_skill` to save successful refactoring patterns
 
 ## Refactoring Types
 
@@ -36,14 +37,8 @@ Use `/plan` before starting. Use `run_verification` after finishing. Use `delega
 - Extract to shared function/module
 - Parameterize the differences
 
-### Split Large Module
-- Identify natural boundaries (by responsibility, by domain)
-- Move code incrementally, keeping tests passing
-- Update imports across codebase
-
 ## Safety Rules
-
-- **Never mix refactoring with feature changes.** One type of change per commit.
-- **Run tests before and after.** If tests didn't pass before, fix that first.
-- **Commit small, revert easy.** Atomic commits per refactoring step.
-- **Use LSP for renames.** Text replace misses shadowing and re-exports.
+- **Never mix refactoring with feature changes.**
+- **Run tests before and after.**
+- **Commit small, revert easy.** Atomic commits per step.
+- **Use LSP for renames.**

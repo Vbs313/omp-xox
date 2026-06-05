@@ -5,7 +5,7 @@ argument-hint: module, function, or project
 
 # Document
 
-Document: $@. Read workspace-map for module context. Use `delegate(capability=explore)` to gather information.
+Document: $@. Read workspace-map for module context. Use `delegate(capability=explore)` to gather information. Check `l2_fact(action=read)` for known environment details.
 
 ## Document Types
 
@@ -28,3 +28,4 @@ Document: $@. Read workspace-map for module context. Use `delegate(capability=ex
 - Explain WHY, not WHAT (code shows what)
 - Keep examples minimal and runnable
 - Link to related docs, don't duplicate
+- After documenting: `crystallize_skill` to save doc templates

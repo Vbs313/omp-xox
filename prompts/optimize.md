@@ -5,14 +5,15 @@ argument-hint: file, function, or module
 
 # Optimize
 
-Optimize: $@. Use `run_tests` before and after for regression check. Use `delegate(capability=implement)` for complex optimizations.
+Optimize: $@. Use `run_tests` before and after for regression check. Use `delegate(capability=implement)` for complex optimizations. Use `distill_session` to record benchmarks.
 
 ## Workflow
 1. Profile baseline: identify bottleneck (don't guess)
 2. `/plan` — propose optimization with expected improvement
-3. Implement after user approves
+3. Implement after user approves. `set_checkpoint("Applied X optimization", status=in_progress)`
 4. `run_tests` — confirm no regression
 5. Compare metrics: before vs after
+6. `distill_session(summary="...", learnings=["before: Xms, after: Yms"], tags=["perf", "optimization"])`
 
 ## Dimensions
 

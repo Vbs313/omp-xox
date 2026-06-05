@@ -5,7 +5,7 @@ argument-hint: file, function, or concept
 
 # Explain
 
-Explain: $@. Read workspace-map for context. Use `delegate(capability=explore)` for broad searches.
+Explain: $@. Read workspace-map for context. Use `delegate(capability=explore)` for broad searches. Check `l2_fact(action=read)` for known environment facts.
 
 ## Levels
 

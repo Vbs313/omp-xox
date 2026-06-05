@@ -5,15 +5,16 @@ description: Generate tests with coverage analysis and edge case detection.
 
 # Test Generation
 
-Use `run_tests` to detect framework and run existing tests. Use `auto_repair` to fix failures.
+Use `run_tests` to detect framework and run existing tests. Use `auto_repair` to fix failures. Use `crystallize_skill` to save test patterns.
 
 ## Workflow
 
 1. **Detect framework** — `run_tests` auto-detects
 2. **Analyze target** — read the file to test, identify public API surfaces
-3. **Generate tests** — one test file per source file
+3. **Generate tests** — one test file per source file. `set_checkpoint("Generated tests for X, running verification", status=in_progress)`
 4. **Run** — `run_tests(filter=new_test_file)`
 5. **Fix** — `auto_repair(command, maxCycles=2)` if tests fail
+6. **Evolve** — `crystallize_skill` for reusable test patterns (mocking strategies, edge case templates)
 
 ## Test Categories
 
@@ -27,17 +28,7 @@ Use `run_tests` to detect framework and run existing tests. Use `auto_repair` to
 - Real (or realistic) dependencies
 - Cover: cross-component data flow, error propagation
 
-### Test Patterns
-
-```
-describe("<unit>", () => {
-  it("should <expected behavior> when <condition>", () => {
-    // arrange → act → assert
-  });
-});
-```
-
-### Edge Cases Checklist
+## Edge Cases Checklist
 - Empty input (null, undefined, "", [], {})
 - Boundary values (0, -1, MAX_INT, empty string)
 - Concurrent access (if applicable)
@@ -45,7 +36,6 @@ describe("<unit>", () => {
 - Invalid input (wrong type, malformed data, injection attempts)
 
 ## Coverage Targets
-
 - Critical path code: 90%+
 - Utility functions: 80%+
 - UI/rendering: snapshot tests

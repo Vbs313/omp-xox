@@ -13,6 +13,7 @@ Generate tests for: $@. Use `run_tests` to detect framework. Use `auto_repair(co
 3. Generate tests — one test file covering all public APIs
 4. `run_tests(filter=new_file)` — verify
 5. `auto_repair(command)` — fix failures in loop
+6. `crystallize_skill` — save test patterns for reuse
 
 ## Coverage Checklist
 Per function/method:

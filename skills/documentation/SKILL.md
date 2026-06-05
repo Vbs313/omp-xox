@@ -5,7 +5,7 @@ description: Generate documentation: README, API docs, architecture docs, inline
 
 # Documentation
 
-Use workspace-map for module context. Use `delegate(capability=implement)` for large doc generation.
+Use workspace-map for module context. Use `delegate(capability=implement)` for large doc generation. Use `crystallize_skill` to save documentation templates.
 
 ## Document Types
 
@@ -34,17 +34,6 @@ Use workspace-map for module context. Use `delegate(capability=implement)` for l
 
 1. **Read workspace-map** for module layout
 2. **Read key files** — entry points, config, public API surfaces
-3. **Write docs** — one doc type at a time
-4. **Verify** — does a new team member understand from these docs?
-
-## Output Format
-
-```
-## Documentation: <scope>
-
-### Files Created/Modified
-- path/to/doc.md — brief summary
-
-### Content Summary
-- what was documented and why
-```
+3. **Check L2 facts** — `l2_fact(action=read)` for known environment details
+4. **Write docs** — one doc type at a time
+5. **Evolve** — `crystallize_skill` to save doc templates

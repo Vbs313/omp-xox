@@ -15,22 +15,18 @@ Review $@. Use `delegate(capability=review)` for deep review on large diffs.
 ## Security
 - Inputs validated/sanitized? Injection vulnerabilities?
 - Secrets hardcoded? Use environment variables.
-- Auth checked on protected paths?
 
 ## Readability
 - Names reveal intent? Variables, functions, classes.
 - Flow easy to follow? Avoid deep nesting, complex conditionals.
-- Comments explain WHY, not WHAT.
-
-## Maintainability
-- DRY? Repeated logic extracted.
-- Single responsibility? Modules focused.
-- Dependencies explicit and minimal?
 
 ## Performance
-- N+1 queries? Unnecessary allocations?
-- Blocking calls in hot paths?
+- N+1 queries? Unnecessary allocations? Blocking calls in hot paths?
 
 ## Output Format
 For each issue: **file:line** — problem → suggestion
 Severity: `BLOCKER | MAJOR | MINOR | PRAISE`
+
+## After Review
+- If a systematic issue pattern found: `crystallize_skill(name="review-pattern-X", ...)`
+- If critical findings: `distill_session(summary="...", learnings=[...])`
