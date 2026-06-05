@@ -1,10 +1,12 @@
 // omp-xox v3.2: Workspace Map — repo structure + checkpoint + orchestration injection
 //
 // Architecture:
-//   before_agent_start hook → scan repo + read checkpoints → inject as custom message
-//   Fires ONCE per top-level session (injected flag reset on session_start).
+//   session_start hook → pi.sendMessage() → injects as steer message visible to LLM
+//   Fires ONCE per session (injected flag).
 //
-// v3.2: Added checkpoint reading + orchestration hint for delegate tool routing.
+// v3.2 fix: before_agent_start custom messages are stored but NOT included in the
+// LLM's system prompt. Switched to pi.sendMessage() with deliverAs:"steer" which IS
+// included in the conversation context.
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
 import { readdirSync, readFileSync, statSync } from "fs";
@@ -114,8 +116,6 @@ function buildMap(cwd: string, maxFiles: number): string {
   return full.length > maxChars ? `${full.slice(0, maxChars)}\n... (truncated)` : full;
 }
 
-// ---- Checkpoint Reading ----
-
 function readCheckpoints(ctx: { sessionManager: { getBranch(): Array<Record<string, unknown>> } }): string {
   try {
     const items: string[] = [];
@@ -133,24 +133,13 @@ function readCheckpoints(ctx: { sessionManager: { getBranch(): Array<Record<stri
   return "";
 }
 
-// ---- Orchestration Hint ----
-
-const ORCHESTRATION_HINT = `
-<orchestration>
-For task routing, prefer \`delegate(task="...", capability="...")\` over the raw \`task\` tool.
-Available capabilities: review, implement, fix, refactor, explore, plan, verify, test.
-Use \`agent_status\` to list all loaded agents and their capabilities.
-</orchestration>`;
-
 // ---- Extension Entry ----
 
 export default function workspaceMap(pi: ExtensionAPI) {
   let injected = false;
   pi.setLabel("omp-xox Workspace Map v3.2");
 
-  pi.on("session_start", () => { injected = false; });
-
-  pi.on("before_agent_start", async (_event, ctx) => {
+  pi.on("session_start", async (_event, ctx) => {
     if (injected) return;
     injected = true;
 
@@ -161,16 +150,24 @@ export default function workspaceMap(pi: ExtensionAPI) {
     const map = buildMap(cwd, config.maxFiles);
     const checkpoints = readCheckpoints(ctx as unknown as { sessionManager: { getBranch(): Array<Record<string, unknown>> } });
 
-    // Always inject: map (may be empty) + checkpoints (may be empty) + orchestration hint
-    const content = `<workspace-map>\n${map}\n${checkpoints}\n${ORCHESTRATION_HINT}\n</workspace-map>`;
-
-    return {
-      message: {
-        customType: "workspace-map",
-        content,
-        display: false,
-        details: { generated: true, at: new Date().toISOString() },
-      },
-    };
+    // Inject orchestration hint — must reach the LLM.
+    // pi.sendMessage with deliverAs:"steer" is included in the conversation context.
+    // before_agent_start custom messages are NOT (they're stored but not rendered).
+    await pi.sendMessage({
+      customType: "workspace-map",
+      content: [
+        "<workspace-map>",
+        map,
+        checkpoints,
+        "",
+        "<orchestration>",
+        "For task routing, prefer `delegate(task=\"...\", capability=\"...\")` over the raw `task` tool.",
+        "Available capabilities: review, implement, fix, refactor, explore, plan, verify, test.",
+        "Use `agent_status` to list all loaded agents and their capabilities.",
+        "</orchestration>",
+        "</workspace-map>",
+      ].filter(Boolean).join("\n"),
+      display: false,
+    }, { deliverAs: "steer" });
   });
 }
