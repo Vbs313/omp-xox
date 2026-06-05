@@ -87,7 +87,6 @@ export default function dagScheduler(pi: ExtensionAPI) {
 
   pi.setLabel("omp-xox DAG Scheduler v3.2");
 
-  // ── Initialization ──
   pi.on("session_start", async (_event, ctx) => {
     const dirs = [
       path.join(ctx.cwd ?? process.cwd(), ".omp/agents"),
@@ -107,35 +106,30 @@ export default function dagScheduler(pi: ExtensionAPI) {
     }
   });
 
-  // ── Slash Command: /orchestrate ──
   pi.registerCommand("orchestrate", {
     description: "Decompose a task and delegate to specialized agents",
     handler: async (args, ctx) => {
       const task = args.trim();
-      if (!task) {
-        ctx.ui.notify("Usage: /orchestrate <task description>", "warn");
-        return;
-      }
+      if (!task) { ctx.ui.notify("Usage: /orchestrate <task description>", "warn"); return; }
       const capId = autoDetectCapability(task);
       ctx.ui.notify(`Orchestrating: "${task.slice(0, 80)}" → ${capId}`, "info");
       await pi.sendMessage({
         customType: "orchestrate",
-        content: `Please use \`delegate(task="${task}", capability="${capId}")\` to execute this task with the appropriate sub-agent.`,
+        content: `Please use \`delegate(task="${task}", capability="${capId}")\` to execute this task.`,
         display: true,
       }, { deliverAs: "steer" });
     },
   });
 
-  // ── Tool: delegate ──
   pi.registerTool({
     name: "delegate",
     label: "Delegate Task",
-    description: "Delegate a task to a specialized sub-agent. Auto-detects capability from task description, or use explicit capability override.",
+    description: "Delegate a task to a specialized sub-agent with capability-based routing.",
     parameters: z.object({
       task: z.string().describe("Task description in natural language"),
       capability: z.string().optional().describe("Explicit capability override (omit for auto-detect)"),
     }),
-    async execute(_id, params, _signal, _onUpdate, ctx) {
+    async execute(_id, params, _signal, _onUpdate, _ctx) {
       const task = params.task;
       const capId = params.capability ?? autoDetectCapability(task);
       const cap = resolveCapability(capId);
@@ -148,11 +142,11 @@ export default function dagScheduler(pi: ExtensionAPI) {
       }
 
       try {
+        const prompt = `${agent.prompt}\n\nTask: ${task}\n\nExecute efficiently. Return findings clearly.`;
         const { session } = await pi.pi.createAgentSession({
-          systemPrompt: (_default: { systemPrompt: string }) => `${agent.prompt}\n\n---\n\nTask: ${task}\n\nExecute this task efficiently. Use the tools available to you. Return your findings or results clearly.`,
-          agentType: cap.ompAgentType as "task" | "explore" | "plan" | "designer" | "reviewer" | "quick_task",
-          authStorage: ctx.modelRegistry?.authStorage,
+          systemPrompt: () => prompt,
         });
+
         let output = "";
         session.subscribe((event: { type: string; assistantMessageEvent?: { type: string; delta?: string } }) => {
           if (event.type === "message_update" && event.assistantMessageEvent?.type === "text_delta") {
@@ -161,8 +155,8 @@ export default function dagScheduler(pi: ExtensionAPI) {
         });
 
         await session.prompt(task);
-
         const text = output.trim() || "(no output)";
+
         return {
           content: [{ type: "text" as const, text: `## Delegation: ${capId} → ${agent.name}\n\n${text}` }],
           details: { task, capability: capId, agent: agent.name },
@@ -176,7 +170,6 @@ export default function dagScheduler(pi: ExtensionAPI) {
     },
   });
 
-  // ── Tool: agent_status ──
   pi.registerTool({
     name: "agent_status",
     label: "Agent Status",
@@ -185,7 +178,7 @@ export default function dagScheduler(pi: ExtensionAPI) {
     async execute(_id, _params, _signal, _onUpdate, _ctx) {
       if (agents.length === 0) {
         return {
-          content: [{ type: "text" as const, text: "No agents loaded. Agent contracts are loaded from .omp/agents/, ~/.omp/agents/, or the bundled agents/ directory on session start." }],
+          content: [{ type: "text" as const, text: "No agents loaded." }],
           details: { count: 0, agents: [] },
         };
       }
@@ -194,7 +187,7 @@ export default function dagScheduler(pi: ExtensionAPI) {
       );
       return {
         content: [{ type: "text" as const, text: `## Loaded Agents (${agents.length})\n\n${lines.join("\n")}` }],
-        details: { count: agents.length, agents: agents.map(a => ({ id: a.id, name: a.name, provides: a.provides, modelRole: a.budget.modelRole, thinking: a.budget.thinking })) },
+        details: { count: agents.length, agents: agents.map(a => ({ id: a.id, name: a.name, provides: a.provides })) },
       };
     },
   });
