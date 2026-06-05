@@ -156,10 +156,16 @@ export default function dagScheduler(pi: ExtensionAPI) {
           timeout: cap.timeoutSeconds * 1000,
         });
 
-        // session.run() returns a promise that resolves when the sub-agent completes
-        const output = await session.run();
+        let output = "";
+        session.subscribe((event: { type: string; assistantMessageEvent?: { type: string; delta?: string } }) => {
+          if (event.type === "message_update" && event.assistantMessageEvent?.type === "text_delta") {
+            output += event.assistantMessageEvent.delta ?? "";
+          }
+        });
 
-        const text = typeof output === "string" ? output : JSON.stringify(output ?? "(no output)");
+        await session.prompt(task);
+
+        const text = output.trim() || "(no output)";
         return {
           content: [{ type: "text" as const, text: `## Delegation: ${capId} → ${agent.name}\n\n${text}` }],
           details: { task, capability: capId, agent: agent.name },
