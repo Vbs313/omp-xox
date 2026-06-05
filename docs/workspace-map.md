@@ -1,32 +1,45 @@
 # Workspace Map
 
-Repository structure index injected into system prompt at session start. Gives the LLM a bird's-eye view of the codebase before it starts reading files.
+Repository structure index + active checkpoint injection at session start.
 
-Aider equivalent: repo-map — the most impactful single feature for token efficiency.
+Aider equivalent: repo-map + GenericAgent equivalent: working_checkpoint injection.
 
 ## Hook
 
 `before_agent_start` — fires once per top-level session, injects `<workspace-map>` block as custom message.
+
+## v3.2: Checkpoint Integration
+
+Workspace-map now reads active `in_progress` checkpoints from the session branch and injects them alongside the repo structure:
+
+```xml
+<workspace-map>
+# Repository Structure (85 files)
+## src/
+### src/index.ts
+  - export default function ompXox(pi: ExtensionAPI)
+
+## Active Checkpoints
+- Confirmed DB connection params work, moving to backup script
+- Found edge case: NULL handling in migration v4 needs fix
+</workspace-map>
+```
+
+Checkpoints come from the `set_checkpoint` tool (checkpoint-notepad module). Only the 5 most recent `in_progress` checkpoints are injected — prevents accumulation across compaction cycles.
 
 ## How It Works
 
 ```text
 Session starts
     │
-    ▼
-Scan repo files (max 200, skip node_modules/.git/etc)
+    ├─ Scan repo files (max 200, skip node_modules/.git/etc)
+    ├─ Extract signatures (function/class/interface declarations)
+    ├─ Build Markdown index grouped by top-level directory
     │
-    ▼
-Extract signatures (function/class/interface declarations)
+    ├─ Read session branch → filter omp-xox-checkpoint entries
+    ├─ Take last 5 in_progress checkpoints
     │
-    ▼
-Build Markdown index grouped by top-level directory
-    │
-    ▼
-Inject as <workspace-map> custom message
-    │
-    ▼
-LLM sees repo structure in system prompt
+    └─ Inject as <workspace-map> custom message
 ```
 
 ## Output Format
@@ -38,13 +51,8 @@ LLM sees repo structure in system prompt
 ## src/
 ### src/index.ts
   - export default function ompXox(pi: ExtensionAPI)
-  - function autoDetectCapability(task: string): string
 ### src/config.ts
   - export interface AppConfig
-
-## extensions/
-### extensions/safety-gate/index.ts
-  - export default function safetyGate(pi: ExtensionAPI)
 ...
 </workspace-map>
 ```
@@ -55,7 +63,7 @@ Signature extraction for: TypeScript, JavaScript, Python, Rust, Go, C, C++.
 
 ## Token Budget
 
-~2000 tokens max. Automatically truncated if oversized.
+~2000 tokens max for repo map. Checkpoint injection adds ~50 tokens per checkpoint (max 250).
 
 ## Configuration
 
@@ -74,4 +82,6 @@ Signature extraction for: TypeScript, JavaScript, Python, Rust, Go, C, C++.
 - Regex-based signature extraction — portable across languages
 - `injected` flag prevents re-injection on sub-agent spawn
 - Hooks.md guarantee: "first returned message is kept; later messages ignored" — double protection
+- Checkpoint reading via `ctx.sessionManager.getBranch()` — survives compaction
+- Checkpoints limited to last 5 to prevent accumulation
 - See `extensions/workspace-map/index.ts`
