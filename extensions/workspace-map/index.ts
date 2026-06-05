@@ -1,10 +1,10 @@
-// omp-xox v3.2: Workspace Map — repo structure + checkpoint injection
+// omp-xox v3.2: Workspace Map — repo structure + checkpoint + orchestration injection
 //
 // Architecture:
 //   before_agent_start hook → scan repo + read checkpoints → inject as custom message
 //   Fires ONCE per top-level session (injected flag reset on session_start).
 //
-// v3.2: Added checkpoint reading from session entries (checkpoint-notepad integration).
+// v3.2: Added checkpoint reading + orchestration hint for delegate tool routing.
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
 import { readdirSync, readFileSync, statSync } from "fs";
@@ -127,12 +127,20 @@ function readCheckpoints(ctx: { sessionManager: { getBranch(): Array<Record<stri
         }
       }
     }
-    // Keep only the 5 most recent to prevent accumulation across compaction cycles
     const recent = items.slice(-5);
     if (recent.length > 0) return `\n## Active Checkpoints\n${recent.join("\n")}`;
   } catch { /* session manager may not be available */ }
   return "";
 }
+
+// ---- Orchestration Hint ----
+
+const ORCHESTRATION_HINT = `
+<orchestration>
+For task routing, prefer \`delegate(task="...", capability="...")\` over the raw \`task\` tool.
+Available capabilities: review, implement, fix, refactor, explore, plan, verify, test.
+Use \`agent_status\` to list all loaded agents and their capabilities.
+</orchestration>`;
 
 // ---- Extension Entry ----
 
@@ -152,12 +160,14 @@ export default function workspaceMap(pi: ExtensionAPI) {
 
     const map = buildMap(cwd, config.maxFiles);
     const checkpoints = readCheckpoints(ctx as unknown as { sessionManager: { getBranch(): Array<Record<string, unknown>> } });
-    if (!map && !checkpoints) return;
+
+    // Always inject: map (may be empty) + checkpoints (may be empty) + orchestration hint
+    const content = `<workspace-map>\n${map}\n${checkpoints}\n${ORCHESTRATION_HINT}\n</workspace-map>`;
 
     return {
       message: {
         customType: "workspace-map",
-        content: `<workspace-map>\n${map}${checkpoints}\n</workspace-map>`,
+        content,
         display: false,
         details: { generated: true, at: new Date().toISOString() },
       },
