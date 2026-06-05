@@ -139,9 +139,41 @@ export default function workspaceMap(pi: ExtensionAPI) {
   let injected = false;
   pi.setLabel("omp-xox Workspace Map v3.2");
 
+  // Runtime tool verification — checks if all omp-xox tools are registered.
+  // Reports missing tools via UI notification on session start.
+  // This is the canonical way to verify extension tool registration.
+  // (Session JSONL only stores tool CALLS, not tool DEFINITIONS.)
+  async function selfTest() {
+    try {
+      const allTools = pi.getAllTools();
+      const expected = [
+        "delegate", "agent_status", "run_tests", "auto_repair",
+        "run_verification", "crystallize_skill", "l1_insight",
+        "l2_fact", "distill_session", "set_checkpoint",
+      ];
+      const missing = expected.filter(t => !allTools.includes(t));
+      if (missing.length > 0) {
+        const { ctx } = await selfTest._ctx || {};
+        // Can't notify without ctx — flag for injection message
+      }
+      return { allTools, missing, ok: missing.length === 0 };
+    } catch {
+      return { allTools: [], missing: ["pi.getAllTools failed"], ok: false };
+    }
+  }
+
   pi.on("session_start", async (_event, ctx) => {
     if (injected) return;
     injected = true;
+
+    // Self-test: verify all expected tools are registered
+    const test = await selfTest();
+    if (!test.ok) {
+      ctx.ui.notify(
+        `omp-xox: ${test.missing.length} tool(s) missing: ${test.missing.join(", ")}`,
+        "warn",
+      );
+    }
 
     const cwd = ctx.cwd ?? process.cwd();
     const { config } = loadConfig(cwd, "workspace-map", DEFAULTS);
@@ -150,7 +182,7 @@ export default function workspaceMap(pi: ExtensionAPI) {
     const map = buildMap(cwd, config.maxFiles);
     const checkpoints = readCheckpoints(ctx as unknown as { sessionManager: { getBranch(): Array<Record<string, unknown>> } });
 
-    // Inject orchestration hint — must reach the LLM.
+    // Inject orchestration hint + map + checkpoints via sendMessage
     // pi.sendMessage with deliverAs:"steer" is included in the conversation context.
     // before_agent_start custom messages are NOT (they're stored but not rendered).
     await pi.sendMessage({
