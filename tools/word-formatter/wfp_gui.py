@@ -1,0 +1,1842 @@
+# uncompyle6 version 3.9.3
+# Python bytecode version base 3.8.0 (3413)
+# Decompiled from: Python 3.14.4 (main, Apr  8 2026, 04:02:31) [GCC 15.2.0]
+# Embedded file name: wfp_gui.py
+"""Tkinter GUI for Word Formatter Pro v2.7.4."""
+-- Stacks of completed symbols:
+START ::= |- stmts . 
+_come_froms ::= \e__come_froms . COME_FROM
+_come_froms ::= \e__come_froms . COME_FROM_LOOP
+_come_froms ::= \e__come_froms COME_FROM . 
+_come_froms ::= _come_froms . COME_FROM
+_come_froms ::= _come_froms . COME_FROM_LOOP
+_come_froms ::= _come_froms COME_FROM . 
+_ifstmts_jump ::= \e_c_stmts_opt . COME_FROM
+_ifstmts_jump ::= \e_c_stmts_opt . ELSE
+_ifstmts_jump ::= \e_c_stmts_opt . JUMP_ABSOLUTE JUMP_FORWARD \e__come_froms
+_ifstmts_jump ::= \e_c_stmts_opt . JUMP_ABSOLUTE JUMP_FORWARD _come_froms
+_ifstmts_jump ::= \e_c_stmts_opt . come_froms
+_ifstmts_jump ::= c_stmts_opt . COME_FROM
+_ifstmts_jump ::= c_stmts_opt . ELSE
+_ifstmts_jump ::= c_stmts_opt . JUMP_ABSOLUTE JUMP_FORWARD \e__come_froms
+_ifstmts_jump ::= c_stmts_opt . JUMP_ABSOLUTE JUMP_FORWARD _come_froms
+_ifstmts_jump ::= c_stmts_opt . come_froms
+_ifstmts_jump ::= c_stmts_opt COME_FROM . 
+_ifstmts_jump ::= c_stmts_opt come_froms . 
+_ifstmts_jumpl ::= _ifstmts_jump . 
+_ifstmts_jumpl ::= c_stmts . JUMP_BACK
+_jump ::= JUMP_FORWARD . 
+_stmts ::= _stmts . stmt
+_stmts ::= _stmts stmt . 
+_stmts ::= stmt . 
+and ::= expr . JUMP_IF_FALSE_OR_POP expr \e_come_from_opt
+and ::= expr . JUMP_IF_FALSE_OR_POP expr come_from_opt
+and ::= expr . jifop_come_from expr
+and ::= expr . jmp_false expr
+and ::= expr . jmp_false expr COME_FROM
+and ::= expr . jmp_false expr jmp_false
+and ::= expr jmp_false . expr
+and ::= expr jmp_false . expr COME_FROM
+and ::= expr jmp_false . expr jmp_false
+and ::= expr jmp_false expr . 
+and ::= expr jmp_false expr . COME_FROM
+and ::= expr jmp_false expr . jmp_false
+and ::= expr jmp_false expr jmp_false . 
+and_not ::= expr . jmp_false expr POP_JUMP_IF_TRUE
+and_not ::= expr jmp_false . expr POP_JUMP_IF_TRUE
+and_not ::= expr jmp_false expr . POP_JUMP_IF_TRUE
+and_not ::= expr jmp_false expr POP_JUMP_IF_TRUE . 
+assert2 ::= expr . jmp_true LOAD_GLOBAL expr CALL_FUNCTION_1 RAISE_VARARGS_1
+assert2 ::= expr jmp_true . LOAD_GLOBAL expr CALL_FUNCTION_1 RAISE_VARARGS_1
+assert_invert ::= testtrue . LOAD_GLOBAL RAISE_VARARGS_1
+assign ::= expr . DUP_TOP designList
+assign ::= expr . store
+assign ::= expr store . 
+assign2 ::= expr . expr ROT_TWO store store
+assign2 ::= expr expr . ROT_TWO store store
+assign3 ::= expr . expr expr ROT_THREE ROT_TWO store store store
+assign3 ::= expr expr . expr ROT_THREE ROT_TWO store store store
+assign3 ::= expr expr expr . ROT_THREE ROT_TWO store store store
+async_for_stmt38 ::= expr . async_for store for_block COME_FROM_FINALLY END_ASYNC_FOR
+async_forelse_stmt38 ::= expr . GET_AITER SETUP_FINALLY GET_ANEXT LOAD_CONST YIELD_FROM POP_BLOCK store for_block COME_FROM_FINALLY END_ASYNC_FOR else_suite
+attribute ::= expr . LOAD_ATTR
+attribute ::= expr LOAD_ATTR . 
+attribute37 ::= expr . LOAD_METHOD
+attribute37 ::= expr LOAD_METHOD . 
+aug_assign1 ::= expr . expr inplace_op ROT_THREE STORE_SUBSCR
+aug_assign1 ::= expr . expr inplace_op store
+aug_assign1 ::= expr expr . inplace_op ROT_THREE STORE_SUBSCR
+aug_assign1 ::= expr expr . inplace_op store
+aug_assign1 ::= expr expr inplace_op . ROT_THREE STORE_SUBSCR
+aug_assign1 ::= expr expr inplace_op . store
+aug_assign1 ::= expr expr inplace_op store . 
+aug_assign2 ::= expr . DUP_TOP LOAD_ATTR expr inplace_op ROT_TWO STORE_ATTR
+await_expr ::= expr . GET_AWAITABLE LOAD_CONST YIELD_FROM
+bin_op ::= expr . expr binary_operator
+bin_op ::= expr expr . binary_operator
+bin_op ::= expr expr binary_operator . 
+binary_operator ::= BINARY_MULTIPLY . 
+binary_operator ::= BINARY_SUBTRACT . 
+binary_operator ::= BINARY_TRUE_DIVIDE . 
+break ::= POP_BLOCK . BREAK_LOOP
+break ::= POP_BLOCK . POP_TOP BREAK_LOOP
+break ::= POP_EXCEPT . BREAK_LOOP
+break ::= POP_TOP . BREAK_LOOP
+c_stmts ::= _stmts . 
+c_stmts ::= _stmts . lastc_stmt
+c_stmts_opt ::= c_stmts . 
+call ::= expr . CALL_FUNCTION_0
+call ::= expr . CALL_METHOD_0
+call ::= expr . pos_arg CALL_FUNCTION_1
+call ::= expr . pos_arg CALL_METHOD_1
+call ::= expr . pos_arg pos_arg CALL_FUNCTION_2
+call ::= expr . pos_arg pos_arg CALL_METHOD_2
+call ::= expr . pos_arg pos_arg pos_arg CALL_FUNCTION_3
+call ::= expr . pos_arg pos_arg pos_arg CALL_METHOD_3
+call ::= expr . pos_arg pos_arg pos_arg pos_arg CALL_FUNCTION_4
+call ::= expr . pos_arg pos_arg pos_arg pos_arg pos_arg CALL_FUNCTION_5
+call ::= expr CALL_METHOD_0 . 
+call ::= expr pos_arg . CALL_FUNCTION_1
+call ::= expr pos_arg . CALL_METHOD_1
+call ::= expr pos_arg . pos_arg CALL_FUNCTION_2
+call ::= expr pos_arg . pos_arg CALL_METHOD_2
+call ::= expr pos_arg . pos_arg pos_arg CALL_FUNCTION_3
+call ::= expr pos_arg . pos_arg pos_arg CALL_METHOD_3
+call ::= expr pos_arg . pos_arg pos_arg pos_arg CALL_FUNCTION_4
+call ::= expr pos_arg . pos_arg pos_arg pos_arg pos_arg CALL_FUNCTION_5
+call ::= expr pos_arg CALL_FUNCTION_1 . 
+call ::= expr pos_arg CALL_METHOD_1 . 
+call ::= expr pos_arg pos_arg . CALL_FUNCTION_2
+call ::= expr pos_arg pos_arg . CALL_METHOD_2
+call ::= expr pos_arg pos_arg . pos_arg CALL_FUNCTION_3
+call ::= expr pos_arg pos_arg . pos_arg CALL_METHOD_3
+call ::= expr pos_arg pos_arg . pos_arg pos_arg CALL_FUNCTION_4
+call ::= expr pos_arg pos_arg . pos_arg pos_arg pos_arg CALL_FUNCTION_5
+call ::= expr pos_arg pos_arg CALL_METHOD_2 . 
+call ::= expr pos_arg pos_arg pos_arg . CALL_FUNCTION_3
+call ::= expr pos_arg pos_arg pos_arg . CALL_METHOD_3
+call ::= expr pos_arg pos_arg pos_arg . pos_arg CALL_FUNCTION_4
+call ::= expr pos_arg pos_arg pos_arg . pos_arg pos_arg CALL_FUNCTION_5
+call ::= expr pos_arg pos_arg pos_arg pos_arg . CALL_FUNCTION_4
+call ::= expr pos_arg pos_arg pos_arg pos_arg . pos_arg CALL_FUNCTION_5
+call ::= expr pos_arg pos_arg pos_arg pos_arg pos_arg . CALL_FUNCTION_5
+call_ex ::= expr . starred CALL_FUNCTION_EX
+call_ex ::= expr starred . CALL_FUNCTION_EX
+call_ex_kw4 ::= expr . expr expr CALL_FUNCTION_EX
+call_ex_kw4 ::= expr expr . expr CALL_FUNCTION_EX
+call_ex_kw4 ::= expr expr expr . CALL_FUNCTION_EX
+call_kw36 ::= expr . expr LOAD_CONST CALL_FUNCTION_KW_1
+call_kw36 ::= expr . expr expr LOAD_CONST CALL_FUNCTION_KW_2
+call_kw36 ::= expr . expr expr expr LOAD_CONST CALL_FUNCTION_KW_3
+call_kw36 ::= expr . expr expr expr expr LOAD_CONST CALL_FUNCTION_KW_4
+call_kw36 ::= expr . expr expr expr expr expr LOAD_CONST CALL_FUNCTION_KW_5
+call_kw36 ::= expr . expr expr expr expr expr expr LOAD_CONST CALL_FUNCTION_KW_6
+call_kw36 ::= expr expr . LOAD_CONST CALL_FUNCTION_KW_1
+call_kw36 ::= expr expr . expr LOAD_CONST CALL_FUNCTION_KW_2
+call_kw36 ::= expr expr . expr expr LOAD_CONST CALL_FUNCTION_KW_3
+call_kw36 ::= expr expr . expr expr expr LOAD_CONST CALL_FUNCTION_KW_4
+call_kw36 ::= expr expr . expr expr expr expr LOAD_CONST CALL_FUNCTION_KW_5
+call_kw36 ::= expr expr . expr expr expr expr expr LOAD_CONST CALL_FUNCTION_KW_6
+call_kw36 ::= expr expr LOAD_CONST . CALL_FUNCTION_KW_1
+call_kw36 ::= expr expr expr . LOAD_CONST CALL_FUNCTION_KW_2
+call_kw36 ::= expr expr expr . expr LOAD_CONST CALL_FUNCTION_KW_3
+call_kw36 ::= expr expr expr . expr expr LOAD_CONST CALL_FUNCTION_KW_4
+call_kw36 ::= expr expr expr . expr expr expr LOAD_CONST CALL_FUNCTION_KW_5
+call_kw36 ::= expr expr expr . expr expr expr expr LOAD_CONST CALL_FUNCTION_KW_6
+call_kw36 ::= expr expr expr LOAD_CONST . CALL_FUNCTION_KW_2
+call_kw36 ::= expr expr expr LOAD_CONST CALL_FUNCTION_KW_2 . 
+call_kw36 ::= expr expr expr expr . LOAD_CONST CALL_FUNCTION_KW_3
+call_kw36 ::= expr expr expr expr . expr LOAD_CONST CALL_FUNCTION_KW_4
+call_kw36 ::= expr expr expr expr . expr expr LOAD_CONST CALL_FUNCTION_KW_5
+call_kw36 ::= expr expr expr expr . expr expr expr LOAD_CONST CALL_FUNCTION_KW_6
+call_kw36 ::= expr expr expr expr LOAD_CONST . CALL_FUNCTION_KW_3
+call_kw36 ::= expr expr expr expr LOAD_CONST CALL_FUNCTION_KW_3 . 
+call_kw36 ::= expr expr expr expr expr . LOAD_CONST CALL_FUNCTION_KW_4
+call_kw36 ::= expr expr expr expr expr . expr LOAD_CONST CALL_FUNCTION_KW_5
+call_kw36 ::= expr expr expr expr expr . expr expr LOAD_CONST CALL_FUNCTION_KW_6
+call_kw36 ::= expr expr expr expr expr expr . LOAD_CONST CALL_FUNCTION_KW_5
+call_kw36 ::= expr expr expr expr expr expr . expr LOAD_CONST CALL_FUNCTION_KW_6
+call_kw36 ::= expr expr expr expr expr expr expr . LOAD_CONST CALL_FUNCTION_KW_6
+call_stmt ::= call . 
+call_stmt ::= expr . POP_TOP
+call_stmt ::= expr POP_TOP . 
+cf_jf_else ::= come_froms . JUMP_FORWARD ELSE
+cf_jump_back ::= COME_FROM . JUMP_BACK
+cf_pt ::= COME_FROM . POP_TOP
+classdefdeco1 ::= expr . classdefdeco1 CALL_FUNCTION_1
+classdefdeco1 ::= expr . classdefdeco2 CALL_FUNCTION_1
+come_from_loops ::= \e_come_from_loops . COME_FROM_LOOP
+come_from_opt ::= COME_FROM . 
+come_froms ::= COME_FROM . 
+come_froms ::= come_froms . COME_FROM
+come_froms ::= come_froms COME_FROM . 
+compare ::= compare_single . 
+compare_chained ::= expr . compared_chained_middle ROT_TWO POP_TOP \e__come_froms
+compare_chained ::= expr . compared_chained_middle ROT_TWO POP_TOP _come_froms
+compare_chained37 ::= expr . compared_chained_middlea_37
+compare_chained37 ::= expr . compared_chained_middlec_37
+compare_chained37_false ::= expr . compare_chained_right_false_37
+compare_chained37_false ::= expr . compared_chained_middle_false_37
+compare_chained37_false ::= expr . compared_chained_middleb_false_37
+compare_chained_right_false_37 ::= expr . DUP_TOP ROT_THREE COMPARE_OP POP_JUMP_IF_FALSE compare_chained_righta_false_37 POP_TOP JUMP_BACK COME_FROM
+compare_single ::= expr . expr COMPARE_OP
+compare_single ::= expr expr . COMPARE_OP
+compare_single ::= expr expr COMPARE_OP . 
+compared_chained_middle ::= expr . DUP_TOP ROT_THREE COMPARE_OP JUMP_IF_FALSE_OR_POP compare_chained_right COME_FROM
+compared_chained_middle ::= expr . DUP_TOP ROT_THREE COMPARE_OP JUMP_IF_FALSE_OR_POP compared_chained_middle COME_FROM
+compared_chained_middle_false_37 ::= expr . DUP_TOP ROT_THREE COMPARE_OP POP_JUMP_IF_FALSE compare_chained_rightb_false_37 POP_TOP _jump COME_FROM
+compared_chained_middle_false_37 ::= expr . DUP_TOP ROT_THREE COMPARE_OP POP_JUMP_IF_FALSE compare_chained_rightc_37 POP_TOP JUMP_FORWARD COME_FROM
+compared_chained_middlea_37 ::= expr . DUP_TOP ROT_THREE COMPARE_OP POP_JUMP_IF_FALSE
+compared_chained_middlea_37 ::= expr . DUP_TOP ROT_THREE COMPARE_OP POP_JUMP_IF_FALSE compare_chained_righta_37 COME_FROM POP_TOP COME_FROM
+compared_chained_middleb_false_37 ::= expr . DUP_TOP ROT_THREE COMPARE_OP POP_JUMP_IF_FALSE compare_chained_rightb_false_37 POP_TOP _jump COME_FROM
+compared_chained_middlec_37 ::= expr . DUP_TOP ROT_THREE COMPARE_OP POP_JUMP_IF_FALSE compare_chained_righta_37 POP_TOP
+cond_except_stmt ::= except_cond1 . except_stmts
+cond_except_stmts_opt ::= \e_cond_except_stmts_opt . cond_except_stmt
+continue ::= POP_EXCEPT . JUMP_BACK
+continues ::= _stmts . lastl_stmt continue
+continues ::= _stmts lastl_stmt . continue
+continues ::= lastl_stmt . continue
+delete ::= DELETE_FAST . 
+dict_comp ::= load_closure . LOAD_DICTCOMP LOAD_STR MAKE_FUNCTION_8 expr GET_ITER CALL_FUNCTION_1
+dict_unpack ::= expr . expr BUILD_MAP_UNPACK_2
+dict_unpack ::= expr expr . BUILD_MAP_UNPACK_2
+else_suite ::= suite_stmts . 
+except_cond1 ::= DUP_TOP . expr COMPARE_OP jmp_false POP_TOP POP_TOP POP_TOP
+except_cond1 ::= DUP_TOP . expr COMPARE_OP jmp_false POP_TOP POP_TOP POP_TOP POP_EXCEPT
+except_cond1 ::= DUP_TOP expr . COMPARE_OP jmp_false POP_TOP POP_TOP POP_TOP
+except_cond1 ::= DUP_TOP expr . COMPARE_OP jmp_false POP_TOP POP_TOP POP_TOP POP_EXCEPT
+except_cond1 ::= DUP_TOP expr COMPARE_OP . jmp_false POP_TOP POP_TOP POP_TOP
+except_cond1 ::= DUP_TOP expr COMPARE_OP . jmp_false POP_TOP POP_TOP POP_TOP POP_EXCEPT
+except_cond1 ::= DUP_TOP expr COMPARE_OP jmp_false . POP_TOP POP_TOP POP_TOP
+except_cond1 ::= DUP_TOP expr COMPARE_OP jmp_false . POP_TOP POP_TOP POP_TOP POP_EXCEPT
+except_cond1 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP . POP_TOP POP_TOP
+except_cond1 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP . POP_TOP POP_TOP POP_EXCEPT
+except_cond1 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP POP_TOP . POP_TOP
+except_cond1 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP POP_TOP . POP_TOP POP_EXCEPT
+except_cond1 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP POP_TOP POP_TOP . 
+except_cond1 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP POP_TOP POP_TOP . POP_EXCEPT
+except_cond1 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP POP_TOP POP_TOP POP_EXCEPT . 
+except_cond2 ::= DUP_TOP . expr COMPARE_OP jmp_false POP_TOP store POP_TOP \e_come_from_opt
+except_cond2 ::= DUP_TOP . expr COMPARE_OP jmp_false POP_TOP store POP_TOP come_from_opt
+except_cond2 ::= DUP_TOP expr . COMPARE_OP jmp_false POP_TOP store POP_TOP \e_come_from_opt
+except_cond2 ::= DUP_TOP expr . COMPARE_OP jmp_false POP_TOP store POP_TOP come_from_opt
+except_cond2 ::= DUP_TOP expr COMPARE_OP . jmp_false POP_TOP store POP_TOP \e_come_from_opt
+except_cond2 ::= DUP_TOP expr COMPARE_OP . jmp_false POP_TOP store POP_TOP come_from_opt
+except_cond2 ::= DUP_TOP expr COMPARE_OP jmp_false . POP_TOP store POP_TOP \e_come_from_opt
+except_cond2 ::= DUP_TOP expr COMPARE_OP jmp_false . POP_TOP store POP_TOP come_from_opt
+except_cond2 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP . store POP_TOP \e_come_from_opt
+except_cond2 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP . store POP_TOP come_from_opt
+except_cond2 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP store . POP_TOP \e_come_from_opt
+except_cond2 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP store . POP_TOP come_from_opt
+except_cond2 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP store POP_TOP . come_from_opt
+except_cond2 ::= DUP_TOP expr COMPARE_OP jmp_false POP_TOP store POP_TOP \e_come_from_opt . 
+except_cond_as ::= DUP_TOP . expr COMPARE_OP POP_JUMP_IF_FALSE POP_TOP STORE_FAST POP_TOP
+except_cond_as ::= DUP_TOP expr . COMPARE_OP POP_JUMP_IF_FALSE POP_TOP STORE_FAST POP_TOP
+except_cond_as ::= DUP_TOP expr COMPARE_OP . POP_JUMP_IF_FALSE POP_TOP STORE_FAST POP_TOP
+except_cond_as ::= DUP_TOP expr COMPARE_OP POP_JUMP_IF_FALSE . POP_TOP STORE_FAST POP_TOP
+except_cond_as ::= DUP_TOP expr COMPARE_OP POP_JUMP_IF_FALSE POP_TOP . STORE_FAST POP_TOP
+except_cond_as ::= DUP_TOP expr COMPARE_OP POP_JUMP_IF_FALSE POP_TOP STORE_FAST . POP_TOP
+except_cond_as ::= DUP_TOP expr COMPARE_OP POP_JUMP_IF_FALSE POP_TOP STORE_FAST POP_TOP . 
+except_handler38 ::= _jump . COME_FROM_FINALLY except_stmts END_FINALLY \e_opt_come_from_except
+except_handler38 ::= _jump . COME_FROM_FINALLY except_stmts END_FINALLY opt_come_from_except
+except_handler38 ::= _jump COME_FROM_FINALLY . except_stmts END_FINALLY \e_opt_come_from_except
+except_handler38 ::= _jump COME_FROM_FINALLY . except_stmts END_FINALLY opt_come_from_except
+except_handler38 ::= _jump COME_FROM_FINALLY except_stmts . END_FINALLY \e_opt_come_from_except
+except_handler38 ::= _jump COME_FROM_FINALLY except_stmts . END_FINALLY opt_come_from_except
+except_handler38 ::= _jump COME_FROM_FINALLY except_stmts END_FINALLY . opt_come_from_except
+except_handler38 ::= _jump COME_FROM_FINALLY except_stmts END_FINALLY \e_opt_come_from_except . 
+except_handler38 ::= _jump COME_FROM_FINALLY except_stmts END_FINALLY opt_come_from_except . 
+except_handler_as ::= COME_FROM_FINALLY . except_cond_as tryfinallystmt POP_EXCEPT JUMP_FORWARD COME_FROM
+except_handler_as ::= COME_FROM_FINALLY except_cond_as . tryfinallystmt POP_EXCEPT JUMP_FORWARD COME_FROM
+except_ret38 ::= SETUP_FINALLY . expr ROT_FOUR POP_BLOCK POP_EXCEPT CALL_FINALLY RETURN_VALUE COME_FROM COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+except_ret38 ::= SETUP_FINALLY . expr ROT_FOUR POP_BLOCK POP_EXCEPT CALL_FINALLY RETURN_VALUE COME_FROM COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+except_ret38 ::= SETUP_FINALLY expr . ROT_FOUR POP_BLOCK POP_EXCEPT CALL_FINALLY RETURN_VALUE COME_FROM COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+except_ret38 ::= SETUP_FINALLY expr . ROT_FOUR POP_BLOCK POP_EXCEPT CALL_FINALLY RETURN_VALUE COME_FROM COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+except_ret38a ::= COME_FROM_FINALLY . POP_TOP POP_TOP POP_TOP expr ROT_FOUR POP_EXCEPT RETURN_VALUE END_FINALLY
+except_return_value ::= POP_BLOCK . return
+except_return_value ::= expr . POP_BLOCK RETURN_VALUE
+except_stmt ::= except_cond1 . except_suite \e_come_from_opt
+except_stmt ::= except_cond1 . except_suite come_from_opt
+except_stmt ::= except_cond1 except_suite . come_from_opt
+except_stmt ::= except_cond1 except_suite \e_come_from_opt . 
+except_stmt ::= except_cond1 except_suite come_from_opt . 
+except_stmt ::= except_cond2 . except_suite \e_come_from_opt
+except_stmt ::= except_cond2 . except_suite come_from_opt
+except_stmt ::= except_cond2 . except_suite_finalize
+except_stmt ::= except_cond2 except_suite . come_from_opt
+except_stmt ::= except_cond2 except_suite \e_come_from_opt . 
+except_stmt ::= except_cond2 except_suite come_from_opt . 
+except_stmts ::= except_stmt . 
+except_stmts ::= except_stmts . except_stmt
+except_stmts ::= except_stmts except_stmt . 
+except_suite ::= \e_c_stmts_opt . COME_FROM POP_EXCEPT jump_except COME_FROM
+except_suite ::= \e_c_stmts_opt . POP_EXCEPT jump_except
+except_suite ::= \e_c_stmts_opt . POP_EXCEPT jump_except ELSE
+except_suite ::= \e_c_stmts_opt POP_EXCEPT . jump_except
+except_suite ::= \e_c_stmts_opt POP_EXCEPT . jump_except ELSE
+except_suite ::= \e_c_stmts_opt POP_EXCEPT jump_except . 
+except_suite ::= \e_c_stmts_opt POP_EXCEPT jump_except . ELSE
+except_suite ::= c_stmts_opt . COME_FROM POP_EXCEPT jump_except COME_FROM
+except_suite ::= c_stmts_opt . POP_EXCEPT jump_except
+except_suite ::= c_stmts_opt . POP_EXCEPT jump_except ELSE
+except_suite ::= c_stmts_opt POP_EXCEPT . jump_except
+except_suite ::= c_stmts_opt POP_EXCEPT . jump_except ELSE
+except_suite ::= c_stmts_opt POP_EXCEPT jump_except . 
+except_suite ::= c_stmts_opt POP_EXCEPT jump_except . ELSE
+except_suite_finalize ::= SETUP_FINALLY . c_stmts_opt except_var_finalize END_FINALLY _jump
+except_suite_finalize ::= SETUP_FINALLY . returns COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY _jump
+except_suite_finalize ::= SETUP_FINALLY . returns COME_FROM_FINALLY suite_stmts_opt END_FINALLY _jump
+except_suite_finalize ::= SETUP_FINALLY \e_c_stmts_opt . except_var_finalize END_FINALLY _jump
+except_suite_finalize ::= SETUP_FINALLY c_stmts_opt . except_var_finalize END_FINALLY _jump
+except_var_finalize ::= POP_BLOCK . POP_EXCEPT LOAD_CONST COME_FROM_FINALLY LOAD_CONST store delete
+expr ::= LOAD_CONST . 
+expr ::= LOAD_DEREF . 
+expr ::= LOAD_FAST . 
+expr ::= LOAD_GLOBAL . 
+expr ::= LOAD_STR . 
+expr ::= and . 
+expr ::= attribute . 
+expr ::= attribute37 . 
+expr ::= bin_op . 
+expr ::= call . 
+expr ::= call_kw36 . 
+expr ::= compare . 
+expr ::= formatted_value1 . 
+expr ::= formatted_value_debug . 
+expr ::= get_iter . 
+expr ::= joined_str . 
+expr ::= or . 
+expr ::= subscript . 
+expr ::= tuple . 
+expr_jit ::= expr . JUMP_IF_TRUE
+expr_jitop ::= expr . JUMP_IF_TRUE_OR_POP
+expr_jt ::= expr . jmp_true
+expr_jt ::= expr jmp_true . 
+expr_pjit ::= expr . POP_JUMP_IF_TRUE
+expr_pjit ::= expr POP_JUMP_IF_TRUE . 
+expr_pjit_come_from ::= expr . POP_JUMP_IF_TRUE COME_FROM
+expr_pjit_come_from ::= expr POP_JUMP_IF_TRUE . COME_FROM
+expr_stmt ::= expr . POP_TOP
+expr_stmt ::= expr POP_TOP . 
+for38 ::= expr . get_for_iter store for_block
+for38 ::= expr . get_for_iter store for_block JUMP_BACK
+for38 ::= expr . get_for_iter store for_block JUMP_BACK POP_BLOCK
+for38 ::= expr . get_iter store for_block JUMP_BACK
+for38 ::= expr get_for_iter . store for_block
+for38 ::= expr get_for_iter . store for_block JUMP_BACK
+for38 ::= expr get_for_iter . store for_block JUMP_BACK POP_BLOCK
+for38 ::= expr get_for_iter store . for_block
+for38 ::= expr get_for_iter store . for_block JUMP_BACK
+for38 ::= expr get_for_iter store . for_block JUMP_BACK POP_BLOCK
+for38 ::= expr get_for_iter store for_block . 
+for38 ::= expr get_for_iter store for_block . JUMP_BACK
+for38 ::= expr get_for_iter store for_block . JUMP_BACK POP_BLOCK
+for38 ::= expr get_for_iter store for_block JUMP_BACK . 
+for38 ::= expr get_for_iter store for_block JUMP_BACK . POP_BLOCK
+for_block ::= \e__come_froms . l_stmts_opt _come_from_loops JUMP_BACK
+for_block ::= \e__come_froms \e_l_stmts_opt . _come_from_loops JUMP_BACK
+for_block ::= \e__come_froms l_stmts_opt . _come_from_loops JUMP_BACK
+for_block ::= \e_l_stmts_opt . _come_froms JUMP_BACK
+for_block ::= \e_l_stmts_opt . come_from_loops JUMP_BACK
+for_block ::= \e_l_stmts_opt \e__come_froms . JUMP_BACK
+for_block ::= \e_l_stmts_opt \e_come_from_loops . JUMP_BACK
+for_block ::= l_stmts . 
+for_block ::= l_stmts . JUMP_BACK
+for_block ::= l_stmts JUMP_BACK . 
+for_block ::= l_stmts_opt . _come_froms JUMP_BACK
+for_block ::= l_stmts_opt . come_from_loops JUMP_BACK
+for_block ::= l_stmts_opt \e__come_froms . JUMP_BACK
+for_block ::= l_stmts_opt \e__come_froms JUMP_BACK . 
+for_block ::= l_stmts_opt \e_come_from_loops . JUMP_BACK
+for_block ::= l_stmts_opt \e_come_from_loops JUMP_BACK . 
+forelselaststmt38 ::= expr . get_for_iter store for_block POP_BLOCK else_suitec
+forelselaststmt38 ::= expr get_for_iter . store for_block POP_BLOCK else_suitec
+forelselaststmt38 ::= expr get_for_iter store . for_block POP_BLOCK else_suitec
+forelselaststmt38 ::= expr get_for_iter store for_block . POP_BLOCK else_suitec
+forelselaststmtl38 ::= expr . get_for_iter store for_block POP_BLOCK else_suitel
+forelselaststmtl38 ::= expr get_for_iter . store for_block POP_BLOCK else_suitel
+forelselaststmtl38 ::= expr get_for_iter store . for_block POP_BLOCK else_suitel
+forelselaststmtl38 ::= expr get_for_iter store for_block . POP_BLOCK else_suitel
+forelsestmt38 ::= expr . get_for_iter store for_block JUMP_BACK \e__come_froms else_suite
+forelsestmt38 ::= expr . get_for_iter store for_block JUMP_BACK _come_froms else_suite
+forelsestmt38 ::= expr . get_for_iter store for_block POP_BLOCK else_suite
+forelsestmt38 ::= expr get_for_iter . store for_block JUMP_BACK \e__come_froms else_suite
+forelsestmt38 ::= expr get_for_iter . store for_block JUMP_BACK _come_froms else_suite
+forelsestmt38 ::= expr get_for_iter . store for_block POP_BLOCK else_suite
+forelsestmt38 ::= expr get_for_iter store . for_block JUMP_BACK \e__come_froms else_suite
+forelsestmt38 ::= expr get_for_iter store . for_block JUMP_BACK _come_froms else_suite
+forelsestmt38 ::= expr get_for_iter store . for_block POP_BLOCK else_suite
+forelsestmt38 ::= expr get_for_iter store for_block . JUMP_BACK \e__come_froms else_suite
+forelsestmt38 ::= expr get_for_iter store for_block . JUMP_BACK _come_froms else_suite
+forelsestmt38 ::= expr get_for_iter store for_block . POP_BLOCK else_suite
+forelsestmt38 ::= expr get_for_iter store for_block JUMP_BACK . _come_froms else_suite
+forelsestmt38 ::= expr get_for_iter store for_block JUMP_BACK \e__come_froms . else_suite
+forelsestmt38 ::= expr get_for_iter store for_block JUMP_BACK \e__come_froms else_suite . 
+formatted_value1 ::= expr . FORMAT_VALUE
+formatted_value1 ::= expr FORMAT_VALUE . 
+formatted_value_debug ::= LOAD_STR . formatted_value1 BUILD_STRING_2
+formatted_value_debug ::= LOAD_STR . formatted_value1 LOAD_STR BUILD_STRING_3
+formatted_value_debug ::= LOAD_STR . formatted_value2 BUILD_STRING_2
+formatted_value_debug ::= LOAD_STR . formatted_value2 LOAD_STR BUILD_STRING_3
+formatted_value_debug ::= LOAD_STR formatted_value1 . BUILD_STRING_2
+formatted_value_debug ::= LOAD_STR formatted_value1 . LOAD_STR BUILD_STRING_3
+formatted_value_debug ::= LOAD_STR formatted_value1 BUILD_STRING_2 . 
+formatted_value_debug ::= LOAD_STR formatted_value1 LOAD_STR . BUILD_STRING_3
+function_def ::= mkfunc . store
+function_def ::= mkfunc store . 
+generator_exp ::= load_closure . load_genexpr LOAD_STR MAKE_FUNCTION_0 expr GET_ITER CALL_FUNCTION_1
+generator_exp ::= load_closure . load_genexpr LOAD_STR MAKE_FUNCTION_8 expr GET_ITER CALL_FUNCTION_1
+get_for_iter ::= GET_ITER . _come_froms FOR_ITER
+get_for_iter ::= GET_ITER \e__come_froms . FOR_ITER
+get_for_iter ::= GET_ITER \e__come_froms FOR_ITER . 
+get_iter ::= expr . GET_ITER
+get_iter ::= expr GET_ITER . 
+if_exp ::= expr . jmp_false expr jf_cf expr COME_FROM
+if_exp ::= expr . jmp_false expr jump_absolute_else expr
+if_exp ::= expr jmp_false . expr jf_cf expr COME_FROM
+if_exp ::= expr jmp_false . expr jump_absolute_else expr
+if_exp ::= expr jmp_false expr . jf_cf expr COME_FROM
+if_exp ::= expr jmp_false expr . jump_absolute_else expr
+if_exp37 ::= expr . expr jf_cfs expr COME_FROM
+if_exp37 ::= expr expr . jf_cfs expr COME_FROM
+if_exp_37a ::= and_not . expr JUMP_FORWARD come_froms expr COME_FROM
+if_exp_37a ::= and_not expr . JUMP_FORWARD come_froms expr COME_FROM
+if_exp_37b ::= expr . jmp_false expr POP_JUMP_IF_FALSE jump_forward_else expr
+if_exp_37b ::= expr jmp_false . expr POP_JUMP_IF_FALSE jump_forward_else expr
+if_exp_37b ::= expr jmp_false expr . POP_JUMP_IF_FALSE jump_forward_else expr
+if_exp_37b ::= expr jmp_false expr POP_JUMP_IF_FALSE . jump_forward_else expr
+if_exp_lambda ::= expr . jmp_false expr return_if_lambda return_stmt_lambda LAMBDA_MARKER
+if_exp_lambda ::= expr jmp_false . expr return_if_lambda return_stmt_lambda LAMBDA_MARKER
+if_exp_lambda ::= expr jmp_false expr . return_if_lambda return_stmt_lambda LAMBDA_MARKER
+if_exp_not ::= expr . jmp_true expr jump_forward_else expr COME_FROM
+if_exp_not ::= expr jmp_true . expr jump_forward_else expr COME_FROM
+if_exp_not ::= expr jmp_true expr . jump_forward_else expr COME_FROM
+if_exp_not_lambda ::= expr . jmp_true expr return_if_lambda return_stmt_lambda LAMBDA_MARKER
+if_exp_not_lambda ::= expr jmp_true . expr return_if_lambda return_stmt_lambda LAMBDA_MARKER
+if_exp_not_lambda ::= expr jmp_true expr . return_if_lambda return_stmt_lambda LAMBDA_MARKER
+if_exp_true ::= expr . JUMP_FORWARD expr COME_FROM
+ifelsestmt ::= testexpr . c_stmts come_froms else_suite come_froms
+ifelsestmt ::= testexpr . c_stmts_opt JUMP_FORWARD else_suite \e__come_froms
+ifelsestmt ::= testexpr . c_stmts_opt JUMP_FORWARD else_suite \e_opt_come_from_except
+ifelsestmt ::= testexpr . c_stmts_opt JUMP_FORWARD else_suite _come_froms
+ifelsestmt ::= testexpr . c_stmts_opt JUMP_FORWARD else_suite opt_come_from_except
+ifelsestmt ::= testexpr . c_stmts_opt jf_cfs else_suite \e_opt_come_from_except
+ifelsestmt ::= testexpr . c_stmts_opt jf_cfs else_suite opt_come_from_except
+ifelsestmt ::= testexpr . c_stmts_opt jump_forward_else else_suite \e__come_froms
+ifelsestmt ::= testexpr . c_stmts_opt jump_forward_else else_suite _come_froms
+ifelsestmt ::= testexpr . stmts jf_cfs \e_else_suite_opt \e_opt_come_from_except
+ifelsestmt ::= testexpr . stmts jf_cfs \e_else_suite_opt opt_come_from_except
+ifelsestmt ::= testexpr . stmts jf_cfs else_suite_opt \e_opt_come_from_except
+ifelsestmt ::= testexpr . stmts jf_cfs else_suite_opt opt_come_from_except
+ifelsestmt ::= testexpr \e_c_stmts_opt . JUMP_FORWARD else_suite \e__come_froms
+ifelsestmt ::= testexpr \e_c_stmts_opt . JUMP_FORWARD else_suite \e_opt_come_from_except
+ifelsestmt ::= testexpr \e_c_stmts_opt . JUMP_FORWARD else_suite _come_froms
+ifelsestmt ::= testexpr \e_c_stmts_opt . JUMP_FORWARD else_suite opt_come_from_except
+ifelsestmt ::= testexpr \e_c_stmts_opt . jf_cfs else_suite \e_opt_come_from_except
+ifelsestmt ::= testexpr \e_c_stmts_opt . jf_cfs else_suite opt_come_from_except
+ifelsestmt ::= testexpr \e_c_stmts_opt . jump_forward_else else_suite \e__come_froms
+ifelsestmt ::= testexpr \e_c_stmts_opt . jump_forward_else else_suite _come_froms
+ifelsestmt ::= testexpr c_stmts . come_froms else_suite come_froms
+ifelsestmt ::= testexpr c_stmts come_froms . else_suite come_froms
+ifelsestmt ::= testexpr c_stmts come_froms else_suite . come_froms
+ifelsestmt ::= testexpr c_stmts_opt . JUMP_FORWARD else_suite \e__come_froms
+ifelsestmt ::= testexpr c_stmts_opt . JUMP_FORWARD else_suite \e_opt_come_from_except
+ifelsestmt ::= testexpr c_stmts_opt . JUMP_FORWARD else_suite _come_froms
+ifelsestmt ::= testexpr c_stmts_opt . JUMP_FORWARD else_suite opt_come_from_except
+ifelsestmt ::= testexpr c_stmts_opt . jf_cfs else_suite \e_opt_come_from_except
+ifelsestmt ::= testexpr c_stmts_opt . jf_cfs else_suite opt_come_from_except
+ifelsestmt ::= testexpr c_stmts_opt . jump_forward_else else_suite \e__come_froms
+ifelsestmt ::= testexpr c_stmts_opt . jump_forward_else else_suite _come_froms
+ifelsestmt ::= testexpr stmts . jf_cfs \e_else_suite_opt \e_opt_come_from_except
+ifelsestmt ::= testexpr stmts . jf_cfs \e_else_suite_opt opt_come_from_except
+ifelsestmt ::= testexpr stmts . jf_cfs else_suite_opt \e_opt_come_from_except
+ifelsestmt ::= testexpr stmts . jf_cfs else_suite_opt opt_come_from_except
+ifelsestmtc ::= testexpr . c_stmts_opt JUMP_ABSOLUTE else_suitec
+ifelsestmtc ::= testexpr . c_stmts_opt JUMP_FORWARD else_suitec
+ifelsestmtc ::= testexpr . c_stmts_opt jump_absolute_else else_suitec
+ifelsestmtc ::= testexpr \e_c_stmts_opt . JUMP_ABSOLUTE else_suitec
+ifelsestmtc ::= testexpr \e_c_stmts_opt . JUMP_FORWARD else_suitec
+ifelsestmtc ::= testexpr \e_c_stmts_opt . jump_absolute_else else_suitec
+ifelsestmtc ::= testexpr c_stmts_opt . JUMP_ABSOLUTE else_suitec
+ifelsestmtc ::= testexpr c_stmts_opt . JUMP_FORWARD else_suitec
+ifelsestmtc ::= testexpr c_stmts_opt . jump_absolute_else else_suitec
+ifelsestmtl ::= testexpr . c_stmts cf_pt else_suite
+ifelsestmtl ::= testexpr . c_stmts_opt cf_jf_else else_suitel
+ifelsestmtl ::= testexpr . c_stmts_opt cf_jump_back else_suitel
+ifelsestmtl ::= testexpr . c_stmts_opt jb_cfs else_suitel
+ifelsestmtl ::= testexpr . c_stmts_opt jb_cfs else_suitel JUMP_BACK come_froms
+ifelsestmtl ::= testexpr . c_stmts_opt jb_else else_suitel
+ifelsestmtl ::= testexpr . c_stmts_opt jump_forward_else else_suitec
+ifelsestmtl ::= testexpr \e_c_stmts_opt . cf_jf_else else_suitel
+ifelsestmtl ::= testexpr \e_c_stmts_opt . cf_jump_back else_suitel
+ifelsestmtl ::= testexpr \e_c_stmts_opt . jb_cfs else_suitel
+ifelsestmtl ::= testexpr \e_c_stmts_opt . jb_cfs else_suitel JUMP_BACK come_froms
+ifelsestmtl ::= testexpr \e_c_stmts_opt . jb_else else_suitel
+ifelsestmtl ::= testexpr \e_c_stmts_opt . jump_forward_else else_suitec
+ifelsestmtl ::= testexpr c_stmts . cf_pt else_suite
+ifelsestmtl ::= testexpr c_stmts_opt . cf_jf_else else_suitel
+ifelsestmtl ::= testexpr c_stmts_opt . cf_jump_back else_suitel
+ifelsestmtl ::= testexpr c_stmts_opt . jb_cfs else_suitel
+ifelsestmtl ::= testexpr c_stmts_opt . jb_cfs else_suitel JUMP_BACK come_froms
+ifelsestmtl ::= testexpr c_stmts_opt . jb_else else_suitel
+ifelsestmtl ::= testexpr c_stmts_opt . jump_forward_else else_suitec
+ifelsestmtr ::= testexpr . return_if_stmts returns
+iflaststmt ::= testexpr . c_stmts
+iflaststmt ::= testexpr . c_stmts JUMP_ABSOLUTE
+iflaststmt ::= testexpr . c_stmts_opt JUMP_FORWARD
+iflaststmt ::= testexpr \e_c_stmts_opt . JUMP_FORWARD
+iflaststmt ::= testexpr c_stmts . 
+iflaststmt ::= testexpr c_stmts . JUMP_ABSOLUTE
+iflaststmt ::= testexpr c_stmts_opt . JUMP_FORWARD
+iflaststmtl ::= testexpr . c_stmts
+iflaststmtl ::= testexpr . c_stmts JUMP_BACK
+iflaststmtl ::= testexpr . c_stmts JUMP_BACK COME_FROM_LOOP
+iflaststmtl ::= testexpr . c_stmts JUMP_BACK POP_BLOCK
+iflaststmtl ::= testexpr c_stmts . 
+iflaststmtl ::= testexpr c_stmts . JUMP_BACK
+iflaststmtl ::= testexpr c_stmts . JUMP_BACK COME_FROM_LOOP
+iflaststmtl ::= testexpr c_stmts . JUMP_BACK POP_BLOCK
+iflaststmtl ::= testexprl . c_stmts JUMP_BACK
+iflaststmtl ::= testexprl . c_stmts JUMP_BACK COME_FROM_LOOP
+iflaststmtl ::= testexprl . c_stmts JUMP_BACK POP_BLOCK
+iflaststmtl ::= testexprl c_stmts . JUMP_BACK
+iflaststmtl ::= testexprl c_stmts . JUMP_BACK COME_FROM_LOOP
+iflaststmtl ::= testexprl c_stmts . JUMP_BACK POP_BLOCK
+ifpoplaststmtl ::= testexpr . POP_TOP \e_c_stmts_opt
+ifpoplaststmtl ::= testexpr . POP_TOP c_stmts_opt
+ifstmt ::= testexpr . _ifstmts_jump
+ifstmt ::= testexpr _ifstmts_jump . 
+ifstmtl ::= testexpr . _ifstmts_jumpl
+ifstmtl ::= testexpr _ifstmts_jumpl . 
+import ::= LOAD_CONST . LOAD_CONST alias
+import_as37 ::= LOAD_CONST . LOAD_CONST importlist37 store POP_TOP
+import_from ::= LOAD_CONST . LOAD_CONST IMPORT_NAME importlist POP_TOP
+import_from ::= LOAD_CONST . LOAD_CONST importlist POP_TOP
+import_from37 ::= LOAD_CONST . LOAD_CONST IMPORT_NAME_ATTR importlist37 POP_TOP
+import_from_as37 ::= LOAD_CONST . LOAD_CONST import_from_attr37 store POP_TOP
+import_from_star ::= LOAD_CONST . LOAD_CONST IMPORT_NAME IMPORT_STAR
+import_from_star ::= LOAD_CONST . LOAD_CONST IMPORT_NAME_ATTR IMPORT_STAR
+importmultiple ::= LOAD_CONST . LOAD_CONST alias imports_cont
+inplace_op ::= INPLACE_ADD . 
+jb_cfs ::= \e_come_from_opt . JUMP_BACK come_froms
+jb_cfs ::= come_from_opt . JUMP_BACK come_froms
+jmp_false ::= POP_JUMP_IF_FALSE . 
+jmp_true ::= POP_JUMP_IF_TRUE . 
+joined_str ::= expr . expr BUILD_STRING_2
+joined_str ::= expr . expr expr BUILD_STRING_3
+joined_str ::= expr . expr expr expr BUILD_STRING_4
+joined_str ::= expr . expr expr expr expr BUILD_STRING_5
+joined_str ::= expr . expr expr expr expr expr BUILD_STRING_6
+joined_str ::= expr . expr expr expr expr expr expr BUILD_STRING_7
+joined_str ::= expr expr . BUILD_STRING_2
+joined_str ::= expr expr . expr BUILD_STRING_3
+joined_str ::= expr expr . expr expr BUILD_STRING_4
+joined_str ::= expr expr . expr expr expr BUILD_STRING_5
+joined_str ::= expr expr . expr expr expr expr BUILD_STRING_6
+joined_str ::= expr expr . expr expr expr expr expr BUILD_STRING_7
+joined_str ::= expr expr BUILD_STRING_2 . 
+joined_str ::= expr expr expr . BUILD_STRING_3
+joined_str ::= expr expr expr . expr BUILD_STRING_4
+joined_str ::= expr expr expr . expr expr BUILD_STRING_5
+joined_str ::= expr expr expr . expr expr expr BUILD_STRING_6
+joined_str ::= expr expr expr . expr expr expr expr BUILD_STRING_7
+joined_str ::= expr expr expr expr . BUILD_STRING_4
+joined_str ::= expr expr expr expr . expr BUILD_STRING_5
+joined_str ::= expr expr expr expr . expr expr BUILD_STRING_6
+joined_str ::= expr expr expr expr . expr expr expr BUILD_STRING_7
+joined_str ::= expr expr expr expr BUILD_STRING_4 . 
+joined_str ::= expr expr expr expr expr . BUILD_STRING_5
+joined_str ::= expr expr expr expr expr . expr BUILD_STRING_6
+joined_str ::= expr expr expr expr expr . expr expr BUILD_STRING_7
+joined_str ::= expr expr expr expr expr expr . BUILD_STRING_6
+joined_str ::= expr expr expr expr expr expr . expr BUILD_STRING_7
+joined_str ::= expr expr expr expr expr expr BUILD_STRING_6 . 
+joined_str ::= expr expr expr expr expr expr expr . BUILD_STRING_7
+joined_str ::= expr expr expr expr expr expr expr BUILD_STRING_7 . 
+jump_absolute_else ::= come_froms . _jump COME_FROM
+jump_except ::= JUMP_FORWARD . 
+l_stmts ::= _stmts . 
+l_stmts ::= _stmts . lastl_stmt
+l_stmts ::= _stmts lastl_stmt . 
+l_stmts ::= l_stmts . lstmt
+l_stmts ::= l_stmts lstmt . 
+l_stmts ::= lastl_stmt . 
+l_stmts ::= lastl_stmt . come_froms l_stmts
+l_stmts ::= lastl_stmt come_froms . l_stmts
+l_stmts ::= lastl_stmt come_froms l_stmts . 
+l_stmts ::= lstmt . 
+l_stmts ::= returns . 
+l_stmts_opt ::= l_stmts . 
+lambda_body ::= expr . LOAD_LAMBDA LOAD_STR MAKE_FUNCTION_1
+lambda_body ::= expr . load_closure BUILD_TUPLE_1 LOAD_LAMBDA LOAD_STR MAKE_FUNCTION_9
+lambda_body ::= expr load_closure . BUILD_TUPLE_1 LOAD_LAMBDA LOAD_STR MAKE_FUNCTION_9
+lambda_body ::= expr load_closure BUILD_TUPLE_1 . LOAD_LAMBDA LOAD_STR MAKE_FUNCTION_9
+lambda_body ::= load_closure . LOAD_LAMBDA LOAD_STR MAKE_FUNCTION_8
+lambda_body ::= pos_arg . LOAD_LAMBDA LOAD_STR MAKE_FUNCTION_9
+lastl_stmt ::= iflaststmtl . 
+lc_setup_finally ::= LOAD_CONST . SETUP_FINALLY
+list ::= expr . BUILD_LIST_1
+list ::= expr . expr BUILD_LIST_2
+list ::= expr expr . BUILD_LIST_2
+list_comp ::= load_closure . LOAD_LISTCOMP LOAD_STR MAKE_FUNCTION_8 expr GET_ITER CALL_FUNCTION_1
+load_closure ::= LOAD_CLOSURE . 
+load_closure ::= LOAD_CLOSURE . BUILD_TUPLE_1
+load_closure ::= LOAD_CLOSURE . LOAD_CLOSURE BUILD_TUPLE_2
+load_closure ::= LOAD_CLOSURE . LOAD_CLOSURE LOAD_CLOSURE BUILD_TUPLE_3
+load_closure ::= LOAD_CLOSURE . LOAD_CLOSURE LOAD_CLOSURE LOAD_CLOSURE LOAD_CLOSURE LOAD_CLOSURE LOAD_CLOSURE BUILD_TUPLE_7
+load_closure ::= LOAD_CLOSURE BUILD_TUPLE_1 . 
+load_closure ::= load_closure . LOAD_CLOSURE
+load_genexpr ::= BUILD_TUPLE_1 . LOAD_GENEXPR LOAD_STR
+lstmt ::= stmt . 
+mkfunc ::= expr . LOAD_CODE LOAD_STR MAKE_FUNCTION_1
+mkfunc ::= expr . load_closure LOAD_CODE LOAD_STR MAKE_FUNCTION_9
+mkfunc ::= expr load_closure . LOAD_CODE LOAD_STR MAKE_FUNCTION_9
+mkfunc ::= expr load_closure LOAD_CODE . LOAD_STR MAKE_FUNCTION_9
+mkfunc ::= expr load_closure LOAD_CODE LOAD_STR . MAKE_FUNCTION_9
+mkfunc ::= expr load_closure LOAD_CODE LOAD_STR MAKE_FUNCTION_9 . 
+mkfunc ::= load_closure . LOAD_CODE LOAD_STR MAKE_FUNCTION_8
+mkfunc ::= load_closure LOAD_CODE . LOAD_STR MAKE_FUNCTION_8
+mkfunc ::= load_closure LOAD_CODE LOAD_STR . MAKE_FUNCTION_8
+mkfuncdeco ::= expr . mkfuncdeco CALL_FUNCTION_1
+mkfuncdeco ::= expr . mkfuncdeco0 CALL_FUNCTION_1
+named_expr ::= expr . DUP_TOP store
+opt_come_from_except ::= _come_froms . 
+or ::= and . jitop_come_from_expr COME_FROM
+or ::= expr_jt . expr
+or ::= expr_jt . expr COME_FROM
+or ::= expr_jt expr . 
+or ::= expr_jt expr . COME_FROM
+or ::= expr_pjit . expr POP_JUMP_IF_FALSE COME_FROM
+or ::= expr_pjit expr . POP_JUMP_IF_FALSE COME_FROM
+pop_ex_return ::= return_expr . ROT_FOUR POP_EXCEPT RETURN_VALUE
+pop_ex_return ::= return_expr ROT_FOUR . POP_EXCEPT RETURN_VALUE
+pop_return ::= POP_TOP . return_expr RETURN_VALUE
+pop_return ::= POP_TOP return_expr . RETURN_VALUE
+popb_return ::= return_expr . POP_BLOCK RETURN_VALUE
+popb_return ::= return_expr POP_BLOCK . RETURN_VALUE
+popb_return ::= return_expr POP_BLOCK RETURN_VALUE . 
+pos_arg ::= expr . 
+ret_and ::= expr . JUMP_IF_FALSE_OR_POP return_expr_or_cond COME_FROM
+ret_or ::= expr . JUMP_IF_TRUE_OR_POP return_expr_or_cond COME_FROM
+return ::= popb_return . 
+return ::= return_expr . RETURN_END_IF
+return ::= return_expr . RETURN_VALUE
+return ::= return_expr . RETURN_VALUE COME_FROM
+return ::= return_expr . discard_tops RETURN_VALUE
+return ::= return_expr RETURN_VALUE . 
+return ::= return_expr RETURN_VALUE . COME_FROM
+return ::= return_expr RETURN_VALUE COME_FROM . 
+return_except ::= stmts . POP_BLOCK return
+return_except ::= stmts POP_BLOCK . return
+return_expr ::= expr . 
+return_expr_lambda ::= return_expr . RETURN_VALUE_LAMBDA
+return_expr_lambda ::= return_expr . RETURN_VALUE_LAMBDA LAMBDA_MARKER
+return_if_stmt ::= return_expr . RETURN_END_IF
+return_if_stmt ::= return_expr . RETURN_END_IF POP_BLOCK
+return_if_stmts ::= _stmts . return_if_stmt \e__come_froms
+return_if_stmts ::= _stmts . return_if_stmt _come_froms
+returns ::= _stmts . return
+returns ::= _stmts . return_if_stmt
+returns ::= return . 
+returns_in_except ::= _stmts . except_return_value
+sf_pb_call_returns ::= SETUP_FINALLY . POP_BLOCK CALL_FINALLY returns
+sstmt ::= return . RETURN_LAST
+sstmt ::= sstmt . RETURN_LAST
+sstmt ::= stmt . 
+starred ::= expr . 
+stmt ::= assign . 
+stmt ::= aug_assign1 . 
+stmt ::= call_stmt . 
+stmt ::= delete . 
+stmt ::= expr_stmt . 
+stmt ::= for38 . 
+stmt ::= forelsestmt38 . 
+stmt ::= function_def . 
+stmt ::= ifstmt . 
+stmt ::= ifstmtl . 
+stmt ::= return . 
+stmt ::= try_except . 
+stmt ::= tryfinallystmt . 
+stmt ::= with_as . 
+stmts ::= sstmt . 
+stmts ::= stmts . sstmt
+stmts ::= stmts sstmt . 
+store ::= STORE_FAST . 
+store ::= expr . STORE_ATTR
+store ::= expr STORE_ATTR . 
+store ::= unpack . 
+store_subscript ::= expr . expr STORE_SUBSCR
+store_subscript ::= expr expr . STORE_SUBSCR
+subscript ::= expr . expr BINARY_SUBSCR
+subscript ::= expr expr . BINARY_SUBSCR
+subscript ::= expr expr BINARY_SUBSCR . 
+subscript2 ::= expr . expr DUP_TOP_TWO BINARY_SUBSCR
+subscript2 ::= expr expr . DUP_TOP_TWO BINARY_SUBSCR
+suite_stmts ::= _stmts . 
+suite_stmts ::= returns . 
+suite_stmts_opt ::= suite_stmts . 
+testexpr ::= testfalse . 
+testexpr ::= testtrue . 
+testexpr_cf ::= testexpr . come_froms
+testexprl ::= testfalsel . 
+testfalse ::= and_not . 
+testfalse ::= expr . jmp_false
+testfalse ::= expr jmp_false . 
+testfalse ::= or . jmp_false COME_FROM
+testfalse_not_and ::= and . jmp_true come_froms
+testfalse_not_and ::= expr . jmp_false expr jmp_true COME_FROM
+testfalse_not_and ::= expr jmp_false . expr jmp_true COME_FROM
+testfalse_not_and ::= expr jmp_false expr . jmp_true COME_FROM
+testfalse_not_and ::= expr jmp_false expr jmp_true . COME_FROM
+testfalse_not_or ::= expr . jmp_false expr jmp_false COME_FROM
+testfalse_not_or ::= expr jmp_false . expr jmp_false COME_FROM
+testfalse_not_or ::= expr jmp_false expr . jmp_false COME_FROM
+testfalse_not_or ::= expr jmp_false expr jmp_false . COME_FROM
+testfalsel ::= expr . jmp_true
+testfalsel ::= expr jmp_true . 
+testtrue ::= expr . jmp_true
+testtrue ::= expr jmp_true . 
+try_elsestmtl38 ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK except_handler38 COME_FROM else_suitel \e_opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK except_handler38 COME_FROM else_suitel opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK except_handler38 COME_FROM else_suitel \e_opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK except_handler38 COME_FROM else_suitel opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK except_handler38 COME_FROM else_suitel \e_opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK except_handler38 COME_FROM else_suitel opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . except_handler38 COME_FROM else_suitel \e_opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . except_handler38 COME_FROM else_suitel opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK except_handler38 . COME_FROM else_suitel \e_opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK except_handler38 . COME_FROM else_suitel opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK except_handler38 COME_FROM . else_suitel \e_opt_come_from_except
+try_elsestmtl38 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK except_handler38 COME_FROM . else_suitel opt_come_from_except
+try_except ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK except_handler38
+try_except ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK except_handler38
+try_except ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK except_handler38
+try_except ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . except_handler38
+try_except ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK except_handler38 . 
+try_except38 ::= SETUP_FINALLY . POP_BLOCK POP_TOP \e_suite_stmts_opt except_handler38a
+try_except38 ::= SETUP_FINALLY . POP_BLOCK POP_TOP suite_stmts_opt except_handler38a
+try_except38 ::= SETUP_FINALLY . POP_BLOCK suite_stmts except_handler38b
+try_except38r ::= SETUP_FINALLY . return_except except_handler38b
+try_except38r2 ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY POP_TOP POP_TOP POP_TOP \e_cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY POP_TOP POP_TOP POP_TOP cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY POP_TOP POP_TOP POP_TOP \e_cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY POP_TOP POP_TOP POP_TOP cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY POP_TOP POP_TOP POP_TOP \e_cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY POP_TOP POP_TOP POP_TOP cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . JUMP_FORWARD COME_FROM_FINALLY POP_TOP POP_TOP POP_TOP \e_cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . JUMP_FORWARD COME_FROM_FINALLY POP_TOP POP_TOP POP_TOP cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK JUMP_FORWARD . COME_FROM_FINALLY POP_TOP POP_TOP POP_TOP \e_cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK JUMP_FORWARD . COME_FROM_FINALLY POP_TOP POP_TOP POP_TOP cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY . POP_TOP POP_TOP POP_TOP \e_cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r2 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY . POP_TOP POP_TOP POP_TOP cond_except_stmts_opt POP_EXCEPT return END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY \e_cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY \e_cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY \e_cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . JUMP_FORWARD COME_FROM_FINALLY \e_cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . JUMP_FORWARD COME_FROM_FINALLY cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK JUMP_FORWARD . COME_FROM_FINALLY \e_cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK JUMP_FORWARD . COME_FROM_FINALLY cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY . cond_except_stmts_opt POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r3 ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK JUMP_FORWARD COME_FROM_FINALLY \e_cond_except_stmts_opt . POP_EXCEPT return COME_FROM END_FINALLY COME_FROM
+try_except38r4 ::= SETUP_FINALLY . returns_in_except COME_FROM_FINALLY except_cond1 return COME_FROM END_FINALLY
+try_except_as ::= SETUP_FINALLY . POP_BLOCK suite_stmts except_handler_as END_FINALLY COME_FROM
+try_except_as ::= SETUP_FINALLY . suite_stmts except_handler_as END_FINALLY COME_FROM
+try_except_as ::= SETUP_FINALLY suite_stmts . except_handler_as END_FINALLY COME_FROM
+try_except_ret38 ::= SETUP_FINALLY . returns except_ret38a
+try_except_ret38 ::= SETUP_FINALLY returns . except_ret38a
+tryfinally36 ::= SETUP_FINALLY . returns COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinally36 ::= SETUP_FINALLY . returns COME_FROM_FINALLY suite_stmts
+tryfinally36 ::= SETUP_FINALLY . returns COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinally36 ::= SETUP_FINALLY returns . COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinally36 ::= SETUP_FINALLY returns . COME_FROM_FINALLY suite_stmts
+tryfinally36 ::= SETUP_FINALLY returns . COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinally36 ::= SETUP_FINALLY returns COME_FROM_FINALLY . suite_stmts
+tryfinally36 ::= SETUP_FINALLY returns COME_FROM_FINALLY . suite_stmts_opt END_FINALLY
+tryfinally36 ::= SETUP_FINALLY returns COME_FROM_FINALLY \e_suite_stmts_opt . END_FINALLY
+tryfinally38astmt ::= LOAD_CONST . SETUP_FINALLY \e_suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY POP_TOP \e_suite_stmts_opt END_FINALLY POP_TOP
+tryfinally38astmt ::= LOAD_CONST . SETUP_FINALLY \e_suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY POP_TOP suite_stmts_opt END_FINALLY POP_TOP
+tryfinally38astmt ::= LOAD_CONST . SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY POP_TOP \e_suite_stmts_opt END_FINALLY POP_TOP
+tryfinally38astmt ::= LOAD_CONST . SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY POP_TOP suite_stmts_opt END_FINALLY POP_TOP
+tryfinally38rstmt3 ::= SETUP_FINALLY . expr POP_BLOCK CALL_FINALLY RETURN_VALUE COME_FROM COME_FROM_FINALLY ss_end_finally
+tryfinally38rstmt3 ::= SETUP_FINALLY expr . POP_BLOCK CALL_FINALLY RETURN_VALUE COME_FROM COME_FROM_FINALLY ss_end_finally
+tryfinally38rstmt3 ::= SETUP_FINALLY expr POP_BLOCK . CALL_FINALLY RETURN_VALUE COME_FROM COME_FROM_FINALLY ss_end_finally
+tryfinally38stmt ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . BEGIN_FINALLY COME_FROM_FINALLY POP_FINALLY suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY . COME_FROM_FINALLY POP_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY . COME_FROM_FINALLY POP_FINALLY suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY . POP_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinally38stmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY . POP_FINALLY suite_stmts_opt END_FINALLY
+tryfinally_return_stmt ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_FINALLY
+tryfinally_return_stmt ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK LOAD_CONST COME_FROM_FINALLY
+tryfinally_return_stmt ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK LOAD_CONST COME_FROM_FINALLY
+tryfinally_return_stmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . LOAD_CONST COME_FROM_FINALLY
+tryfinallystmt ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY . suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK LOAD_CONST COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY \e_suite_stmts_opt . POP_BLOCK LOAD_CONST COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK LOAD_CONST COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt . POP_BLOCK LOAD_CONST COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . BEGIN_FINALLY COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . BEGIN_FINALLY COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . LOAD_CONST COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK . LOAD_CONST COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY . COME_FROM_FINALLY \e_suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY . COME_FROM_FINALLY suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY . suite_stmts_opt END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY \e_suite_stmts_opt . END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY suite_stmts_opt . END_FINALLY
+tryfinallystmt ::= SETUP_FINALLY suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_FINALLY suite_stmts_opt END_FINALLY . 
+tuple ::= expr . BUILD_TUPLE_1
+tuple ::= expr . expr BUILD_TUPLE_2
+tuple ::= expr BUILD_TUPLE_1 . 
+tuple ::= expr expr . BUILD_TUPLE_2
+tuple ::= expr expr BUILD_TUPLE_2 . 
+unary_not ::= expr . UNARY_NOT
+unary_op ::= expr . unary_operator
+unpack ::= UNPACK_SEQUENCE_2 . store store
+unpack ::= UNPACK_SEQUENCE_2 store . store
+unpack ::= UNPACK_SEQUENCE_2 store store . 
+unpack ::= UNPACK_SEQUENCE_3 . store store store
+unpack ::= UNPACK_SEQUENCE_3 store . store store
+unpack ::= UNPACK_SEQUENCE_3 store store . store
+unpack ::= UNPACK_SEQUENCE_3 store store store . 
+while1stmt ::= \e__come_froms . l_stmts COME_FROM JUMP_BACK COME_FROM_LOOP
+while1stmt ::= \e__come_froms l_stmts . COME_FROM JUMP_BACK COME_FROM_LOOP
+while1stmt ::= \e__come_froms l_stmts COME_FROM . JUMP_BACK COME_FROM_LOOP
+while1stmt ::= _come_froms . l_stmts COME_FROM JUMP_BACK COME_FROM_LOOP
+while1stmt ::= _come_froms l_stmts . COME_FROM JUMP_BACK COME_FROM_LOOP
+whileTruestmt ::= \e__come_froms . l_stmts JUMP_BACK POP_BLOCK
+whileTruestmt ::= \e__come_froms l_stmts . JUMP_BACK POP_BLOCK
+whileTruestmt ::= \e__come_froms l_stmts JUMP_BACK . POP_BLOCK
+whileTruestmt ::= _come_froms . l_stmts JUMP_BACK POP_BLOCK
+whileTruestmt ::= _come_froms l_stmts . JUMP_BACK POP_BLOCK
+whileTruestmt38 ::= \e__come_froms . l_stmts JUMP_BACK
+whileTruestmt38 ::= \e__come_froms . l_stmts JUMP_BACK COME_FROM_EXCEPT_CLAUSE
+whileTruestmt38 ::= \e__come_froms . pass JUMP_BACK
+whileTruestmt38 ::= \e__come_froms \e_pass . JUMP_BACK
+whileTruestmt38 ::= \e__come_froms \e_pass JUMP_BACK . 
+whileTruestmt38 ::= \e__come_froms l_stmts . JUMP_BACK
+whileTruestmt38 ::= \e__come_froms l_stmts . JUMP_BACK COME_FROM_EXCEPT_CLAUSE
+whileTruestmt38 ::= \e__come_froms l_stmts JUMP_BACK . 
+whileTruestmt38 ::= \e__come_froms l_stmts JUMP_BACK . COME_FROM_EXCEPT_CLAUSE
+whileTruestmt38 ::= _come_froms . l_stmts JUMP_BACK
+whileTruestmt38 ::= _come_froms . l_stmts JUMP_BACK COME_FROM_EXCEPT_CLAUSE
+whileTruestmt38 ::= _come_froms . pass JUMP_BACK
+whileTruestmt38 ::= _come_froms \e_pass . JUMP_BACK
+whileTruestmt38 ::= _come_froms l_stmts . JUMP_BACK
+whileTruestmt38 ::= _come_froms l_stmts . JUMP_BACK COME_FROM_EXCEPT_CLAUSE
+whilestmt38 ::= \e__come_froms . testexpr \e_l_stmts_opt COME_FROM JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms . testexpr \e_l_stmts_opt JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms . testexpr \e_l_stmts_opt JUMP_BACK come_froms
+whilestmt38 ::= \e__come_froms . testexpr l_stmts JUMP_BACK
+whilestmt38 ::= \e__come_froms . testexpr l_stmts come_froms
+whilestmt38 ::= \e__come_froms . testexpr l_stmts_opt COME_FROM JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms . testexpr l_stmts_opt JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms . testexpr l_stmts_opt JUMP_BACK come_froms
+whilestmt38 ::= \e__come_froms . testexpr returns POP_BLOCK
+whilestmt38 ::= \e__come_froms testexpr . l_stmts JUMP_BACK
+whilestmt38 ::= \e__come_froms testexpr . l_stmts come_froms
+whilestmt38 ::= \e__come_froms testexpr . l_stmts_opt COME_FROM JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms testexpr . l_stmts_opt JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms testexpr . l_stmts_opt JUMP_BACK come_froms
+whilestmt38 ::= \e__come_froms testexpr . returns POP_BLOCK
+whilestmt38 ::= \e__come_froms testexpr \e_l_stmts_opt . COME_FROM JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms testexpr \e_l_stmts_opt . JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms testexpr \e_l_stmts_opt . JUMP_BACK come_froms
+whilestmt38 ::= \e__come_froms testexpr l_stmts . JUMP_BACK
+whilestmt38 ::= \e__come_froms testexpr l_stmts . come_froms
+whilestmt38 ::= \e__come_froms testexpr l_stmts come_froms . 
+whilestmt38 ::= \e__come_froms testexpr l_stmts_opt . COME_FROM JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms testexpr l_stmts_opt . JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms testexpr l_stmts_opt . JUMP_BACK come_froms
+whilestmt38 ::= \e__come_froms testexpr l_stmts_opt COME_FROM . JUMP_BACK POP_BLOCK
+whilestmt38 ::= \e__come_froms testexpr returns . POP_BLOCK
+whilestmt38 ::= _come_froms . testexpr \e_l_stmts_opt COME_FROM JUMP_BACK POP_BLOCK
+whilestmt38 ::= _come_froms . testexpr \e_l_stmts_opt JUMP_BACK POP_BLOCK
+whilestmt38 ::= _come_froms . testexpr \e_l_stmts_opt JUMP_BACK come_froms
+whilestmt38 ::= _come_froms . testexpr l_stmts JUMP_BACK
+whilestmt38 ::= _come_froms . testexpr l_stmts come_froms
+whilestmt38 ::= _come_froms . testexpr l_stmts_opt COME_FROM JUMP_BACK POP_BLOCK
+whilestmt38 ::= _come_froms . testexpr l_stmts_opt JUMP_BACK POP_BLOCK
+whilestmt38 ::= _come_froms . testexpr l_stmts_opt JUMP_BACK come_froms
+whilestmt38 ::= _come_froms . testexpr returns POP_BLOCK
+with ::= expr . SETUP_WITH POP_TOP \e_suite_stmts_opt COME_FROM_WITH with_suffix
+with ::= expr . SETUP_WITH POP_TOP \e_suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with ::= expr . SETUP_WITH POP_TOP \e_suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with ::= expr . SETUP_WITH POP_TOP suite_stmts_opt COME_FROM_WITH with_suffix
+with ::= expr . SETUP_WITH POP_TOP suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with ::= expr . SETUP_WITH POP_TOP suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with ::= expr SETUP_WITH . POP_TOP \e_suite_stmts_opt COME_FROM_WITH with_suffix
+with ::= expr SETUP_WITH . POP_TOP \e_suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with ::= expr SETUP_WITH . POP_TOP \e_suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with ::= expr SETUP_WITH . POP_TOP suite_stmts_opt COME_FROM_WITH with_suffix
+with ::= expr SETUP_WITH . POP_TOP suite_stmts_opt POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with ::= expr SETUP_WITH . POP_TOP suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with_as ::= expr . SETUP_WITH store \e_suite_stmts_opt COME_FROM_WITH with_suffix
+with_as ::= expr . SETUP_WITH store \e_suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH
+with_as ::= expr . SETUP_WITH store \e_suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with_as ::= expr . SETUP_WITH store suite_stmts POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_as ::= expr . SETUP_WITH store suite_stmts_opt COME_FROM_WITH with_suffix
+with_as ::= expr . SETUP_WITH store suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH
+with_as ::= expr . SETUP_WITH store suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH . store \e_suite_stmts_opt COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH . store \e_suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH
+with_as ::= expr SETUP_WITH . store \e_suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH . store suite_stmts POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH . store suite_stmts_opt COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH . store suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH
+with_as ::= expr SETUP_WITH . store suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store . suite_stmts POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store . suite_stmts_opt COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store . suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH
+with_as ::= expr SETUP_WITH store . suite_stmts_opt POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store \e_suite_stmts_opt . COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store \e_suite_stmts_opt . POP_BLOCK LOAD_CONST COME_FROM_WITH
+with_as ::= expr SETUP_WITH store \e_suite_stmts_opt . POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store suite_stmts . POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store suite_stmts POP_BLOCK . BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store suite_stmts POP_BLOCK BEGIN_FINALLY . COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store suite_stmts POP_BLOCK BEGIN_FINALLY COME_FROM_WITH . with_suffix
+with_as ::= expr SETUP_WITH store suite_stmts POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix . 
+with_as ::= expr SETUP_WITH store suite_stmts_opt . COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store suite_stmts_opt . POP_BLOCK LOAD_CONST COME_FROM_WITH
+with_as ::= expr SETUP_WITH store suite_stmts_opt . POP_BLOCK LOAD_CONST COME_FROM_WITH with_suffix
+with_as ::= expr SETUP_WITH store suite_stmts_opt POP_BLOCK . LOAD_CONST COME_FROM_WITH
+with_as ::= expr SETUP_WITH store suite_stmts_opt POP_BLOCK . LOAD_CONST COME_FROM_WITH with_suffix
+with_as_pass ::= expr . SETUP_WITH store \e_pass POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_as_pass ::= expr . SETUP_WITH store pass POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_as_pass ::= expr SETUP_WITH . store \e_pass POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_as_pass ::= expr SETUP_WITH . store pass POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_as_pass ::= expr SETUP_WITH store . pass POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_as_pass ::= expr SETUP_WITH store \e_pass . POP_BLOCK BEGIN_FINALLY COME_FROM_WITH with_suffix
+with_suffix ::= WITH_CLEANUP_START . WITH_CLEANUP_FINISH END_FINALLY
+with_suffix ::= WITH_CLEANUP_START WITH_CLEANUP_FINISH . END_FINALLY
+with_suffix ::= WITH_CLEANUP_START WITH_CLEANUP_FINISH END_FINALLY . 
+yield ::= expr . YIELD_VALUE
+yield_from ::= expr . GET_YIELD_FROM_ITER LOAD_CONST YIELD_FROM
+Instruction context:
+-> 
+ L. 983         0  LOAD_GLOBAL              TKDND_AVAILABLE
+                   2  POP_JUMP_IF_FALSE    76  'to 76'
+
+import json, logging, os, queue, tempfile, threading, tkinter as tk
+from tkinter import ttk, filedialog, messagebox, scrolledtext, Menu, font as tkfont
+try:
+    from tkinterdnd2 import DND_FILES, TkinterDnD
+    TKDND_AVAILABLE = True
+except Exception:
+    DND_FILES = None
+    TkinterDnD = None
+    TKDND_AVAILABLE = False
+else:
+    from wfp_config import DEFAULT_CONFIG, FONT_SIZE_MAP, PRESET_FONT_OPTIONS
+    from wfp_core import BLANK_LINE_MODE_DELETE_SINGLE, BLANK_LINE_MODE_KEEP_SINGLE, BLANK_LINE_MODE_OPTIONS, IS_WINDOWS, LARGE_FOLDER_FILE_CONFIRM_THRESHOLD, LegacyConversionUnavailable, SUPPORTED_FILE_EXTENSIONS, WPSAppManager, WordProcessor, _initialize_com_for_thread, _uninitialize_com_for_thread
+
+    class WordFormatterGUI:
+
+        def __init__(self, master):
+            self.master = master
+            master.title("Word文档智能排版工具 v2.7.4")
+            master.geometry("1200x860")
+            master.minsize(1200, 860)
+            self.log_queue = queue.Queue()
+            self.is_processing = False
+            self.font_size_map = FONT_SIZE_MAP.copy()
+            self.font_size_map_rev = {v: k for k, v in self.font_size_map.items()}
+            self.default_params = DEFAULT_CONFIG.copy()
+            self.font_separator = "── 已安装字体 ──"
+            self.installed_fonts = self._get_installed_fonts()
+            self.font_options = {key: self._with_installed_fonts(options) for key, options in PRESET_FONT_OPTIONS.items()}
+            self.set_outline_var = tk.BooleanVar(value=(self.default_params["set_outline"]))
+            self.enable_attachment_var = tk.BooleanVar(value=(self.default_params["enable_attachment_formatting"]))
+            self.force_a4_var = tk.BooleanVar(value=(self.default_params["force_a4"]))
+            self.use_custom_english_font_var = tk.BooleanVar(value=(self.default_params["use_custom_english_font"]))
+            self.normalize_punctuation_var = tk.BooleanVar(value=(self.default_params["normalize_punctuation"]))
+            self.enable_table_var = tk.BooleanVar(value=(self.default_params["enable_table_formatting"]))
+            self.table_auto_col_width_var = tk.BooleanVar(value=(self.default_params["table_auto_col_width"]))
+            self.table_header_bold_var = tk.BooleanVar(value=(self.default_params["table_header_bold"]))
+            self.table_smart_align_var = tk.BooleanVar(value=(self.default_params["table_smart_align"]))
+            self.table_unified_borders_var = tk.BooleanVar(value=(self.default_params["table_unified_borders"]))
+            self.progress_var = tk.DoubleVar(value=0.0)
+            self.progress_text_var = tk.StringVar(value="")
+            self.entries = {}
+            self.attachment_option_widgets = []
+            self.table_option_widgets = []
+            self.default_config_path = "default_config.json"
+            self.create_menu()
+            self.create_widgets()
+            self.load_initial_config()
+            self.master.protocol("WM_DELETE_WINDOW", self._on_close)
+            self.master.after(250, self.set_initial_pane_position)
+            self.master.after(100, self._check_log_queue)
+
+        def _get_installed_fonts(self):
+            try:
+                fonts = tkfont.families(self.master)
+            except tk.TclError:
+                return                 return []
+            else:
+                unique_fonts = {font.strip() for font in fonts if not font.strip().startswith("@")}
+                return sorted(unique_fonts, key=(str.casefold))
+
+        def _with_installed_fonts(self, preset_fonts):
+            options = []
+            seen = set()
+            for font in preset_fonts:
+                normalized = font.casefold()
+                if normalized not in seen:
+                    options.append(font)
+                    seen.add(normalized)
+                installed_fonts = [font for font in self.installed_fonts if font.casefold() not in seen]
+                if installed_fonts:
+                    options.append(self.font_separator)
+                    options.extend(installed_fonts)
+                return options
+
+        def _update_english_font_state(self):
+            combo = self.entries.get("english_font")
+            if combo:
+                combo.configure(state=("normal" if self.use_custom_english_font_var.get() else "disabled"))
+
+        def _set_widgets_enabled(self, widgets, enabled):
+            for widget in widgets:
+                if not hasattr(widget, "_enabled_state"):
+                    try:
+                        enabled_state = widget.cget("state") or "normal"
+                        widget._enabled_state = "normal" if enabled_state == "disabled" else enabled_state
+                    except tk.TclError:
+                        widget._enabled_state = "normal"
+                    else:
+                        try:
+                            widget.configure(state=(widget._enabled_state if enabled else "disabled"))
+                        except tk.TclError:
+                            pass
+
+        def _update_attachment_state(self):
+            self._set_widgets_enabled(self.attachment_option_widgets, self.enable_attachment_var.get())
+
+        def _update_table_state(self):
+            self._set_widgets_enabled(self.table_option_widgets, self.enable_table_var.get())
+
+        def _enable_dependent_widgets_for_config_load(self):
+            self._set_widgets_enabled(self.attachment_option_widgets, True)
+            self._set_widgets_enabled(self.table_option_widgets, True)
+            english_font_combo = self.entries.get("english_font")
+            if english_font_combo:
+                english_font_combo.configure(state="normal")
+
+        def _set_widget_value(self, widget, value, is_size=False):
+            previous_state = None
+            try:
+                previous_state = widget.cget("state")
+                if previous_state == "disabled":
+                    widget.configure(state=(getattr(widget, "_enabled_state", "normal")))
+            except tk.TclError:
+                previous_state = None
+            else:
+                try:
+                    if is_size and isinstance(widget, ttk.Combobox):
+                        display_val = self.font_size_map_rev.get(value, str(value))
+                        widget.set(display_val)
+                    else:
+                        if isinstance(widget, ttk.Combobox):
+                            widget.set(value)
+                            if value != self.font_separator:
+                                widget._last_valid_value = value
+                        else:
+                            widget.delete(0, tk.END)
+                            widget.insert(0, str(value))
+                finally:
+                    if previous_state == "disabled":
+                        try:
+                            widget.configure(state="disabled")
+                        except tk.TclError:
+                            pass
+
+        def set_initial_pane_position(self):
+            total_width = self.master.winfo_width()
+            if total_width > 100:
+                left_width = int(total_width * 0.3)
+                for widget in self.master.winfo_children():
+                    if isinstance(widget, ttk.PanedWindow):
+                        widget.sashpos(0, left_width)
+                        break
+
+        def create_menu(self):
+            menubar = Menu(self.master)
+            help_menu = Menu(menubar, tearoff=0)
+            help_menu.add_command(label="使用说明", command=(self.show_help_window))
+            menubar.add_cascade(label="帮助", menu=help_menu)
+            self.master.config(menu=menubar)
+
+        def _show_help_tooltip(self, title, message):
+            messagebox.showinfo(title, message, parent=(self.master))
+
+        def _create_help_label(self, parent, text, row, col):
+            help_label = ttk.Label(parent, text="(?)", foreground="blue", cursor="hand2")
+            help_label.grid(row=row, column=col, sticky="W", padx=(0, 5))
+            help_label.bind("<Button-1>", lambda e: self._show_help_tooltip("识别规则说明", text))
+
+        def create_widgets(self):
+            main_pane = ttk.PanedWindow((self.master), orient=(tk.HORIZONTAL))
+            main_pane.pack(fill=(tk.BOTH), expand=True, padx=5, pady=5)
+            left_frame = ttk.Frame(main_pane, padding=5)
+            main_pane.add(left_frame, weight=2)
+            notebook = ttk.Notebook(left_frame)
+            notebook.pack(fill=(tk.BOTH), expand=True)
+            self.notebook = notebook
+            file_tab = ttk.Frame(notebook)
+            notebook.add(file_tab, text=" 文件批量处理 ")
+            list_frame = ttk.LabelFrame(file_tab, text="待处理文件列表（可拖拽文件或文件夹）")
+            list_frame.pack(fill=(tk.BOTH), expand=True, pady=5)
+            v_scrollbar = ttk.Scrollbar(list_frame, orient=(tk.VERTICAL))
+            h_scrollbar = ttk.Scrollbar(list_frame, orient=(tk.HORIZONTAL))
+            self.file_listbox = tk.Listbox(list_frame,
+              yscrollcommand=(v_scrollbar.set),
+              xscrollcommand=(h_scrollbar.set),
+              selectmode=(tk.EXTENDED))
+            v_scrollbar.config(command=(self.file_listbox.yview))
+            h_scrollbar.config(command=(self.file_listbox.xview))
+            self.file_listbox.grid(row=0, column=0, sticky="nsew")
+            v_scrollbar.grid(row=0, column=1, sticky="ns")
+            h_scrollbar.grid(row=1, column=0, sticky="ew")
+            list_frame.rowconfigure(0, weight=1)
+            list_frame.columnconfigure(0, weight=1)
+            if TKDND_AVAILABLE and hasattr(self.file_listbox, "drop_target_register"):
+                try:
+                    self.file_listbox.drop_target_register(DND_FILES)
+                    self.file_listbox.dnd_bind("<<Drop>>", self.handle_drop)
+                except Exception as e:
+                    try:
+                        self.log_to_debug_window(f"拖拽组件初始化失败，已改为按钮添加文件/文件夹：{e}")
+                    finally:
+                        e = None
+                        del e
+
+            else:
+                self.log_to_debug_window("拖拽添加不可用，已改为按钮添加文件/文件夹。")
+            dnd_enabled = TKDND_AVAILABLE and hasattr(self.file_listbox, "drop_target_register")
+            placeholder_text = "可以拖拽文件或文件夹到这里" if dnd_enabled else "请使用下方按钮添加文件或文件夹"
+            self.placeholder_label = ttk.Label((self.file_listbox), text=placeholder_text, foreground="grey")
+            file_button_frame = ttk.Frame(file_tab)
+            file_button_frame.pack(fill=(tk.X), pady=5)
+            ttk.Button(file_button_frame, text="添加文件", command=(self.add_files)).grid(row=0, column=0, sticky="ew", padx=2, pady=2)
+            ttk.Button(file_button_frame, text="添加文件夹", command=(self.add_folder)).grid(row=0, column=1, sticky="ew", padx=2, pady=2)
+            ttk.Button(file_button_frame, text="移除文件", command=(self.remove_files)).grid(row=1, column=0, sticky="ew", padx=2, pady=2)
+            ttk.Button(file_button_frame, text="清空列表", command=(self.clear_list)).grid(row=1, column=1, sticky="ew", padx=2, pady=2)
+            file_button_frame.columnconfigure(0, weight=1)
+            file_button_frame.columnconfigure(1, weight=1)
+            text_tab = ttk.Frame(notebook)
+            notebook.add(text_tab, text=" 直接输入文本 ")
+            text_frame = ttk.LabelFrame(text_tab, text="在此处输入或粘贴文本")
+            text_frame.pack(fill=(tk.BOTH), expand=True, pady=5)
+            self.direct_text_input = scrolledtext.ScrolledText(text_frame, height=10, wrap=(tk.WORD))
+            self.direct_text_input.pack(fill=(tk.BOTH), expand=True)
+            style = ttk.Style()
+            style.configure("Success.TButton", font=('Helvetica', 10, 'bold'), foreground="green")
+            left_action_frame = ttk.Frame(left_frame)
+            left_action_frame.pack(fill=(tk.X), pady=(5, 0))
+            self.start_btn = ttk.Button(left_action_frame,
+              text="开始排版",
+              style="Success.TButton",
+              command=(self.start_processing))
+            self.start_btn.pack(fill=(tk.X), ipady=8)
+            progress_frame = ttk.Frame(left_frame)
+            progress_frame.pack(fill=(tk.X), pady=(5, 0))
+            self.progressbar = ttk.Progressbar(progress_frame,
+              mode="determinate",
+              variable=(self.progress_var),
+              maximum=100)
+            self.progressbar.pack(fill=(tk.X))
+            ttk.Label(progress_frame, textvariable=(self.progress_text_var), foreground="grey").pack(anchor=(tk.W))
+            log_frame = ttk.LabelFrame(left_frame, text="调试日志")
+            log_frame.pack(fill=(tk.BOTH), expand=True, pady=(5, 0))
+            self.debug_text = scrolledtext.ScrolledText(log_frame, height=10, state="disabled", wrap=(tk.WORD))
+            self.debug_text.pack(fill=(tk.BOTH), expand=True)
+            right_frame = ttk.Frame(main_pane, padding=5)
+            main_pane.add(right_frame, weight=4)
+            canvas = tk.Canvas(right_frame)
+            v_scrollbar = ttk.Scrollbar(right_frame, orient=(tk.VERTICAL), command=(canvas.yview))
+            canvas.configure(yscrollcommand=(v_scrollbar.set))
+            params_container = ttk.Frame(canvas)
+            canvas_window = canvas.create_window((0, 0), window=params_container, anchor="nw")
+            params_frame = ttk.LabelFrame(params_container, text="参数设置", padding=10)
+            params_frame.pack(fill=(tk.BOTH), expand=True, pady=(0, 5))
+            params_frame.columnconfigure(1, weight=1)
+            params_frame.columnconfigure(3, weight=1)
+            params_frame.columnconfigure(5, weight=1)
+
+            def create_entry(label, var_name, r, c):
+                ttk.Label(params_frame, text=label).grid(row=r, column=c, sticky=(tk.W), padx=3, pady=2)
+                entry = ttk.Entry(params_frame, width=12)
+                entry.grid(row=r, column=(c + 1), sticky=(tk.EW), padx=3, pady=2)
+                self.entries[var_name] = entry
+                return entry
+
+            def create_combo(label, var_name, opts, r, c, readonly=True):
+                ttk.Label(params_frame, text=label).grid(row=r, column=c, sticky=(tk.W), padx=3, pady=2)
+                state = "readonly" if readonly else "normal"
+                combo = ttk.Combobox(params_frame, values=opts, state=state, width=15)
+                combo.grid(row=r, column=(c + 1), sticky=(tk.EW), padx=3, pady=2)
+                if self.font_separator in opts:
+                    combo._last_valid_value = ""
+
+                    def remember_font_value(event, combo=combo):
+                        current = combo.get().strip()
+                        if current:
+                            if current != self.font_separator:
+                                combo._last_valid_value = current
+
+                    def reject_font_separator(event, combo=combo):
+                        if combo.get() == self.font_separator:
+                            combo.set(getattr(combo, "_last_valid_value", ""))
+                        else:
+                            remember_font_value(event, combo)
+
+                    combo.bind("<FocusIn>", remember_font_value, add="+")
+                    combo.bind("<<ComboboxSelected>>", reject_font_separator, add="+")
+                self.entries[var_name] = combo
+                return combo
+
+            def create_font_size_combo(label, var_name, r, c):
+                ttk.Label(params_frame, text=label).grid(row=r, column=c, sticky=(tk.W), padx=3, pady=2)
+                combo = ttk.Combobox(params_frame, values=(list(self.font_size_map.keys())), width=15)
+                combo.grid(row=r, column=(c + 1), sticky=(tk.EW), padx=3, pady=2)
+                self.entries[var_name] = combo
+                return combo
+
+            def create_section_header(text, help_text, r):
+                header_frame = ttk.Frame(params_frame)
+                header_frame.grid(row=r, column=0, columnspan=6, sticky="ew", pady=(6,
+                                                                                    2))
+                ttk.Label(header_frame, text=text, font=('Helvetica', 9, 'bold')).pack(side=(tk.LEFT))
+                if help_text:
+                    help_label = ttk.Label(header_frame, text="(?)", foreground="blue", cursor="hand2")
+                    help_label.pack(side=(tk.LEFT), padx=(2, 0))
+                    help_label.bind("<Button-1>", lambda e, t=text, m=help_text: self._show_help_tooltip(f"{t} - 识别规则", m))
+                ttk.Separator(params_frame, orient="horizontal").grid(row=(r + 1), column=0, columnspan=6, sticky="ew")
+                return r + 2
+
+            row = 0
+            row = create_section_header("页面设置", None, row)
+            create_entry("上边距(cm)", "margin_top", row, 0)
+            create_entry("下边距(cm)", "margin_bottom", row, 2)
+            create_entry("页脚距(cm)", "footer_distance", row, 4)
+            row += 1
+            create_entry("左边距(cm)", "margin_left", row, 0)
+            create_entry("右边距(cm)", "margin_right", row, 2)
+            ttk.Checkbutton(params_frame, text="强制设置为A4纸张", variable=(self.force_a4_var)).grid(row=row, column=4, columnspan=2, sticky=(tk.W), padx=3)
+            row += 1
+            create_combo("页码对齐", "page_number_align", ["奇偶分页", "居中"], row, 0)
+            create_combo("页码字体", "page_number_font", (self.font_options["page_number"]), row, 2, readonly=False)
+            create_font_size_combo("页码字号", "page_number_size", row, 4)
+            row += 1
+            title_help = "• 主标题: 识别文档开头的连续【居中】且【字体字号相同】的段落。\n• 副标题: 主标题下方，同样【居中】但【字体字号与主标题不同】的段落。\n• TXT文件: 会将首个非层级标题的段落视为题目。"
+            row = create_section_header("标题样式", title_help, row)
+            create_combo("题目字体", "title_font", (self.font_options["title"]), row, 0, readonly=False)
+            create_font_size_combo("题目字号", "title_size", row, 2)
+            create_entry("题目行距(磅)", "title_line_spacing", row, 4)
+            row += 1
+            create_combo("副标题字体", "subtitle_font", (self.font_options["subtitle"]), row, 0, readonly=False)
+            create_font_size_combo("副标题字号", "subtitle_size", row, 2)
+            create_entry("副标题行距(磅)", "subtitle_line_spacing", row, 4)
+            row += 1
+            headings_help = '• 一级标题: "一、", "二、" ...\n• 二级标题: "（一）", "（二）" ...\n• 三级标题: "1.", "2." ...\n• 四级标题: "(1)", "(2)" ...\n\n注：正文、三级、四级标题共用一套字体字号。'
+            row = create_section_header("正文与层级", headings_help, row)
+            create_combo("一级标题字体", "h1_font", (self.font_options["h1"]), row, 0, readonly=False)
+            create_font_size_combo("一级标题字号", "h1_size", row, 2)
+            row += 1
+            create_combo("二级标题字体", "h2_font", (self.font_options["h2"]), row, 0, readonly=False)
+            create_font_size_combo("二级标题字号", "h2_size", row, 2)
+            row += 1
+            create_combo("正文/三四级字体", "body_font", (self.font_options["body"]), row, 0, readonly=False)
+            create_font_size_combo("正文/三四级字号", "body_size", row, 2)
+            create_entry("正文行距(磅)", "line_spacing", row, 4)
+            row += 1
+            create_entry("段落左缩进(cm)", "left_indent_cm", row, 0)
+            create_entry("段落右缩进(cm)", "right_indent_cm", row, 2)
+            row += 1
+            table_help = "• 默认不启用表格自动调整，启用后才会调整表头/内容字体、字号、行距、行高、列宽和边框。\n• 默认保留单元格原始对齐方式；勾选智能对齐后，表头/序号/短文本居中，数字靠右，长文本靠左。"
+            row = create_section_header("表格内容（实验功能）", table_help, row)
+            ttk.Checkbutton(params_frame, text="启用表格自动调整（总开关）", variable=(self.enable_table_var), command=(self._update_table_state)).grid(row=row, column=0, columnspan=2, sticky=(tk.W), padx=3, pady=2)
+            table_auto_col_width_check = ttk.Checkbutton(params_frame, text="自动调整列宽", variable=(self.table_auto_col_width_var))
+            table_auto_col_width_check.grid(row=row, column=2, columnspan=2, sticky=(tk.W), padx=3, pady=2)
+            table_unified_borders_check = ttk.Checkbutton(params_frame, text="统一表格边框", variable=(self.table_unified_borders_var))
+            table_unified_borders_check.grid(row=row, column=4, columnspan=2, sticky=(tk.W), padx=3, pady=2)
+            row += 1
+            table_header_font_combo = create_combo("表头字体", "table_header_font", (self.font_options["table"]), row, 0, readonly=False)
+            table_font_combo = create_combo("表格字体", "table_font", (self.font_options["table"]), row, 2, readonly=False)
+            table_size_combo = create_font_size_combo("表格字号", "table_size", row, 4)
+            row += 1
+            table_line_spacing_entry = create_entry("表格行距(磅)", "table_line_spacing", row, 0)
+            table_row_height_entry = create_entry("表格行高(cm)", "table_row_height_cm", row, 2)
+            table_width_percent_entry = create_entry("表格宽度(%)", "table_width_percent", row, 4)
+            row += 1
+            table_border_size_entry = create_entry("边框粗细(pt)", "table_border_size_pt", row, 0)
+            table_header_bold_check = ttk.Checkbutton(params_frame, text="表头行加粗", variable=(self.table_header_bold_var))
+            table_header_bold_check.grid(row=row, column=2, columnspan=2, sticky=(tk.W), padx=3, pady=2)
+            table_smart_align_check = ttk.Checkbutton(params_frame, text="智能调整单元格对齐", variable=(self.table_smart_align_var))
+            table_smart_align_check.grid(row=row, column=4, columnspan=2, sticky=(tk.W), padx=3, pady=2)
+            self.table_option_widgets = [
+             table_auto_col_width_check,  table_unified_borders_check, 
+             table_header_font_combo,  table_font_combo,  table_size_combo, 
+             table_line_spacing_entry,  table_row_height_entry,  table_width_percent_entry, 
+             table_border_size_entry,  table_header_bold_check,  table_smart_align_check]
+            self._update_table_state()
+            row += 1
+            other_help = '• 图/表标题: 自动查找图片或表格【上方或下方】最近的、居中的、以"图"或"表"开头的段落。\n• 附件标识: 识别"附件1"、"附件："等独立段落。启用后将自动【段前分页】并按主副标题规则识别其自身标题。'
+            row = create_section_header("其他元素", other_help, row)
+            create_combo("表格标题字体", "table_caption_font", (self.font_options["table_caption"]), row, 0, readonly=False)
+            create_font_size_combo("表格标题字号", "table_caption_size", row, 2)
+            row += 1
+            create_combo("图形标题字体", "figure_caption_font", (self.font_options["figure_caption"]), row, 0, readonly=False)
+            create_font_size_combo("图形标题字号", "figure_caption_size", row, 2)
+            row += 1
+            ttk.Checkbutton(params_frame, text="启用附件格式化", variable=(self.enable_attachment_var), command=(self._update_attachment_state)).grid(row=row, column=0, columnspan=2, sticky=(tk.W), padx=3, pady=2)
+            attachment_font_combo = create_combo("附件标识字体", "attachment_font", (self.font_options["attachment"]), row, 2, readonly=False)
+            attachment_size_combo = create_font_size_combo("附件标识字号", "attachment_size", row, 4)
+            self.attachment_option_widgets = [attachment_font_combo, attachment_size_combo]
+            self._update_attachment_state()
+            row += 1
+            ttk.Separator(params_frame, orient="horizontal").grid(row=row, column=0, columnspan=6, sticky="ew", pady=5)
+            row += 1
+            ttk.Checkbutton(params_frame, text="自动设置大纲级别 (用于生成导航目录)", variable=(self.set_outline_var)).grid(row=row, columnspan=6, sticky=(tk.W), padx=3)
+            row += 1
+            ttk.Checkbutton(params_frame,
+              text="自定义数字和字母字体",
+              variable=(self.use_custom_english_font_var),
+              command=(self._update_english_font_state)).grid(row=row,
+              column=0,
+              columnspan=2,
+              sticky=(tk.W),
+              padx=3)
+            create_combo("数字和字母字体", "english_font", (self.font_options["english"]), row, 2, readonly=False)
+            self._update_english_font_state()
+            row += 1
+            blank_line_combo = create_combo("TXT/MD空行处理", "blank_line_mode", BLANK_LINE_MODE_OPTIONS, row, 0)
+            blank_line_combo.configure(width=42)
+            blank_line_combo.grid_configure(columnspan=5)
+            row += 1
+            ttk.Checkbutton(params_frame, text="启用符号标准化（实验功能，保守修复中英文标点混用）", variable=(self.normalize_punctuation_var)).grid(row=row, columnspan=6, sticky=(tk.W), padx=3)
+            row += 1
+            button_frame = ttk.Frame(params_container)
+            button_frame.pack(fill=(tk.X), pady=5)
+            config_buttons = ttk.Frame(button_frame)
+            config_buttons.pack(fill=(tk.X), pady=(0, 5))
+            ttk.Button(config_buttons, text="加载配置", command=(self.load_config)).grid(row=0, column=0, sticky="ew", padx=2, pady=2)
+            ttk.Button(config_buttons, text="保存配置", command=(self.save_config)).grid(row=0, column=1, sticky="ew", padx=2, pady=2)
+            ttk.Button(config_buttons, text="保存为默认", command=(self.save_default_config)).grid(row=1, column=0, sticky="ew", padx=2, pady=2)
+            ttk.Button(config_buttons, text="恢复内置默认", command=(self.load_defaults)).grid(row=1, column=1, sticky="ew", padx=2, pady=2)
+            config_buttons.columnconfigure(0, weight=1)
+            config_buttons.columnconfigure(1, weight=1)
+
+            def on_canvas_configure(event):
+                canvas.configure(scrollregion=(canvas.bbox("all")))
+                canvas_width = event.width
+                canvas.itemconfig(canvas_window, width=canvas_width)
+
+            canvas.bind("<Configure>", on_canvas_configure)
+
+            def on_mousewheel(event):
+                canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+            canvas.bind_all("<MouseWheel>", on_mousewheel)
+            canvas.pack(side=(tk.LEFT), fill=(tk.BOTH), expand=True)
+            v_scrollbar.pack(side=(tk.RIGHT), fill=(tk.Y))
+            self._update_listbox_placeholder()
+
+        def _append_log_message(self, message):
+            try:
+                self.debug_text.config(state="normal")
+                self.debug_text.insert(tk.END, message + "\n")
+                self.debug_text.config(state="disabled")
+                self.debug_text.see(tk.END)
+            except tk.TclError:
+                pass
+
+        def _check_log_queue(self):
+            try:
+                while True:
+                    self._append_log_message(self.log_queue.get_nowait())
+
+            except queue.Empty:
+                pass
+
+            try:
+                self.master.after(100, self._check_log_queue)
+            except tk.TclError:
+                pass
+
+        def log_to_debug_window(self, message):
+            self.log_queue.put(message)
+
+        def _drain_log_queue(self):
+            try:
+                while True:
+                    self._append_log_message(self.log_queue.get_nowait())
+
+            except queue.Empty:
+                pass
+
+        def _clear_debug_log(self):
+            self._drain_log_queue()
+            try:
+                self.debug_text.config(state="normal")
+                self.debug_text.delete("1.0", tk.END)
+                self.debug_text.config(state="disabled")
+            except tk.TclError:
+                pass
+
+        def _run_on_main(self, callback, *args):
+            try:
+                self.master.after(0, lambda: callback(*args))
+            except tk.TclError:
+                pass
+
+        def _set_progress(self, value, text=''):
+
+            def update():
+                try:
+                    self.progress_var.set(value)
+                    self.progress_text_var.set(text)
+                except tk.TclError:
+                    pass
+
+            self._run_on_main(update)
+
+        def load_initial_config(self):
+            if os.path.exists(self.default_config_path):
+                try:
+                    with open((self.default_config_path), "r", encoding="utf-8") as f:
+                        config = json.load(f)
+                    self._apply_config(config)
+                    self.log_to_debug_window(f"已加载默认配置文件: {self.default_config_path}")
+                except Exception as e:
+                    try:
+                        self.log_to_debug_window(f"加载默认配置 '{self.default_config_path}' 失败: {e}。将使用内置默认值。")
+                        self.load_defaults()
+                    finally:
+                        e = None
+                        del e
+
+            else:
+                self.log_to_debug_window("未找到默认配置文件，将使用内置默认值。")
+                self.load_defaults()
+
+        @staticmethod
+        def _legacy_blank_line_mode(remove_blank_lines):
+            if remove_blank_lines:
+                return BLANK_LINE_MODE_DELETE_SINGLE
+            return BLANK_LINE_MODE_KEEP_SINGLE
+
+        def _apply_config(self, loaded_config):
+            loaded_config = dict(loaded_config)
+            if "use_custom_english_font" not in loaded_config:
+                if loaded_config.get("use_times_new_roman"):
+                    loaded_config["use_custom_english_font"] = True
+                    loaded_config.setdefault("english_font", "Times New Roman")
+            elif "blank_line_mode" not in loaded_config:
+                loaded_config["blank_line_mode"] = self._legacy_blank_line_mode(loaded_config.get("remove_blank_lines", True))
+            else:
+                loaded_config["blank_line_mode"] = WordProcessor._normalize_blank_line_mode((loaded_config.get("blank_line_mode")),
+                  remove_blank_lines=(loaded_config.get("remove_blank_lines", True)))
+            loaded_config = {**(self.default_params), **loaded_config}
+            for key, default_value in self.default_params.items():
+                value = loaded_config.get(key)
+                if not value is None:
+                    if isinstance(value, str):
+                        if not value.strip():
+                            loaded_config[key] = default_value
+                        self.set_outline_var.set(loaded_config.get("set_outline", True))
+                        self.enable_attachment_var.set(loaded_config.get("enable_attachment_formatting", True))
+                        self.force_a4_var.set(loaded_config.get("force_a4", False))
+                        self.use_custom_english_font_var.set(loaded_config.get("use_custom_english_font", False))
+                        self.normalize_punctuation_var.set(loaded_config.get("normalize_punctuation", False))
+                        self.enable_table_var.set(loaded_config.get("enable_table_formatting", False))
+                        self.table_auto_col_width_var.set(loaded_config.get("table_auto_col_width", True))
+                        self.table_header_bold_var.set(loaded_config.get("table_header_bold", True))
+                        self.table_smart_align_var.set(loaded_config.get("table_smart_align", False))
+                        self.table_unified_borders_var.set(loaded_config.get("table_unified_borders", True))
+                        boolean_keys = [
+                         'set_outline',  'enable_attachment_formatting',  'force_a4', 
+                         'use_custom_english_font',  'use_times_new_roman', 
+                         'remove_blank_lines',  'normalize_punctuation', 
+                         'enable_table_formatting',  'table_auto_col_width',  'table_header_bold', 
+                         'table_smart_align',  'table_unified_borders']
+                        self._enable_dependent_widgets_for_config_load()
+
+            for key, value in loaded_config.items():
+                if key in boolean_keys:
+                    pass
+                else:
+                    widget = self.entries.get(key)
+                    if widget:
+                        self._set_widget_value(widget, value, is_size=("_size" in key))
+                    self._update_english_font_state()
+                    self._update_attachment_state()
+                    self._update_table_state()
+
+        def load_defaults(self):
+            self._apply_config(self.default_params)
+
+        def collect_config(self):
+            config = {}
+            for key, widget in self.entries.items():
+                value = widget.get().strip()
+                if isinstance(widget, ttk.Combobox):
+                    if value == self.font_separator:
+                        value = getattr(widget, "_last_valid_value", "").strip()
+                if value == "" and key in self.default_params:
+                    config[key] = self.default_params[key]
+                elif "_size" in key:
+                    if isinstance(widget, ttk.Combobox):
+                        if value in self.font_size_map:
+                            config[key] = self.font_size_map[value]
+                    else:
+                        try:
+                            config[key] = float(value)
+                        except (ValueError, TypeError):
+                            self.log_to_debug_window(f"警告: 无效的字号值 '{value}' for '{key}'. 使用默认值 16pt。")
+                            config[key] = 16
+
+                else:
+                    try:
+                        config[key] = float(value) if "." in value else int(value)
+                    except (ValueError, TypeError):
+                        config[key] = value
+
+            else:
+                config["set_outline"] = self.set_outline_var.get()
+                config["enable_attachment_formatting"] = self.enable_attachment_var.get()
+                config["force_a4"] = self.force_a4_var.get()
+                config["use_custom_english_font"] = self.use_custom_english_font_var.get()
+                config["normalize_punctuation"] = self.normalize_punctuation_var.get()
+                config["enable_table_formatting"] = self.enable_table_var.get()
+                config["table_auto_col_width"] = self.table_auto_col_width_var.get()
+                config["table_header_bold"] = self.table_header_bold_var.get()
+                config["table_smart_align"] = self.table_smart_align_var.get()
+                config["table_unified_borders"] = self.table_unified_borders_var.get()
+                return config
+
+        def save_config(self):
+            file_path = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[('JSON files', '*.json')])
+            if file_path:
+                with open(file_path, "w", encoding="utf-8") as f:
+                    json.dump((self.collect_config()), f, ensure_ascii=False, indent=4)
+                messagebox.showinfo("成功", f"配置已保存至 {file_path}")
+
+        def save_default_config(self):
+            try:
+                with open((self.default_config_path), "w", encoding="utf-8") as f:
+                    json.dump((self.collect_config()), f, ensure_ascii=False, indent=4)
+                messagebox.showinfo("成功", "当前配置已保存为默认配置。\n下次启动软件时将自动加载。")
+            except Exception as e:
+                try:
+                    messagebox.showerror("错误", f"保存默认配置失败: {e}")
+                finally:
+                    e = None
+                    del e
+
+        def load_config(self):
+            file_path = filedialog.askopenfilename(filetypes=[('JSON files', '*.json')])
+            if file_path:
+                try:
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        loaded_config = json.load(f)
+                    self._apply_config(loaded_config)
+                    messagebox.showinfo("成功", "配置已加载")
+                except Exception as e:
+                    try:
+                        messagebox.showerror("错误", f"加载配置文件失败: {e}")
+                    finally:
+                        e = None
+                        del e
+
+        def _update_listbox_placeholder(self):
+            if self.file_listbox.size() == 0:
+                self.placeholder_label.place(in_=(self.file_listbox), relx=0.5, rely=0.5, anchor=(tk.CENTER))
+            else:
+                self.placeholder_label.place_forget()
+
+        def handle_drop(self, event):
+            paths = self.master.tk.splitlist(event.data)
+            self._add_paths_to_listbox(paths)
+
+        def _should_scan_folder(self, folder_path):
+            file_count = 0
+            for _, _, files in os.walk(folder_path):
+                file_count += len(files)
+                if file_count > LARGE_FOLDER_FILE_CONFIRM_THRESHOLD:
+                    folder_name = os.path.basename(os.path.normpath(folder_path)) or folder_path
+                    return messagebox.askyesno("确认",
+                      f"文件夹“{folder_name}”包含超过 {LARGE_FOLDER_FILE_CONFIRM_THRESHOLD} 个文件，继续扫描可能需要较长时间。\n\n确定继续扫描吗？",
+                      parent=(self.master))
+                return True
+
+        def _add_paths_to_listbox(self, paths):
+            current_files = set(self.file_listbox.get(0, tk.END))
+            added_count = 0
+            skipped_dirs = 0
+            for path in paths:
+                if os.path.isdir(path):
+                    if not self._should_scan_folder(path):
+                        skipped_dirs += 1
+                        self.log_to_debug_window(f"已跳过文件夹: {path}")
+            else:
+                for root, _, files in os.walk(path):
+                    for f in files:
+                        if f.lower().endswith(SUPPORTED_FILE_EXTENSIONS):
+                            full_path = os.path.join(root, f)
+                            if full_path not in current_files:
+                                self.file_listbox.insert(tk.END, full_path)
+                                current_files.add(full_path)
+                                added_count += 1
+
+                else:
+                    if os.path.isfile(path):
+                        if path.lower().endswith(SUPPORTED_FILE_EXTENSIONS):
+                            if path not in current_files:
+                                self.file_listbox.insert(tk.END, path)
+                                current_files.add(path)
+                                added_count += 1
+                            if added_count > 0:
+                                self.log_to_debug_window(f"通过按钮或拖拽添加了 {added_count} 个新文件。")
+                        if skipped_dirs > 0:
+                            self.log_to_debug_window(f"已跳过 {skipped_dirs} 个大文件夹。")
+                    self._update_listbox_placeholder()
+
+        def add_files(self):
+            files = filedialog.askopenfilenames(filetypes=[('所有支持的文件', '*.docx;*.doc;*.wps;*.txt;*.md'), ('Word 文档', '*.docx;*.doc'), 
+             ('WPS 文档', '*.wps'), ('纯文本', '*.txt'), ('Markdown', '*.md')])
+            if files:
+                self._add_paths_to_listbox(files)
+
+        def add_folder(self):
+            folder = filedialog.askdirectory()
+            if folder:
+                self._add_paths_to_listbox([folder])
+
+        def remove_files(self):
+            selected_indices = self.file_listbox.curselection()
+            if not selected_indices:
+                messagebox.showinfo("提示", "请先在列表中选择要移除的文件。")
+                return
+            for index in sorted(selected_indices, reverse=True):
+                self.file_listbox.delete(index)
+            else:
+                self._update_listbox_placeholder()
+
+        def clear_list(self):
+            self.file_listbox.delete(0, tk.END)
+            self._update_listbox_placeholder()
+
+        def show_help_window(self):
+            help_win = tk.Toplevel(self.master)
+            help_win.title("使用说明")
+            help_win.geometry("600x600")
+            help_text_widget = scrolledtext.ScrolledText(help_win, wrap=(tk.WORD), state="disabled")
+            help_text_widget.pack(fill=(tk.BOTH), expand=True, padx=10, pady=10)
+            help_content = '\nWord文档智能排版工具 v2.7.4 - 使用说明\n\n本工具旨在提供一键式的专业文档排版体验，支持批量处理和高度自定义。\n\n【核心功能模式】\n1. 文件批量处理：可拖拽或添加 .docx, .doc, .wps, .txt, .md 文件。\n2. 直接输入文本：直接粘贴文本进行排版（自动强制使用A4纸张）。\n\n【操作流程】\n1. 选择模式并添加内容。\n2. （可选）在"参数设置"区调整格式，可点击各分区旁的 (?) 图标查看具体识别规则。\n3. 点击"开始排版"，并选择输出位置。\n\n【智能识别规则详解】\n- 主标题与副标题:\n  • 主标题: 识别文档开头的连续【居中】且【字体字号相同】的段落。\n  • 副标题: 主标题下方，同样【居中】但【字体字号与主标题不同】的段落。\n  • TXT/MD文件: 会将首个非层级标题的段落视为题目。\n\n- 正文与层级标题:\n  • 一级标题: “一、”, “二、” ...\n  • 二级标题: “（一）”, “（二）” ...\n  • 三级标题: “1.”, “2.” ...\n  • 四级标题: “(1)”, “(2)” ...\n  • 注：正文、三级、四级标题默认共用一套字体字号。\n\n- 其他元素:\n  • 图/表标题: 自动查找图片或表格【上方或下方】最近的、居中的、以“图”或“表”开头的段落。\n  • 附件标识: 识别“附件1”、“附件：”等独立段落。启用附件格式化后，将自动【段前分页】并按主副标题规则识别其自身标题。\n  • 表格内容: 默认不启用表格自动调整。启用后可分别设置表头/内容字体，并统一字号、行距、行高、列宽、边框，可选智能对齐。\n\n【其他特性】\n- 纸张设置：直接输入文本默认使用A4纸。文件处理默认保持原样，可勾选“强制设置为A4纸张”进行修改。\n- 保留原文格式：统一格式时，会保留【加粗、斜体、下划线、字体颜色】等。\n- 二级标题智能拆分：若二级标题后紧跟正文（如"（一）标题。正文..."），会自动在【同一个段落内】为标题和正文应用不同格式。\n- 豁免内容：图片、嵌入对象等内容会自动跳过格式化；表格仅在勾选“启用表格自动调整”后处理。\n- 参数自定义：所有核心参数均可在界面调整。配置方案可【保存】和【加载】。\n- Markdown 支持：.md 文件会自动清理 Markdown 标记（标题#、粗体**、链接[]()、图片![]()等）后转为纯文本进行排版。\n- 空行处理：TXT/MD 支持三种模式：不改动任何空行；删除单个空行且多个空行保留至1个空行；保留单个空行且多个空行保留至1个空行。默认使用“删除单个空行，多个空行保留至1个空行”。\n- 跨平台说明：Windows 下优先使用 WPS/Word 处理 .doc/.wps 和自动编号转文本；Linux/Kylin 下不调用 WPS/Word，不执行自动编号转文本。.doc/.wps 会尝试使用 LibreOffice 转换，未安装 LibreOffice 时会跳过这些旧格式文件，.docx/.txt/.md 仍可正常处理。\n\n【安全提示】\n本工具【绝对不会】修改您的任何原始文件。所有操作都在后台的临时副本上进行，确保源文件100%安全。\n'
+            help_text_widget.config(state="normal")
+            help_text_widget.insert("1.0", help_content.strip())
+            help_text_widget.config(state="disabled")
+
+        def start_processing(self):
+            if self.is_processing:
+                messagebox.showinfo("提示", "正在处理中，请稍候...", parent=(self.master))
+                return
+                warning_title = "处理前重要提示"
+                if IS_WINDOWS:
+                    warning_message = "为了防止数据丢失，请在继续前关闭所有已打开的Word和WPS文档（包括wps、表格、PPT等所有文档）。\n\n本程序在转换旧格式文件或预处理自动编号时可能需要调用Word/WPS程序，这可能会影响未保存的工作。\n\n您确定要继续吗？"
+                else:
+                    warning_message = "Linux/Kylin 下不会调用 WPS/Word，也不会执行自动编号转文本。\n\n如处理 .doc/.wps，程序会尝试使用 LibreOffice；未安装 LibreOffice 时会跳过这些旧格式文件，继续处理 .docx/.txt/.md。\n\n您确定要继续吗？"
+                if not messagebox.askokcancel(warning_title, warning_message, parent=(self.master)):
+                    self.log_to_debug_window("用户已取消操作。")
+                    return
+                active_tab_index = self.notebook.index(self.notebook.select())
+                collected_config = self.collect_config()
+                file_list = []
+                text_content = ""
+                output_dir = None
+                output_path = None
+                if active_tab_index == 0:
+                    file_list = list(self.file_listbox.get(0, tk.END))
+                    if not file_list:
+                        messagebox.showwarning("警告", "文件列表为空，请先添加文件！", parent=(self.master))
+                        return
+                else:
+                    output_dir = filedialog.askdirectory(title="请选择一个文件夹用于存放处理后的文件")
+                    return output_dir or None
+            else:
+                if active_tab_index == 1:
+                    text_content = self.direct_text_input.get("1.0", tk.END).strip()
+                    if not text_content:
+                        messagebox.showwarning("警告", "文本框内容为空！", parent=(self.master))
+                        return
+                    output_path = filedialog.asksaveasfilename(defaultextension=".docx",
+                      filetypes=[
+                     ('Word Document', '*.docx')],
+                      initialfile="formatted_document.docx")
+                    if not output_path:
+                        return
+                self._clear_debug_log()
+                self.is_processing = True
+                self.start_btn.config(state="disabled", text="排版中，请稍候...")
+                self._set_progress(0, "开始处理...")
+
+                def worker():
+                    com_initialized = _initialize_com_for_thread(self.log_to_debug_window)
+                    try:
+                        try:
+                            with WPSAppManager(self.log_to_debug_window) as com_mgr:
+                                processor = WordProcessor(collected_config,
+                                  (self.log_to_debug_window),
+                                  com_manager=com_mgr)
+                                if active_tab_index == 0:
+                                    self._process_files(processor, file_list, output_dir)
+                                else:
+                                    self._process_text(processor, text_content, output_path)
+                        except Exception as e:
+                            try:
+                                logging.error(f"处理过程中发生严重错误: {e}", exc_info=True)
+                                self.log_to_debug_window(f"\n❌ 处理过程中发生严重错误：\n{e}")
+                                self._set_progress(100, "处理失败")
+
+                                def show_error(err=e):
+                                    try:
+                                        messagebox.showerror("错误", f"处理过程中发生错误：\n{err}", parent=(self.master))
+                                    except tk.TclError:
+                                        pass
+
+                                self._run_on_main(show_error)
+                            finally:
+                                e = None
+                                del e
+
+                    finally:
+                        _uninitialize_com_for_thread(com_initialized, self.log_to_debug_window)
+                        self._run_on_main(self._restore_after_processing)
+
+                threading.Thread(target=worker, daemon=True).start()
+
+        def _process_files(self, processor, file_list, output_dir):
+            success_count, fail_count, skipped_count = (0, 0, 0)
+            total = len(file_list)
+            for i, input_path in enumerate(file_list, start=1):
+                base_name = os.path.basename(input_path)
+                self._set_progress((i - 1) / total * 100, f"处理中 {i}/{total}: {base_name}")
+                try:
+                    try:
+                        self.log_to_debug_window(f"\n--- 开始处理文件 {i}/{total}: {base_name} ---")
+                        output_name = os.path.splitext(base_name)[0]
+                        output_path = os.path.join(output_dir, f"{output_name}_formatted.docx")
+                        processor.format_document(input_path, output_path)
+                        self.log_to_debug_window(f"✅ 文件处理成功，已保存至: {output_path}")
+                        success_count += 1
+                    except LegacyConversionUnavailable as e:
+                        try:
+                            self.log_to_debug_window(f"\n已跳过旧格式文件 {base_name}：\n{e}")
+                            skipped_count += 1
+                        finally:
+                            e = None
+                            del e
+
+                    except Exception as e:
+                        try:
+                            logging.error(f"处理文件失败: {input_path}\n{e}", exc_info=True)
+                            self.log_to_debug_window(f"\n❌ 处理文件 {base_name} 时发生严重错误：\n{e}")
+                            fail_count += 1
+                        finally:
+                            e = None
+                            del e
+
+                finally:
+                    processor._cleanup_temp_files()
+
+            else:
+                summary_message = f"批量处理完成！\n\n成功: {success_count}个\n跳过: {skipped_count}个\n失败: {fail_count}个"
+                if fail_count > 0:
+                    summary_message += "\n\n失败详情请查看日志窗口。"
+                self._set_progress(100, f"完成（成功 {success_count} / 跳过 {skipped_count} / 失败 {fail_count}）")
+                self.log_to_debug_window(f"\n🎉 {summary_message}")
+
+                def show_summary(msg=summary_message):
+                    try:
+                        messagebox.showinfo("完成", msg, parent=(self.master))
+                    except tk.TclError:
+                        pass
+
+                self._run_on_main(show_summary)
+
+        def _process_text(self, processor, text_content, output_path):
+            self._set_progress(20, "处理文本...")
+            temp_file_path = None
+            try:
+                fd, temp_file_path = tempfile.mkstemp(suffix=".txt", text=True)
+                with os.fdopen(fd, "w", encoding="utf-8") as tmp:
+                    tmp.write(text_content)
+                self.log_to_debug_window("\n--- 开始处理输入的文本 ---")
+                processor.format_document(temp_file_path, output_path)
+                self._set_progress(100, "完成")
+                self.log_to_debug_window("\n🎉 排版全部完成！")
+
+                def show_done(path=output_path):
+                    try:
+                        messagebox.showinfo("完成", f"文档排版成功！\n文件已保存至：\n{path}", parent=(self.master))
+                    except tk.TclError:
+                        pass
+
+                self._run_on_main(show_done)
+            finally:
+                processor._cleanup_temp_files()
+                if temp_file_path:
+                    if os.path.exists(temp_file_path):
+                        try:
+                            os.remove(temp_file_path)
+                            self.log_to_debug_window("  > 输入文本的临时文件已删除")
+                        except OSError:
+                            pass
+
+        def _restore_after_processing(self):
+            self.is_processing = False
+            try:
+                self.start_btn.config(state="normal", text="开始排版")
+            except tk.TclError:
+                pass
+
+        def _on_close(self):
+            if self.is_processing:
+                if not messagebox.askyesno("确认", "任务仍在进行中，确定要退出吗？", parent=(self.master)):
+                    return
+            self._drain_log_queue()
+            self.master.destroy()
+
+
+    def _create_rootParse error at or near `LOAD_GLOBAL' instruction at offset 0
+
+
+    def main():
+        root, dnd_error = _create_root()
+        app = WordFormatterGUI(root)
+        if dnd_error:
+            app.log_to_debug_window(dnd_error)
+        root.mainloop()
+
+
+    if __name__ == "__main__":
+        main()
