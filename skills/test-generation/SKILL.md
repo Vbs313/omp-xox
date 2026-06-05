@@ -1,73 +1,52 @@
 ---
 name: test-generation
-description: Generate comprehensive test suites for code. TRIGGERS: test, generate tests, write tests, unit test, integration test, test coverage
+description: Generate tests with coverage analysis and edge case detection.
 ---
 
-# Test Generation Skill
+# Test Generation
 
-Generate comprehensive test suites for code.
-
-## When to Use
-
-Use this skill when asked to:
-- Write unit tests for a function, class, or module
-- Generate integration tests for API endpoints or services
-- Increase test coverage
-- Create test fixtures or mock data
-- Set up testing infrastructure for a new project
+Use `run_tests` to detect framework and run existing tests. Use `auto_repair` to fix failures.
 
 ## Workflow
 
-### 1. Detect the Test Framework
+1. **Detect framework** — `run_tests` auto-detects
+2. **Analyze target** — read the file to test, identify public API surfaces
+3. **Generate tests** — one test file per source file
+4. **Run** — `run_tests(filter=new_test_file)`
+5. **Fix** — `auto_repair(command, maxCycles=2)` if tests fail
 
-Run the detection script to identify which testing framework the project uses:
+## Test Categories
 
-```bash
-bash skills/test-generation/scripts/detect-framework.sh /path/to/project
+### Unit Tests
+- Test one function/class in isolation
+- Mock external dependencies
+- Cover: happy path, edge cases, error paths
+
+### Integration Tests
+- Test multiple components together
+- Real (or realistic) dependencies
+- Cover: cross-component data flow, error propagation
+
+### Test Patterns
+
+```
+describe("<unit>", () => {
+  it("should <expected behavior> when <condition>", () => {
+    // arrange → act → assert
+  });
+});
 ```
 
-This checks for Jest, Mocha, Vitest, pytest, unittest, Go test, cargo test, and others.
+### Edge Cases Checklist
+- Empty input (null, undefined, "", [], {})
+- Boundary values (0, -1, MAX_INT, empty string)
+- Concurrent access (if applicable)
+- Error conditions (network failure, file not found, permission denied)
+- Invalid input (wrong type, malformed data, injection attempts)
 
-### 2. Analyze the Code Under Test
+## Coverage Targets
 
-- **What does the code export?** List public functions, classes, and interfaces.
-- **What are the inputs and outputs?** Understand types, ranges, and edge cases.
-- **What are the dependencies?** Identify mocks or stubs needed.
-- **What are the side effects?** File I/O, network calls, database writes, global state.
-
-### 3. Plan Test Cases
-
-Cover these categories for every function or module:
-
-| Category | Example |
-|----------|---------|
-| **Happy path** | Valid inputs produce expected output |
-| **Edge cases** | Empty input, max values, null/undefined, boundary conditions |
-| **Error handling** | Invalid input raises expected exception / returns error |
-| **State changes** | Mutable objects modified correctly |
-| **Idempotency** | Running twice gives same result |
-
-### 4. Generate Tests
-
-For each test case, write:
-
-- A descriptive name: `describe('functionName')` + `it('returns X when given Y')`
-- Arrange: set up inputs, mocks, and state
-- Act: call the function under test
-- Assert: check the result matches expectations
-
-### 5. Verify
-
-- Run the test suite. All new tests should pass.
-- Run coverage to identify missed branches.
-- Run existing tests to confirm no regressions.
-
-## Project Conventions
-
-- Place tests next to source files (`src/foo.ts` → `src/foo.test.ts`) or in a `__tests__/` or `tests/` directory.
-- Match the project's existing test framework and configuration.
-- Use the project's existing mock/stub patterns rather than introducing new ones.
-
-## Scripts
-
-- `scripts/detect-framework.sh` — Detect which test framework a project uses.
+- Critical path code: 90%+
+- Utility functions: 80%+
+- UI/rendering: snapshot tests
+- Error handling: 100% (every error path tested)

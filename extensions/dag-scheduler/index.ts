@@ -138,7 +138,7 @@ export default function dagScheduler(pi: ExtensionAPI) {
       task: z.string().describe("Task description in natural language"),
       capability: z.string().optional().describe("Explicit capability override (omit for auto-detect)"),
     }),
-    async execute(_id, params, _onUpdate, _signal) {
+    async execute(_id, params, _signal, _onUpdate, _ctx) {
       const task = params.task.trim();
       const capId = params.capability || autoDetectCapability(task);
       const cap = resolveCapability(capId);
@@ -192,7 +192,7 @@ export default function dagScheduler(pi: ExtensionAPI) {
     label: "Agent Status",
     description: "List all loaded agent contracts and their capabilities",
     parameters: z.object({}),
-    async execute() {
+    async execute(_id, _params, _signal, _onUpdate, _ctx) {
       if (agents.length === 0) {
         return {
           content: [{ type: "text" as const, text: "No agents loaded." }],

@@ -1,79 +1,54 @@
 # DAG Scheduler
 
-## Overview
+Multi-agent orchestration with capability-based routing. Agent contracts define which agent handles which task type.
 
-Orchestration core. Provides capability routing and direct sub-agent spawning via `pi.pi.createAgentSession()`.
-
-## File
-
-`extensions/dag-scheduler/index.ts`
+OMP's `task` tool spawns sub-agents; dag-scheduler adds capability resolution and agent contracts.
 
 ## Tools
 
 ### `delegate`
 
-Direct sub-agent spawning. Auto-detects capability from keywords, resolves to agent contract, calls `pi.pi.createAgentSession()` directly, drives the session, returns the result.
+Spawn a specialized sub-agent for a task.
 
-```
-delegate task="审查safe-edit的安全性"
-  → auto-detect: capability=review
-  → find agent contract "review" (Code Reviewer, slow model)
-  → pi.pi.createAgentSession({ systemPrompt })
-  → session.prompt(task)
-  → session.waitForIdle()
-  → session.getLastAssistantText()
-  → return result
-```
+| Parameter | Type | Description |
+|---|---|---|
+| `task` | string | Task description in natural language |
+| `capability` | string? | Explicit capability override (auto-detect if omitted) |
 
-**No delegation workaround.** Direct SDK call — the sub-agent runs inside omp's native session management.
-
-**Auto-detection keywords:**
-
-| Keywords | Capability | Agent |
-|----------|-----------|-------|
-| 审查/review/audit/assess | review | reviewer |
-| 实现/implement/开发/build | implement | swe |
-| 修复/fix/bug/debug | fix | swe |
-| 重构/refactor/重写 | refactor | swe |
-| 探索/explore/搜索/search | explore | explore |
-| 规划/plan/设计/design | plan | plan |
-| 测试/test/验证/verify | verify | verify |
-| (no match) | quick | swe (smol) |
-
-**Explicit capability override:**
-```
-delegate task="..." capability=review
-```
+The tool:
+1. Auto-detects capability from task keywords (or uses explicit override)
+2. Resolves capability to agent contract
+3. Builds system prompt from contract + task
+4. Spawns sub-agent via `pi.pi.createAgentSession()`
+5. Returns sub-agent response
 
 ### `agent_status`
 
-List all loaded agent contracts with capabilities, model roles, tools, and read-only status.
+List all loaded agent contracts and their capabilities. No parameters.
 
-## Slash Commands
+## Capabilities
 
-### `/orchestrate <task>`
+| Capability | Agent | Tools | Model |
+|---|---|---|---|
+| `review` | reviewer | read, search, find, lsp | slow (high thinking) |
+| `implement` | swe | read, write, edit, bash, lsp, search, find | default (high thinking) |
+| `fix` | swe | read, write, edit, bash, lsp, search, find | default (medium thinking) |
+| `refactor` | swe | read, write, edit, bash, lsp, search, find | default (high thinking) |
+| `explore` | explore | read, search, find, lsp, web_search | smol (low thinking) |
+| `plan` | plan | read, search, find, lsp, web_search | slow (high thinking) |
+| `verify` | verify | read, bash, lsp, search, find | smol (low thinking) |
 
-Injects a structured orchestration prompt into the conversation. The LLM then:
-1. Calls `delegate` with capability=plan to decompose the task
-2. Calls `delegate` for each subtask (parallel when possible)
-3. Calls `run_verification` after all complete
+Auto-detection keywords: 审查/review → `review`, 实现/implement → `implement`, 修复/fix → `fix`, etc.
 
-## Key Architecture Change (v2.1)
+## Commands
 
-**Before (v2.0):** `delegate` returned delegation instructions → LLM called omp's `task` tool → extra LLM round-trip.
+| Command | Effect |
+|---|---|
+| `/orchestrate <task>` | Delegate task with auto-detected capability |
 
-**Now (v2.1):** `delegate` calls `pi.pi.createAgentSession()` directly → no LLM round-trip → deterministic execution.
+## Technical
 
-```typescript
-// Internal implementation
-const { session } = await pi.pi.createAgentSession({
-  systemPrompt: [systemPrompt],
-});
-await session.prompt(task);
-await session.waitForIdle();
-const result = session.getLastAssistantText();
-```
-
-## Integration with Auto-Delegate
-
-The `auto-delegate` extension (`extensions/auto-delegate/`) hooks `before_agent_start` to inject routing rules into the system prompt. The LLM reads these rules and calls `delegate` directly (not `task` tool) — matching the new architecture.
+- Hook: `session_start` — loads agent contracts from `agents/*.md`
+- Uses `pi.pi.createAgentSession()` directly (OMP SDK)
+- Agent contracts: Markdown files with frontmatter (`name`, `provides`, `tools`, `prompt`)
+- See `extensions/dag-scheduler/index.ts`

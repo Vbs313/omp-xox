@@ -5,34 +5,32 @@ argument-hint: file or scope
 
 # Code Review
 
-Review $@. Focus on these areas in order:
+Review $@. Use `delegate(capability=review)` for deep review on large diffs.
 
 ## Correctness
+- Does it do what it claims? Logic errors, off-by-one, race conditions.
+- Edge cases handled? Empty, null, boundary, concurrent.
+- Error paths covered? Exceptions caught, resources cleaned up.
 
-- Does the code do what it claims? Check for logic errors, off-by-one, race conditions.
-- Are edge cases handled? Empty states, null values, boundary conditions.
-- Are error paths covered? Exceptions caught, errors returned, resources cleaned up.
+## Security
+- Inputs validated/sanitized? Injection vulnerabilities?
+- Secrets hardcoded? Use environment variables.
+- Auth checked on protected paths?
 
 ## Readability
-
-- Do names reveal intent? Variables, functions, classes should be self-documenting.
-- Is the flow easy to follow? Avoid deep nesting, complex conditionals, magic numbers.
-- Are there comments where needed? Not for what, but for why.
+- Names reveal intent? Variables, functions, classes.
+- Flow easy to follow? Avoid deep nesting, complex conditionals.
+- Comments explain WHY, not WHAT.
 
 ## Maintainability
+- DRY? Repeated logic extracted.
+- Single responsibility? Modules focused.
+- Dependencies explicit and minimal?
 
-- Is the code DRY? Repeated logic should be extracted.
-- Are functions and modules focused on a single responsibility?
-- Are dependencies explicit and minimal?
+## Performance
+- N+1 queries? Unnecessary allocations?
+- Blocking calls in hot paths?
 
-## Security & Performance
-
-- Are inputs validated and sanitized?
-- Any N+1 queries, unnecessary allocations, or blocking calls in hot paths?
-- Are secrets, tokens, or sensitive data exposed?
-
-## Format
-
-For each issue, state: **file:line** - problem - suggestion
-
-Mark severity: [BLOCKER] / [MAJOR] / [MINOR] / [PRAISE]
+## Output Format
+For each issue: **file:line** — problem → suggestion
+Severity: `BLOCKER | MAJOR | MINOR | PRAISE`

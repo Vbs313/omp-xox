@@ -1,21 +1,21 @@
 {
   "name": "omp-xox",
-  "version": "2.0.1",
-  "description": "OMP extension pack: DAG-based multi-agent orchestration, structured dev tools, safety gate, semantic context guard, unified fallback pipeline, verification gate, task spawner, auto-delegation, and knowledge writer",
+  "version": "3.1.0",
+  "description": "OMP extension pack: 9 modules — safety gate, path guard, exec sandbox, workspace map, plan mode, test runner, auto repair, DAG scheduler, verification gate",
   "type": "module",
   "omp": {
     "name": "omp-xox",
-    "description": "9-extension pack for multi-agent orchestration and dev tooling",
+    "description": "9-module extension pack — only what OMP doesn't provide natively",
     "extensions": [
-      "./extensions/dag-scheduler/index.ts",
-      "./extensions/dev-tools/index.ts",
       "./extensions/safety-gate/index.ts",
-      "./extensions/context-guard/index.ts",
-      "./extensions/fallback-pipeline/index.ts",
-      "./extensions/verification-gate/index.ts",
-      "./extensions/task-spawner/index.ts",
-      "./extensions/auto-delegate/index.ts",
-      "./extensions/knowledge-writer/index.ts"
+      "./extensions/path-guard/index.ts",
+      "./extensions/exec-sandbox/index.ts",
+      "./extensions/workspace-map/index.ts",
+      "./extensions/plan-mode/index.ts",
+      "./extensions/dev-tools/index.ts",
+      "./extensions/auto-repair/index.ts",
+      "./extensions/dag-scheduler/index.ts",
+      "./extensions/verification-gate/index.ts"
     ],
     "tools": "./extensions",
     "skills": [
@@ -28,12 +28,13 @@
   "keywords": [
     "omp",
     "agent",
-    "orchestration",
-    "multi-agent",
-    "coding",
     "safety",
+    "sandbox",
     "verification",
-    "knowledge"
+    "planning",
+    "orchestration",
+    "repair",
+    "multi-agent"
   ],
   "author": "Vbs313",
   "license": "MIT",

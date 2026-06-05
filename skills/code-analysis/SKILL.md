@@ -1,97 +1,49 @@
 ---
 name: code-analysis
-description: Static code analysis for complexity, dependencies, and quality metrics. TRIGGERS: analyze, code analysis, complexity, dependencies, metrics, static analysis
+description: Deep analysis of code structure, architecture, and data flow.
 ---
 
-# Code Analysis Skill
+# Code Analysis
 
-Static code analysis for complexity, dependencies, and quality metrics.
-
-## When to Use
-
-Use this skill when asked to:
-- Analyze code complexity (cyclomatic, cognitive)
-- Map module or file dependencies
-- Measure code quality metrics
-- Find dead code or unused exports
-- Identify tight coupling or circular dependencies
-- Report on technical debt
+Use workspace-map for top-level structure. Use `delegate(capability=explore)` for broad searches.
 
 ## Workflow
 
-### 1. Scan
+1. **Read workspace-map** — understand module layout before reading files
+2. **Trace data flow** — follow inputs → transformations → outputs
+3. **Identify architectural patterns** — MVC, layered, microservices, event-driven?
+4. **Map dependencies** — which modules call which? Circular dependencies?
+5. **Document findings** — explicit, file:line references
 
-Select the right tool for the analysis goal:
+## Analysis Dimensions
 
-| Goal | Recommended Tool |
-|------|----------------|
-| Cyclomatic complexity | `lizard`, `radon`, ESLint `complexity` rule |
-| Cognitive complexity | SonarQube, or manual review |
-| Dependency graph | `madge` (JS/TS), `pydeps` (Python), `go mod graph` |
-| Dead code | `ts-prune` (TS), `vulture` (Python), `unused` (Go) |
-| Code quality | `eslint`/`tslint`, `pylint`, `golangci-lint`, `clippy` |
-| Duplication | `jscpd`, `pmd-cpd`, `dupl` |
-| Test coverage | `istanbul`/`c8`, `pytest-cov`, `go test -cover` |
+### Structure
+- Module boundaries, responsibility separation
+- Coupling: tight or loose? Dependency direction?
+- Cohesion: focused or scattered?
 
-If a tool is not available, use the project's existing linter or formatter configuration.
+### Data Flow
+- Entry points and exit points
+- State mutations: where, when, by whom?
+- Async boundaries: event loop, workers, queues
 
-### 2. Measure
+### Anti-Patterns
+- God objects, shotgun surgery, feature envy
+- Hidden dependencies, temporal coupling
 
-Run analysis and capture metrics:
-
-- **Complexity**: List functions/files with highest cyclomatic complexity. Flag anything above 10 (or the project's threshold).
-- **Dependencies**: Identify circular dependencies, deep module coupling, and unreachable modules.
-- **Size**: File line counts, function lengths, class sizes.
-- **Duplication**: Percentage of duplicated code and locations.
-- **Coverage**: Overall coverage percentage and uncovered critical paths.
-
-### 3. Report
-
-Structure your findings:
+## Output Format
 
 ```
-## Code Analysis: <scope>
+## Analysis: <scope>
 
-### Summary
-- Total files: N
-- Total lines: N
-- Test coverage: N%
+### Architecture Overview
+- Pattern: <identified pattern>
+- Key modules: <list with responsibilities>
+- Data flow: <description>
 
-### Complexity Hotspots
-| File | Function | Complexity | Threshold |
-|------|----------|-----------|-----------|
-| src/foo.ts | bar() | 15 | 10 |
-
-### Dependency Issues
-- Circular: modules/A → modules/B → modules/A
-- High fan-in: utils.ts (imported by 23 files)
+### Issues Found
+- **file:line** — problem → resolution
 
 ### Recommendations
-1. Extract switch/if-chain in src/foo.ts:bar() into strategy pattern
-2. Break circular dependency between modules A and B
-3. ...
+- actionable change → expected benefit
 ```
-
-### 4. Prioritize
-
-Not every metric problem needs fixing. Prioritize based on:
-
-- **Risk**: Does this cause bugs or make bugs harder to find?
-- **Frequency**: How often is this code touched?
-- **Cost**: How hard is it to fix?
-- **Coverage**: Is there test coverage to support a fix?
-
-## Thresholds (Common)
-
-| Metric | Warning | Critical |
-|--------|---------|----------|
-| Cyclomatic complexity | 10+ | 20+ |
-| Function length | 30+ lines | 60+ lines |
-| File length | 300+ lines | 500+ lines |
-| Duplication | 5%+ | 15%+ |
-| Coupling (fan-out) | 10+ dependencies | 20+ dependencies |
-| Test coverage | < 80% | < 50% |
-
-## Scripts
-
-No scripts for this skill. Use the appropriate static analysis tool for the project's language and ecosystem.

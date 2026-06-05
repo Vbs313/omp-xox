@@ -1,69 +1,73 @@
 # Architecture
 
-## Overview
+omp-xox v3.1 — 9-module extension pack for OMP. Only what OMP doesn't provide natively.
 
-omp-xox v2 is an OMP extension pack of **8 independent extensions**. Each extension registers hooks, tools, and slash commands via the OMP extension API. Extensions communicate through shared context (`pi.__ompXoxVerify`) and filesystem state (`.omp-xox/tasks/`, `.omp-xox/mailbox/`).
-
-## Module Graph
+## Module Map
 
 ```
-                      ┌─────────────────────────────────┐
-                      │         OMP Core Engine          │
-                      │  (hooks, tools, commands, task)  │
-                      └──────┬──────────┬───────────────┘
-                             │          │
-     ┌───────────────────────┤          ├──────────────────────┐
-     ▼                       ▼          ▼                      ▼
-┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────────┐
-│ Safety   │   │ Context  │   │ Fallback │   │ Verification │
-│ Gate     │   │ Guard    │   │ Pipeline │   │ Gate         │
-│ hook:    │   │ hook:    │   │ hook:    │   │ tool:        │
-│ tool_call│   │ tool_    │   │ session_ │   │ run_         │
-│          │   │ result   │   │ error    │   │ verification │
-└──────────┘   └──────────┘   └──────────┘   └──────────────┘
-
-┌──────────┐   ┌──────────────┐   ┌──────────────┐
-│ Dev      │   │ DAG          │   │ Task         │
-│ Tools    │   │ Scheduler    │   │ Spawner      │
-│ tools:   │   │ tools:       │   │ tools:       │
-│ safe_edit│   │ delegate     │   │ enqueue_task │
-│ git_*    │   │ agent_status │   │ task_status  │
-│ run_tests│   │              │   │ mailbox_*    │
-└──────────┘   └──────────────┘   └──────────────┘
-
-┌──────────────┐
-│ Auto-        │
-│ Delegate     │
-│ hook:        │
-│ before_      │
-│ agent_start  │
-└──────────────┘
+omp-xox/
+├── index.ts                    # Entry: registers 9 modules in hook-safe order
+├── docs/                       # Module documentation (this directory)
+├── extensions/
+│   ├── shared/                 # Foundation
+│   │   ├── config-loader.ts    # Unified config: project > user > default
+│   │   ├── context-limits.ts   # Token budgets, file extension sets
+│   │   ├── capability-registry.ts  # Agent capability definitions
+│   │   └── types.ts            # Shared TypeScript types
+│   │
+│   ├── safety-gate/            # tool_call hook → block dangerous bash
+│   ├── path-guard/             # tool_call hook → per-directory whitelist
+│   ├── exec-sandbox/           # tool_call hook → docker/podman wrap
+│   │
+│   ├── workspace-map/          # before_agent_start hook → repo index
+│   │
+│   ├── plan-mode/              # /plan + /plan-execute commands
+│   │
+│   ├── dev-tools/              # run_tests tool
+│   ├── auto-repair/            # auto_repair tool → test→fix loop
+│   ├── dag-scheduler/          # delegate + agent_status + /orchestrate
+│   └── verification-gate/      # run_verification + /verify
+│
+├── agents/                     # Agent contract .md files (5 agents)
+└── prompts/                    # Prompt templates (8 templates)
 ```
 
-## Subagent Spawning
+## Hook Execution Order
 
-`delegate` tool uses `pi.pi.createAgentSession()` — the omp SDK's native sub-agent API:
+Registration order in `index.ts` is intentional:
 
-```typescript
-const { session } = await pi.pi.createAgentSession({
-  systemPrompt: [systemPrompt],
-});
-await session.prompt(task);
-await session.waitForIdle();
-const result = session.getLastAssistantText();
-```
+| Order | Module | Hook | When Fires | Returns |
+|---|---|---|---|---|
+| 1 | safety-gate | `tool_call` | Before every tool execution | `{ block, reason }` or void |
+| 2 | path-guard | `tool_call` | Before every tool execution | `{ block, reason }` or void |
+| 3 | exec-sandbox | `tool_call` | Before bash execution | Mutates `event.input.command` |
+| 4 | workspace-map | `before_agent_start` | Once per session start | `{ message }` (first wins) |
 
-No delegation workaround. Direct SDK call.
+Hooks on the same event fire in registration order. Later hooks see mutations from earlier ones.
 
-## Filesystem as State Store
+## Configuration Layers
 
-- `.omp-xox/tasks/` — Persistent task queue (JSON files)
-- `.omp-xox/mailbox/` — Agent-to-agent messaging (JSON files)
-- State survives across conversation turns
+Each module reads config from:
+1. `.omp-xox/<module>.json` (project scope)
+2. `~/.omp/agent/omp-xox/<module>.json` (user scope)
+3. Built-in defaults
 
-## Hook-First Safety
+Environment variables override config:
+- `OMP_SANDBOX=0` — disable exec-sandbox
+- `OMP_SANDBOX_BACKEND=docker|podman` — container runtime
+- `OMP_SANDBOX_IMAGE=alpine:latest` — container image
+- `OMP_PATH_GUARD=0` — disable path-guard
+- `OMP_AUTO_REPAIR=0` — disable auto-repair
 
-- `tool_call` hook → Safety Gate intercepts bash commands
-- `tool_result` hook → Context Guard applies semantic truncation
-- `session_error` hook → Fallback Pipeline tracks errors
-- `before_agent_start` hook → Auto-Delegate injects routing rules
+## Runtime APIs Used
+
+All modules use only `ExtensionAPI` methods from `@oh-my-pi/pi-coding-agent`:
+- `pi.on(event, handler)` — hook registration
+- `pi.registerTool({ name, parameters, execute })` — LLM-callable tools
+- `pi.registerCommand(name, { handler })` — slash commands
+- `pi.sendMessage(msg, { deliverAs })` — context injection
+- `pi.exec(cmd, args, opts)` — subprocess (Bun-native, no node:child_process)
+- `pi.setActiveTools(names)` / `pi.getAllTools()` — tool filtering
+- `pi.setThinkingLevel(level)` — thinking toggle
+- `pi.zod` — parameter schemas
+- `pi.pi.createAgentSession()` — sub-agent spawning

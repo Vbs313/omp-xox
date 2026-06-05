@@ -1,43 +1,29 @@
 ---
-description: Refactor code safely with verification
-argument-hint: target and goal
+description: Refactor code — change structure without changing behavior
+argument-hint: scope or target
 ---
 
 # Refactor
 
-Refactor $@. Work in small, reversible steps.
+Refactor: $@. Use `/plan` before starting. Use `delegate(capability=refactor)` for large efforts.
 
-## 1. Characterize
+## Workflow
+1. `/plan` — analyze scope, identify dependencies, find all call sites
+2. Run baseline: `run_tests` to confirm current state
+3. `/plan-execute` — apply changes incrementally
+4. After each change: `run_tests(filter=affected)`
+5. Final gate: `run_verification`
 
-Before changing anything, understand the current behavior:
+## Safety Rules
+- NEVER mix refactoring with feature changes
+- Run tests before AND after every change
+- Atomic commits per refactoring step
+- Use LSP `rename` for symbols (not text replace)
+- Read workspace-map for dependency graph
 
-- Read the code. Map inputs to outputs and side effects.
-- Check for existing tests. If tests are sparse, write characterization tests that pin down current behavior.
-- Note any implicit contracts: argument order, mutation patterns, return value guarantees.
-
-## 2. Plan
-
-- State the goal clearly: what improves and what stays the same.
-- Break the refactor into atomic steps. Each step must keep the code working.
-- Identify risk areas: shared state, complex conditionals, tight coupling.
-
-## 3. Execute
-
-One step at a time. After each step:
-
-- Run the tests (existing + characterization). They must all pass.
-- Check for regressions manually if coverage is thin.
-- Commit or stage the step so you can revert if needed.
-
-## 4. Verify
-
-- Run the full test suite.
-- Check that the public API and behavior are unchanged.
-- Remove characterization tests if they duplicated existing coverage.
-- Review the diff. Is the result cleaner than what you started with?
-
-## Stop Conditions
-
-- If a step requires changing behavior, stop. File a separate issue.
-- If a step grows beyond 50 lines, split it.
-- If tests break and the fix is not obvious, roll back the step.
+## Refactoring Patterns
+- Extract function/variable for clarity
+- Early return / guard clauses to reduce nesting
+- Replace magic numbers with named constants
+- Split large modules at natural boundaries
+- Remove dead code, unused imports, unreachable branches

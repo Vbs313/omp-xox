@@ -1,39 +1,37 @@
 ---
-description: Optimize code for performance
-argument-hint: target and metric
+description: Optimize code for performance, memory, or bundle size
+argument-hint: file, function, or module
 ---
 
 # Optimize
 
-Optimize $@. Never guess -- measure first.
+Optimize: $@. Use `run_tests` before and after for regression check. Use `delegate(capability=implement)` for complex optimizations.
 
-## 1. Profile
+## Workflow
+1. Profile baseline: identify bottleneck (don't guess)
+2. `/plan` — propose optimization with expected improvement
+3. Implement after user approves
+4. `run_tests` — confirm no regression
+5. Compare metrics: before vs after
 
-- What is the metric? Latency, throughput, memory, bundle size, startup time?
-- Measure the current baseline. Get concrete numbers.
-- Identify the bottleneck. Where is the time or memory actually going? Use a profiler or instrumentation.
-- Is this the right thing to optimize? The bottleneck might be elsewhere.
+## Dimensions
 
-## 2. Analyze
+### CPU
+- Remove unnecessary work: redundant calculations, repeated parsing
+- Cache expensive results: memoize pure functions
+- Use appropriate data structures: Map vs Array.find, Set vs Array.includes
 
-- What is the theoretical minimum for this operation? Compare current performance to it.
-- Is the bottleneck algorithmic (wrong data structure, unnecessary work) or systems (I/O, contention, cache misses)?
-- Check for obvious waste: repeated computation, excessive allocation, serialized work that could be parallelized.
+### Memory
+- Avoid large allocations in hot paths
+- Release references for garbage collection
+- Stream large data instead of buffering
 
-## 3. Propose
+### I/O
+- Batch operations instead of N individual calls
+- Parallelize independent async work
+- Debounce/throttle frequent operations
 
-- For each optimization, state: expected gain, complexity cost, and risk.
-- Prefer algorithmic improvements over micro-optimizations.
-- When micro-optimizing, verify the compiler or runtime does not already handle it.
-
-## 4. Implement & Measure
-
-- Apply one optimization at a time.
-- Remeasure after each change. Did it actually improve? If not, revert.
-- Keep the optimization only if it shows measurable improvement in the target metric.
-
-## 5. Verify Correctness
-
-- Run the full test suite. Optimizations must not change behavior.
-- Check edge cases and boundary conditions. Performance fixes often introduce subtle bugs.
-- Document the optimization and its measured impact.
+## Rules
+- NEVER optimize without measurement first
+- Clean code > micro-optimizations
+- One optimization at a time, verify each

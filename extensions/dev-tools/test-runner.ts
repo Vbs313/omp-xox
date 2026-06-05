@@ -1,8 +1,8 @@
-// omp-xox v2: test-runner — Auto-detect test framework and execute tests
-// Structured output with pass/fail parsing for common frameworks
+// omp-xox v3.1: test-runner — Auto-detect test framework and execute tests
+// Structured output with pass/fail parsing for common frameworks.
+// Uses pi.exec() (Bun-native) instead of node:child_process execSync.
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
-import { execSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
@@ -26,19 +26,16 @@ const FRAMEWORKS: Framework[] = [
 
 function detectFramework(cwd: string): Framework | null {
   for (const fw of FRAMEWORKS) {
-    for (const file of fw.files) {
-      if (fs.existsSync(path.join(cwd, file))) return fw;
+    for (const f of fw.files) {
+      if (fs.existsSync(path.join(cwd, f))) return fw;
     }
   }
   // Fallback heuristics
   if (fs.existsSync(path.join(cwd, "package.json"))) {
     try {
       const pkg = JSON.parse(fs.readFileSync(path.join(cwd, "package.json"), "utf-8"));
-      if (pkg.devDependencies?.vitest || pkg.dependencies?.vitest) return FRAMEWORKS[0]; // vitest
-      if (pkg.devDependencies?.jest || pkg.dependencies?.jest) return FRAMEWORKS[1]; // jest
-      if (pkg.devDependencies?.mocha || pkg.dependencies?.mocha) return FRAMEWORKS[2]; // mocha
-      if (pkg.scripts?.test) return { name: "npm-test", command: "bun run test", files: [] };
-    } catch { /* ignore parse errors */ }
+      if (pkg.scripts?.test) return { name: "npm-test", command: "bun test", files: ["package.json"] };
+    } catch { /* ignore malformed package.json */ }
   }
   return null;
 }
@@ -66,74 +63,60 @@ function parseTestOutput(output: string, framework: string): TestReport {
     rawOutput: output,
   };
 
-  // Vitest / Jest patterns
-  if (framework === "vitest" || framework === "jest" || framework === "npm-test") {
-    const testsMatch = output.match(/Tests\s+(\d+)\s+failed\s*\|\s*(\d+)\s+passed\s*(?:\|\s*(\d+)\s+skipped)?/i);
-    if (testsMatch) {
-      report.failed = parseInt(testsMatch[1], 10);
-      report.passed = parseInt(testsMatch[2], 10);
-      report.skipped = testsMatch[3] ? parseInt(testsMatch[3], 10) : 0;
-    }
-    // Alternative: ✓ N passed | ✗ M failed
-    const altMatch = output.match(/(\d+)\s+passed.*?(\d+)\s+failed/);
-    if (!testsMatch && altMatch) {
-      report.passed = parseInt(altMatch[1], 10);
-      report.failed = parseInt(altMatch[2], 10);
-    }
-
-    // Extract failures
-    const failBlocks = output.split(/FAIL\s+/);
-    for (let i = 1; i < failBlocks.length; i++) {
-      const block = failBlocks[i];
-      const fileMatch = block.match(/^(\S+)/);
-      const testMatch = block.match(/[×✗]\s+(.+?)(?:\n|$)/);
-      const errMatch = block.match(/Error:(.+?)(?:\n\n|\n\s+at|$)/s);
-      report.failures.push({
-        file: fileMatch?.[1] ?? "unknown",
-        test: testMatch?.[1]?.trim() ?? "unknown",
-        error: errMatch?.[1]?.trim() ?? "see raw output",
-      });
-    }
+  // Vitest/Jest: "Tests: 10 passed, 2 failed, 1 skipped (13)"
+  const vitestRe = /Tests:\s*(\d+)\s+passed,\s*(\d+)\s+failed(?:,\s*(\d+)\s+skipped)?/;
+  const vitestMatch = output.match(vitestRe);
+  if (vitestMatch) {
+    report.passed = parseInt(vitestMatch[1], 10);
+    report.failed = parseInt(vitestMatch[2], 10);
+    report.skipped = vitestMatch[3] ? parseInt(vitestMatch[3], 10) : 0;
   }
 
-  // Pytest patterns
-  if (framework === "pytest") {
-    const summary = output.match(/(\d+)\s+passed.*?(\d+)\s+failed.*?(\d+)\s+skipped/i)
-      ?? output.match(/=+.*?(\d+)\s+passed.*?(\d+)\s+failed.*?(\d+)\s+\w+/);
-    if (summary) {
-      report.passed = parseInt(summary[1], 10);
-      report.failed = parseInt(summary[2], 10);
-      report.skipped = parseInt(summary[3], 10);
-    }
-    // Extract failures
-    const failSections = output.split(/_+\s+FAILURES\s+_+/);
-    if (failSections.length > 1) {
-      const failText = failSections[1];
-      const testFailures = failText.split(/_+\s+/);
-      for (const tf of testFailures) {
-        const lines = tf.trim().split("\n");
-        if (lines.length > 1) {
-          report.failures.push({
-            file: lines[0]?.trim() ?? "unknown",
-            test: lines[1]?.trim() ?? "unknown",
-            error: lines.slice(2).join("\n").slice(0, 500),
-          });
-        }
-      }
-    }
+  // Vitest/Jest failures: "● testName" or "× testName"
+  for (const m of output.matchAll(/[×✗●]\s+(.+)/g)) {
+    report.failures.push({ file: "see output", test: m[1].trim(), error: "see raw output" });
+  }
+  // Vitest/Jest failure details: "FAIL src/file.ts > testName"
+  for (const m of output.matchAll(/FAIL\s+(\S+)\s+>\s+(.+)/g)) {
+    report.failures.push({ file: m[1], test: m[2].trim(), error: "see raw output" });
   }
 
-  // Go test patterns
-  if (framework === "go-test") {
-    const failMatches = output.match(/--- FAIL:\s+(.+?)\s+\(/g);
-    if (failMatches) report.failed = failMatches.length;
-    const passMatches = output.match(/--- PASS:\s+(.+?)\s+\(/g);
-    if (passMatches) report.passed = passMatches.length;
-    for (const fm of failMatches ?? []) {
-      const name = fm.replace(/--- FAIL:\s+(.+?)\s+\(/, "$1");
-      report.failures.push({ file: name.split("/")[0] ?? "unknown", test: name, error: "see raw output" });
-    }
+  // Pytest: "= N failed, M passed ... in X.XXs ="
+  const pyRe = /=\s*(\d+)\s+failed,\s*(\d+)\s+passed(?:,\s*(\d+)\s+skipped)?.*in\s+(\S+)/;
+  const pyMatch = output.match(pyRe);
+  if (pyMatch) {
+    report.failed = parseInt(pyMatch[1], 10);
+    report.passed = parseInt(pyMatch[2], 10);
+    report.skipped = pyMatch[3] ? parseInt(pyMatch[3], 10) : report.skipped;
+    report.duration = pyMatch[4];
   }
+
+  // Go test: "--- FAIL: TestName"
+  for (const m of output.matchAll(/^---\s+FAIL:\s+(\S+)/gm)) {
+    report.failures.push({ file: "see output", test: m[1], error: "see raw output" });
+  }
+
+  // Cargo test: "test testname ... FAILED"
+  for (const m of output.matchAll(/^test\s+(\S+)\s+\.\.\.\s+FAILED/gm)) {
+    report.failures.push({ file: "see output", test: m[1], error: "see raw output" });
+  }
+
+  // Playwright: "N failed, M passed"
+  const pwRe = /(\d+)\s+failed(?:,\s*(\d+)\s+passed)?/;
+  const pwMatch = output.match(pwRe);
+  if (pwMatch) {
+    report.failed = parseInt(pwMatch[1], 10);
+    if (pwMatch[2]) report.passed = parseInt(pwMatch[2], 10);
+  }
+
+  // Dedupe failures by test name
+  const seen = new Set<string>();
+  report.failures = report.failures.filter(f => {
+    const key = `${f.file}:${f.test}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 
   return report;
 }
@@ -143,7 +126,7 @@ function parseTestOutput(output: string, framework: string): TestReport {
 export default function testRunner(pi: ExtensionAPI) {
   const { z } = pi.zod;
 
-  pi.setLabel("omp-xox Test Runner");
+  pi.setLabel("omp-xox Test Runner v3.1");
 
   pi.registerTool({
     name: "run_tests",
@@ -154,7 +137,7 @@ export default function testRunner(pi: ExtensionAPI) {
       filter: z.string().optional().describe("Run only tests matching this pattern (file path or test name)"),
       cwd: z.string().optional().describe("Working directory (defaults to project root)"),
     }),
-    async execute(_id, params, _onUpdate, _signal) {
+    async execute(_id, params, _signal, _onUpdate, _ctx) {
       const cwd = params.cwd ? path.resolve(params.cwd) : process.cwd();
       const framework = detectFramework(cwd);
 
@@ -166,16 +149,14 @@ export default function testRunner(pi: ExtensionAPI) {
       }
 
       let command = framework.command;
-      if (params.filter) command += ` -- ${params.filter}`;
-
-      let output: string;
-      try {
-        output = execSync(command, { cwd, encoding: "utf-8", maxBuffer: 20 * 1024 * 1024, timeout: 120000 }).trim();
-      } catch (e: unknown) {
-        // Tests failed — still capture output
-        const err = e as { stdout?: string; stderr?: string };
-        output = (err.stdout ?? "") + "\n" + (err.stderr ?? "");
+      // Sanitize filter: only allow alphanumeric, dash, underscore, dot, slash, colon
+      if (params.filter) {
+        const safe = String(params.filter).replace(/[^\w\-./:\\]/g, "").slice(0, 200);
+        if (safe) command += ` -- ${safe}`;
       }
+      // Use pi.exec() — returns { code, stdout, stderr, killed }
+      const result = await pi.exec("sh", ["-c", command], { cwd, timeout: 120_000 });
+      const output = (result.stdout ?? "") + "\n" + (result.stderr ?? "");
 
       const report = parseTestOutput(output, framework.name);
       const status = report.failed === 0 ? "PASSED" : "FAILED";

@@ -1,87 +1,49 @@
 ---
 name: refactoring
-description: Safe refactoring with before/after verification. TRIGGERS: refactor, refactor code, clean up, improve code, restructure, extract method
+description: Safe refactoring: plan, execute, verify. Behavior-preserving changes.
 ---
 
-# Refactoring Skill
+# Refactoring
 
-Safe refactoring with before/after verification.
-
-## When to Use
-
-Use this skill when asked to:
-- Improve code structure without changing behavior
-- Extract a method, class, or module from existing code
-- Rename symbols for clarity
-- Reduce duplication
-- Simplify complex conditionals
-- Migrate from one pattern to another
-
-## Principles
-
-1. **Refactoring does NOT change behavior.** If behavior changes, it is not refactoring, it is a feature change or a bug fix.
-2. **Tests are your safety net.** Never refactor without a passing test suite.
-3. **One change at a time.** Small, reversible steps reduce risk.
-4. **The code should be cleaner after each step.** If it is not cleaner, undo and try a different approach.
+Use `/plan` before starting. Use `run_verification` after finishing. Use `delegate(capability=refactor)` for large efforts.
 
 ## Workflow
 
-### 1. Analyze
+1. **Plan** — `/plan` to analyze scope without touching files
+2. **Understand** — workspace-map for module boundaries, `run_tests` for baseline
+3. **Execute** — `/plan-execute`, apply changes incrementally
+4. **Verify** — `run_tests` after each change, `run_verification` as final gate
 
-- **What needs to change?** Identify the specific code smell: long method, duplicated code, large class, shotgun surgery, primitive obsession, etc.
-- **What are the dependencies?** Find all callers, consumers, and tests for the code being refactored.
-- **Is there a clear goal?** State the desired outcome before starting.
+## Refactoring Types
 
-### 2. Lock Behavior With Tests
+### Extract Function/Method
+- Identify coherent block of code
+- Extract to named function with clear inputs/outputs
+- Replace original with call
 
-Before any refactoring:
+### Rename
+- Use LSP `rename` (not text replace) for symbols
+- Update imports, call sites, docs, configs
+- Check for string references (API routes, config keys)
 
-- Run the existing test suite. It must be green.
-- If tests are missing for the code being changed, write **characterization tests** that pin current behavior.
-- These tests capture the exact inputs and outputs so you know when behavior has drifted.
+### Reduce Nesting
+- Early return / guard clauses
+- Extract nested conditionals to named predicates
+- Flatten callbacks to async/await
 
-### 3. Plan the Refactoring
+### Remove Duplication
+- Find identical or near-identical code blocks
+- Extract to shared function/module
+- Parameterize the differences
 
-Break the refactoring into small, reversible steps. Each step should:
+### Split Large Module
+- Identify natural boundaries (by responsibility, by domain)
+- Move code incrementally, keeping tests passing
+- Update imports across codebase
 
-- Be completable in a few minutes.
-- Keep the tests green at every intermediate state.
-- Be independently reviewable.
+## Safety Rules
 
-Example plan for "extract method":
-
-1. Identify the lines to extract and their local variables.
-2. Create the new method with those variables as parameters.
-3. Replace the original code with a call to the new method.
-4. Run tests to confirm.
-
-### 4. Execute Each Step
-
-For each step:
-
-1. Make the change.
-2. Run the tests. If they fail, **undo** (do not fix forward — the step was too big).
-3. Commit if using version control.
-
-### 5. Verify
-
-- The full test suite is green.
-- The code is measurably cleaner (fewer lines, less nesting, better names).
-- No behavior drift: characterization tests still pass with identical output.
-- Run any linters or formatters used by the project.
-
-## Common Refactoring Patterns
-
-| Pattern | When to Use |
-|---------|-------------|
-| **Extract Method** | A method is too long or has a clear sub-step |
-| **Rename** | A name is misleading or unclear |
-| **Extract Class** | A class has multiple responsibilities |
-| **Introduce Parameter Object** | Many methods share the same parameter group |
-| **Replace Conditional with Polymorphism** | Complex conditionals that dispatch on type |
-| **Extract Module** | A file has grown too large and has natural sections |
-| **Inline** | A method is trivial and only called in one place |
-
-## Scripts
-
-No scripts for this skill. Verification relies on the project's existing test suite.
+- **Never mix refactoring with feature changes.** One type of change per commit.
+- **Run tests before and after.** If tests didn't pass before, fix that first.
+- **Commit small, revert easy.** Atomic commits per refactoring step.
+- **Use LSP for renames.** Text replace misses shadowing and re-exports.

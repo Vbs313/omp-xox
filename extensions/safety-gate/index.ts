@@ -10,12 +10,15 @@ import * as os from "node:os";
 
 // ── Rule Engine ──
 
-interface SafetyRule {
-  /** Regex pattern to match against the command */
-  pattern: string;
-  /** Action: block (reject), confirm (ask user), warn (allow but notify) */
+interface CompiledRule {
+  regex: RegExp;
   action: "block" | "confirm" | "warn";
-  /** Human-readable message shown when rule triggers */
+  message: string;
+}
+
+interface SafetyRule {
+  pattern: string;
+  action: "block" | "confirm" | "warn";
   message: string;
 }
 
@@ -23,6 +26,7 @@ interface SafetyConfig {
   enabled: boolean;
   mode: "strict" | "permissive";
   rules: SafetyRule[];
+  compiled: CompiledRule[];
 }
 
 const DEFAULT_RULES: SafetyRule[] = [
@@ -48,6 +52,15 @@ const DEFAULT_RULES: SafetyRule[] = [
   { pattern: "DROP\\s+(TABLE|DATABASE)", action: "warn", message: "Warning: destructive SQL operation" },
 ];
 
+function compileRules(rules: SafetyRule[]): CompiledRule[] {
+  const compiled: CompiledRule[] = [];
+  for (const r of rules) {
+    try {
+      compiled.push({ regex: new RegExp(r.pattern, "i"), action: r.action, message: r.message });
+    } catch { /* skip invalid regex */ }
+  }
+  return compiled;
+}
 // ── Rule Loading ──
 
 function loadRules(userDir: string, projectDir?: string): SafetyConfig {
@@ -73,6 +86,7 @@ function loadRules(userDir: string, projectDir?: string): SafetyConfig {
     }
   }
 
+  config.compiled = compileRules(config.rules);
   return config;
 }
 
@@ -80,8 +94,9 @@ function loadRules(userDir: string, projectDir?: string): SafetyConfig {
 
 export default function safetyGate(pi: ExtensionAPI) {
   const { z } = pi.zod;
-  let config: SafetyConfig = { enabled: true, mode: "strict", rules: [...DEFAULT_RULES] };
+  let config: SafetyConfig = { enabled: true, mode: "strict", rules: [...DEFAULT_RULES], compiled: compileRules(DEFAULT_RULES) };
   const stats = { blocked: 0, confirmed: 0, warned: 0 };
+
 
   pi.setLabel("omp-xox Safety Gate");
 
@@ -108,25 +123,21 @@ export default function safetyGate(pi: ExtensionAPI) {
     let highestAction: "block" | "confirm" | "warn" | null = null;
     let highestMessage = "";
 
-    for (const rule of config.rules) {
-      try {
-        if (new RegExp(rule.pattern, "i").test(command)) {
-          if (rule.action === "block") {
-            highestAction = "block";
-            highestMessage = rule.message;
-            break; // Block is final — no need to check further
-          }
-          if (rule.action === "confirm" && highestAction !== "block") {
-            highestAction = "confirm";
-            highestMessage = rule.message;
-          }
-          if (rule.action === "warn" && !highestAction) {
-            highestAction = "warn";
-            highestMessage = rule.message;
-          }
+    for (const rule of config.compiled) {
+      if (rule.regex.test(command)) {
+        if (rule.action === "block") {
+          highestAction = "block";
+          highestMessage = rule.message;
+          break;
         }
-      } catch {
-        // Invalid regex — skip this rule
+        if (rule.action === "confirm" && highestAction !== "block") {
+          highestAction = "confirm";
+          highestMessage = rule.message;
+        }
+        if (rule.action === "warn" && !highestAction) {
+          highestAction = "warn";
+          highestMessage = rule.message;
+        }
       }
     }
 

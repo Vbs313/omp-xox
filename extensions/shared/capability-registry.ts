@@ -13,7 +13,7 @@ export const CAPABILITY_REGISTRY: Record<string, CapabilityEntry> = {
 
   plan: {
     id: "plan", agent: "plan", ompAgentType: "plan",
-    modelRole: "slow", thinking: "xhigh", timeoutSeconds: 240, maxRetries: 1,
+    modelRole: "slow", thinking: "high", timeoutSeconds: 240, maxRetries: 1,
   },
 
   implement: {

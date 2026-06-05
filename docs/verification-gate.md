@@ -1,42 +1,45 @@
 # Verification Gate
 
-## Overview
+Post-agent completion quality checks. Run before merging or after finishing a task.
 
-Post-agent completion quality checks. Runs after subagent completes via `run_verification` tool.
+## Tool: `run_verification`
 
-## File
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `checks` | array? | all 4 | Which checks to run |
 
-`extensions/verification-gate/index.ts`
+### Checks
 
-## Check Types
+| Check | Critical | What it does |
+|---|---|---|
+| `test-pass` | ✅ Yes | Auto-detect test framework, run tests |
+| `lint-pass` | No | Run `bun run lint` if configured |
+| `no-new-todos` | No | Count `TODO`/`FIXME`/`HACK` markers, warn if > 10 |
+| `diff-limit` | No | Check git diff size, warn if > 200 lines |
 
-| Check | Critical | Behavior |
-|-------|----------|----------|
-| test-pass | Yes | Runs: bun test → npm test → pytest → go test → cargo test |
-| lint-pass | No | Runs: bun run lint (if configured in package.json) |
-| no-new-todos | No | Counts TODO/FIXME/HACK markers (threshold: 10) |
-| diff-limit | No | Checks git diff size (threshold: 200 lines) |
+### Example Output
 
-## Tool
+```markdown
+## Verification: ISSUES FOUND
+Results (3/4 passed):
 
-### `run_verification`
-
-```
-Parameters:
-  checks?: string[]   — Which checks to run (default: all four)
-
-Output:
-  ## Verification: PASSED|FAILED
-  - ✓ test-pass: all tests passed
-  - ✓ lint-pass: clean
-  - ⚠ no-new-todos: 3 markers — within threshold
-  - ✓ diff-limit: 42 lines — within limit
+- ✅ **test-pass**: bun test: all tests passed
+- ⚠️ **lint-pass**: bun run lint: 12 errors found
+- ✅ **no-new-todos**: 3 markers found — within threshold
+- ✅ **diff-limit**: Diff: 45 lines — within limit
 ```
 
-## Integration
+Critical failures block the gate; non-critical failures warn but pass.
 
-Exposes checker via `pi.__ompXoxVerify` for other extensions. The `delegate` tool runs verification checks after sub-agent completion (if the agent contract declares `verification` fields). Results are included in the delegation output.
+## Command
 
-## Slash Command
+| Command | Effect |
+|---|---|
+| `/verify` | Run all 4 checks and show results in notification |
 
-`/verify`
+## Technical
+
+- All subprocess calls use `pi.exec()` — Bun-native, no `node:child_process`
+- Framework auto-detection matches test-runner's detection logic
+- Commands are hardcoded (not LLM-controlled) — no injection risk
+- See `extensions/verification-gate/index.ts`

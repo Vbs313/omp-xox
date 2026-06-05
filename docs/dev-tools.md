@@ -1,94 +1,58 @@
 # Dev Tools
 
-## Files
+Test runner with framework auto-detection and structured output parsing. Only module remaining from v2 dev-tools (git-ops and safe-edit removed as redundant with OMP's bash/edit tools).
 
-- `extensions/dev-tools/index.ts` — Unified entry
-- `extensions/dev-tools/safe-edit.ts` — Hashline optimistic lock edit
-- `extensions/dev-tools/git-ops.ts` — Structured git operations
-- `extensions/dev-tools/test-runner.ts` — Framework detection and execution
+## Tool: `run_tests`
 
----
+Auto-detects the project's test framework and runs tests. Returns pass/fail/skip counts and failure details.
 
-## safe_edit
+### Parameters
 
-Edit files with optional hash verification. No hooks — hash is passed explicitly by the LLM.
+| Parameter | Type | Description |
+|---|---|---|
+| `filter` | string? | Run only tests matching this pattern (file path or test name) |
+| `cwd` | string? | Working directory (defaults to project root) |
 
-**Parameters:**
-```
-path: string        — File path
-hash?: string       — Optional 4-char content hash. If provided and file changed, edit rejected.
-operations: [{
-  op: "replace" | "delete" | "insert_before" | "insert_after"
-  range: [startLine, endLine]  — 1-indexed, inclusive
-  content?: string[]
-}]
-```
+### Security
 
-**Flow:**
-```
-1. LLM reads file (via omp's read tool)
-2. LLM calls safe_edit with or without hash
-3. If hash provided: compare against current file content hash
-   - Match → apply edits → return new hash
-   - Mismatch → reject with error
-4. If hash omitted: apply edits directly → return new hash
-5. LLM can use new hash for subsequent edits on the same file
-```
+`filter` parameter is sanitized: only `\w`, `-`, `.`, `/`, `:`, `\` allowed. Shell metacharacters stripped. Max 200 chars.
 
-**Hash algorithm:** `sha1(head(256) + tail(-256) + size).hex().slice(0, 4)`
+### Supported Frameworks
 
----
+| Framework | Detection | Command |
+|---|---|---|
+| Vitest | `vitest.config.{ts,js,mjs}` | `bun test` |
+| Jest | `jest.config.{ts,js,mjs}` | `bun test` |
+| Mocha | `.mocharc.{js,json,yml}` | `bun test` |
+| Playwright | `playwright.config.{ts,js}` | `bunx playwright test` |
+| Pytest | `pytest.ini`, `pyproject.toml` | `python -m pytest` |
+| Go | `go.mod` | `go test ./...` |
+| Rust | `Cargo.toml` | `cargo test` |
 
-## git_ops
+### Output Parsing
 
-### `git_diff`
-```
-mode: "staged" | "unstaged" | "all"  (default: staged)
-path?: string
-stat?: boolean
-nameOnly?: boolean
-```
+Parses test output from all supported frameworks:
+- Vitest/Jest: `Tests: N passed, M failed`
+- Pytest: `= N failed, M passed in Xs =`
+- Go: `--- FAIL: TestName`
+- Rust: `test testname ... FAILED`
+- Playwright: `N failed, M passed`
 
-### `git_log`
-```
-maxCount?: number  (default: 20, max: 100)
-author?: string
-since?: string     ("2026-01-01", "2 weeks ago")
-until?: string
-path?: string
-format?: "oneline" | "medium" | "full"
+### Example Result
+
+```markdown
+## Test Results: FAILED
+Framework: vitest
+Passed: 42 | Failed: 3 | Skipped: 1
+
+### Failures (3)
+- **should handle edge case** (src/utils.test.ts)
+- **validates input** (src/api.test.ts)
+- **timeout on large dataset** (src/batch.test.ts)
 ```
 
-### `git_status`
-```
-path?: string
-```
-Returns structured: staged/unstaged/untracked counts + file lists.
+## Technical
 
-### `git_blame`
-```
-path: string
-startLine?: number
-endLine?: number
-```
-
----
-
-## run_tests
-
-Auto-detect framework, execute, parse results.
-
-**Detected frameworks (priority order):**
-
-| Framework | Config Files | Command |
-|-----------|-------------|---------|
-| vitest | vitest.config.{ts,js,mjs} | bun test |
-| jest | jest.config.{ts,js,mjs} | bun test |
-| mocha | .mocharc.{js,json,yml} | bun test |
-| playwright | playwright.config.{ts,js} | bunx playwright test |
-| pytest | pytest.ini, pyproject.toml | python -m pytest |
-| go-test | go.mod | go test ./... |
-| cargo-test | Cargo.toml | cargo test |
-| npm-test | package.json#scripts.test | bun run test |
-
-**Output parsing:** Extracts pass/fail/skip counts and failure details (file, test name, error message) from framework-specific output formats.
+- Uses `pi.exec("sh", ["-c", command])` — Bun-native, no `node:child_process`
+- 120s timeout per run, 20MB output buffer
+- See `extensions/dev-tools/test-runner.ts`

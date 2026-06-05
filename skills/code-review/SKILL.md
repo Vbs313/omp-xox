@@ -1,102 +1,53 @@
 ---
 name: code-review
-description: Systematic code review for quality, security, performance, and style. TRIGGERS: review, code review, review code, check code, quality check, security review
+description: Systematic code review for quality, security, performance, and style.
 ---
 
-# Code Review Skill
+# Code Review
 
-Systematic code review for quality, security, performance, and style.
-
-## When to Use
-
-Use this skill when asked to:
-- Review code changes before merging
-- Check for security vulnerabilities
-- Evaluate code quality and style
-- Assess performance implications
-- Verify test coverage
+Systematic review before merging. Use `delegate(capability=review)` for deep reviews on large diffs.
 
 ## Workflow
 
-### 1. Understand the Context
+1. **Understand context**: Read diff or full files. Check workspace-map for surrounding code.
+2. **Review checklist** (in order):
 
-- What does this code do? Read the diff or full file.
-- What is the expected behavior? Check linked issues or PR descriptions.
-- What are the project conventions? Glance at nearby code for style.
+### Correctness
+- Does it do what it claims? Logic errors, off-by-one, race conditions?
+- All branches handled? Error paths covered?
 
-### 2. Run the Review Checklist
+### Security
+- User inputs validated/sanitized? Injection vulnerabilities?
+- Secrets hardcoded? Use environment variables.
+- Authentication/authorization checked on protected paths?
 
-Generate a review template using the helper script:
+### Performance
+- N+1 queries? Unnecessary loops?
+- Memory issues with large datasets?
+- Blocking calls in async/hot paths?
 
-```bash
-bash skills/code-review/scripts/review-template.sh
-```
+### Maintainability
+- Follows project conventions? Reasonable function size?
+- Duplicated code? Descriptive names?
 
-### 3. Review Categories
+### Testing
+- Tests for new code? Edge cases covered?
+- Test names descriptive?
 
-#### Correctness
-- Does the code do what it claims?
-- Are there off-by-one errors, race conditions, or logic bugs?
-- Are all branches handled (if/else, switch cases, pattern matches)?
-- Are error paths handled consistently?
-
-#### Security
-- Are user inputs validated and sanitized?
-- Are there injection vulnerabilities (SQL, command, XSS)?
-- Are secrets hardcoded instead of using environment variables?
-- Is authentication/authorization checked on every protected path?
-- Are dependencies up to date without known CVEs?
-
-#### Performance
-- Are there N+1 queries or unnecessary loops?
-- Could large data sets cause memory issues?
-- Are expensive operations cached or lazy where appropriate?
-- Are there obvious bottlenecks (sync I/O in async context, blocking calls)?
-
-#### Style & Maintainability
-- Does the code follow project conventions (naming, formatting, file structure)?
-- Are functions/methods a reasonable size?
-- Is there duplicated code that could be extracted?
-- Are names descriptive and unambiguous?
-- Are comments necessary or could the code speak for itself?
-
-#### Testing
-- Are there tests for the new code?
-- Do tests cover edge cases, not just the happy path?
-- Are test names descriptive (what scenario, what expected outcome)?
-- Are there integration tests for cross-component changes?
-
-### 4. Write the Review
-
-Structure your review response like this:
+## Output Format
 
 ```
-## Review: <file(s) or scope>
+## Review: <scope>
 
-### ✅ Strong Points
-- ...
+### BLOCKER — Must fix before merge
+- **file:line** — problem → fix
 
-### 🔧 Issues
-- **Severity: high/medium/low** — Description with line reference
-- ...
+### MAJOR — Should fix
+- **file:line** — problem → suggestion
 
-### 💡 Suggestions
-- Optional improvements that are not blocking
-- ...
+### MINOR — Nice to fix
+- **file:line** — suggestion
 
-### ❓ Questions
-- Anything unclear that needs clarification
-- ...
+### PRAISE — Well done
+- description
 ```
-
-### 5. Severity Guide
-
-| Severity | Meaning |
-|----------|---------|
-| **High** | Bug, security hole, or correctness issue. Must fix before merge. |
-| **Medium** | Violates project standards, significant maintainability concern. Should fix. |
-| **Low** | Style nit, minor improvement. Nice to fix but not required. |
-
-## Scripts
-
-- `scripts/review-template.sh` — Prints a reusable review checklist template.

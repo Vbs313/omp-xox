@@ -1,29 +1,38 @@
-// omp-xox v2: Unified entry point
-// Imports and delegates to all 8 extensions in a single module.
-// OMP auto-discovers this as the extension entry when loading from ~/.omp/agent/extensions/omp-xox/
+// omp-xox v3.1 — 9 modules: 4 kept from v3 + 5 new
+// Registration order is intentional — hooks fire in register order
 
 import type { ExtensionAPI } from "@oh-my-pi/pi-coding-agent";
-import dagScheduler from "./extensions/dag-scheduler/index.ts";
-import devTools from "./extensions/dev-tools/index.ts";
+
+// v3 (kept)
 import safetyGate from "./extensions/safety-gate/index.ts";
-import contextGuard from "./extensions/context-guard/index.ts";
-import fallbackPipeline from "./extensions/fallback-pipeline/index.ts";
+import devTools from "./extensions/dev-tools/index.ts";
+import dagScheduler from "./extensions/dag-scheduler/index.ts";
 import verificationGate from "./extensions/verification-gate/index.ts";
-import taskSpawner from "./extensions/task-spawner/index.ts";
-import autoDelegate from "./extensions/auto-delegate/index.ts";
-import knowledgeWriter from "./extensions/knowledge-writer/index.ts";
+
+// v3.1 (new)
+import workspaceMap from "./extensions/workspace-map/index.ts";
+import execSandbox from "./extensions/exec-sandbox/index.ts";
+import planMode from "./extensions/plan-mode/index.ts";
+import pathGuard from "./extensions/path-guard/index.ts";
+import autoRepair from "./extensions/auto-repair/index.ts";
 
 export default function ompXox(pi: ExtensionAPI) {
-  pi.setLabel("omp-xox v2");
+  pi.setLabel("omp-xox v3.1");
 
-  // Register all extensions in dependency order
-  safetyGate(pi);        // tool_call hook — must be first to intercept bash
-  contextGuard(pi);      // tool_result hook — truncates large outputs
-  fallbackPipeline(pi);  // session_error hook — tracks fallback events
-  verificationGate(pi);  // run_verification tool + /verify command
-  devTools(pi);          // safe_edit + git_* + run_tests
-  taskSpawner(pi);       // enqueue_task + mailbox_*
-  knowledgeWriter(pi);   // compact_output hook + /archive + archive_to_knowledge
-  autoDelegate(pi);      // before_agent_start hook — keyword routing
-  dagScheduler(pi);      // delegate + agent_status + /orchestrate
+  // --- tool_call hooks (fire in order: block first, then mutate) ---
+  safetyGate(pi);           // command-content rules — block destructive commands
+  pathGuard(pi);            // per-dir path rules — block restricted paths
+  execSandbox(pi);          // docker/podman wrapper — mutates command last
+
+  // --- before_agent_start hooks (first-wins for message injection) ---
+  workspaceMap(pi);         // repo structure index — injects once per session
+
+  // --- commands (registration order for conflict resolution) ---
+  planMode(pi);             // /plan + /plan-execute
+
+  // --- tools (no order dependency between them) ---
+  devTools(pi);             // run_tests
+  autoRepair(pi);           // auto_repair (depends on delegate from dagScheduler)
+  dagScheduler(pi);         // delegate + agent_status + /orchestrate
+  verificationGate(pi);     // run_verification + /verify
 }

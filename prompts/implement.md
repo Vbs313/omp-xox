@@ -1,41 +1,34 @@
 ---
-description: Implement a feature or fix
-argument-hint: specification
+description: Implement a new feature or change
+argument-hint: feature description
 ---
 
 # Implement
 
-Implement $@. Follow this workflow:
+Implement: $@. Use `/plan` for analysis before code. Use `delegate(capability=implement)` for complex features.
 
-## 1. Clarify
+## Workflow
+1. **Plan** — `/plan` to analyze and produce plan. Read workspace-map for relevant modules.
+2. **Execute** — `/plan-execute`. Write tests first, then implementation.
+3. **Verify** — `run_tests(filter=new_tests)`, then `run_verification`.
 
-Before writing code, restate the requirements:
+## Rules
+- One feature per session. Don't mix unrelated changes.
+- Write tests before or alongside implementation.
+- Follow existing patterns in the codebase. Don't invent new patterns.
+- Update docs, types, and config alongside code changes.
+- Use LSP `rename` for symbol changes (not text replace).
 
-- What is the expected behavior? List specific inputs and expected outputs.
-- What are the acceptance criteria? Make them measurable.
-- What is out of scope for this change?
+## Output
+```
+## Plan
+- Files to create/modify
+- Implementation approach
+- Testing strategy
 
-## 2. Design
+## Implementation
+<code changes with file:line references>
 
-- Sketch the approach. Which files need to change? What new types or functions are needed?
-- Consider alternatives briefly. Why is this approach better?
-- Identify integration points: how does this connect to existing code?
-
-## 3. Implement
-
-- Write the smallest test that captures the requirement. Watch it fail.
-- Implement the minimum code to make the test pass.
-- Refactor for clarity without changing behavior.
-- Repeat for each acceptance criterion.
-
-## 4. Integrate
-
-- Wire up the new code with the existing system.
-- Update any callers or interfaces that need to change.
-- Add or update documentation if the public API changed.
-
-## 5. Verify
-
-- Run the full test suite. Everything must pass.
-- Run manual checks for the acceptance criteria.
-- Review the final diff. Remove debug code, commented-out code, and TODOs that belong in issues.
+## Verification
+<test results>
+```
