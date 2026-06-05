@@ -127,7 +127,9 @@ function readCheckpoints(ctx: { sessionManager: { getBranch(): Array<Record<stri
         }
       }
     }
-    if (items.length > 0) return `\n## Active Checkpoints\n${items.join("\n")}`;
+    // Keep only the 5 most recent to prevent accumulation across compaction cycles
+    const recent = items.slice(-5);
+    if (recent.length > 0) return `\n## Active Checkpoints\n${recent.join("\n")}`;
   } catch { /* session manager may not be available */ }
   return "";
 }
