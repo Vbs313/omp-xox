@@ -135,7 +135,7 @@ export default function dagScheduler(pi: ExtensionAPI) {
       task: z.string().describe("Task description in natural language"),
       capability: z.string().optional().describe("Explicit capability override (omit for auto-detect)"),
     }),
-    async execute(_id, params, _signal, _onUpdate, _ctx) {
+    async execute(_id, params, _signal, _onUpdate, ctx) {
       const task = params.task;
       const capId = params.capability ?? autoDetectCapability(task);
       const cap = resolveCapability(capId);
@@ -151,10 +151,8 @@ export default function dagScheduler(pi: ExtensionAPI) {
         const { session } = await pi.pi.createAgentSession({
           systemPrompt: (_default: { systemPrompt: string }) => `${agent.prompt}\n\n---\n\nTask: ${task}\n\nExecute this task efficiently. Use the tools available to you. Return your findings or results clearly.`,
           agentType: cap.ompAgentType as "task" | "explore" | "plan" | "designer" | "reviewer" | "quick_task",
-          thinkingLevel: cap.thinking,
-          timeout: cap.timeoutSeconds * 1000,
+          authStorage: ctx.modelRegistry?.authStorage,
         });
-
         let output = "";
         session.subscribe((event: { type: string; assistantMessageEvent?: { type: string; delta?: string } }) => {
           if (event.type === "message_update" && event.assistantMessageEvent?.type === "text_delta") {
